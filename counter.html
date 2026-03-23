@@ -8,47 +8,78 @@
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     text-align: center;
-    color: #1a56db; /* 清华蓝主题色 */
-    background: #ebf5ff; /* 浅蓝底色 */
+    color: #1a56db; 
+    background: #ebf5ff; 
     border-radius: 10px;
     margin: 0;
     padding: 15px;
     border: 1px solid #a0aec0;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.6;
   }
   .count-box { 
-    font-weight: bold; 
-    margin-top: 10px; 
+    margin-top: 12px; 
     color: #1a202c; 
+    font-size: 15px;
+    text-align: left;
+    display: inline-block; /* 让列表居中对齐 */
+  }
+  .country-row {
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .ticket { 
+    color: #c53030; /* 清华红/警示红 */
+    font-weight: bold; 
+    font-family: "SF Mono", "Consolas", monospace; 
     font-size: 16px;
+  }
+  .ticket-full { 
+    color: #276749; /* 达成目标的绿色 */
+    font-weight: bold; 
   }
 </style>
 </head>
 <body>
-    <div id="counter">Loading real-time quota... / 正在加载实时名额...</div>
+    <div id="counter">Loading current spots... / 正在加载名额进度...</div>
     <script>
         // 指向您的 Cloudflare 大脑
         const API_URL = "https://survey-counter.longhc23gemini.workers.dev/";
         
+        // 阶梯名额计算逻辑
+        function getStatusText(count) {
+            if (count < 150) {
+                // 第一阶段：距离 150 还有多少
+                let left = 150 - count;
+                return "1st Draw: <span class='ticket'>" + left + "</span> left / 首轮抽奖还剩 <span class='ticket'>" + left + "</span> 个名额";
+            } else if (count < 300) {
+                // 第二阶段：距离 300 还有多少
+                let left = 300 - count;
+                return "2nd Draw: <span class='ticket'>" + left + "</span> left / 次轮抽奖还剩 <span class='ticket'>" + left + "</span> 个名额";
+            } else {
+                // 第三阶段：已经达到或超过 300
+                return "<span class='ticket-full'>Quota Reached (300+) / 满额 (已超 300 人)</span>";
+            }
+        }
+
         fetch(API_URL + "?action=read")
         .then(res => res.json())
         .then(data => {
             const counts = data.counts || {};
-            const usLeft = Math.max(0, 150 - (counts.US || 0));
-            const deLeft = Math.max(0, 150 - (counts.DE || 0));
-            const sgLeft = Math.max(0, 150 - (counts.SG || 0));
+            const usCount = counts.US || 0;
+            const deCount = counts.DE || 0;
+            const sgCount = counts.SG || 0;
 
             document.getElementById("counter").innerHTML =
-                "🏆 <b>Prize Draw Spots Remaining / 剩余抽奖名额:</b><br>" +
+                "🏆 <b>Real-Time Prize Draw Spots / 实时抽奖名额进度：</b><br>" +
                 "<div class='count-box'>" +
-                "🇺🇸 United States: " + usLeft + " &nbsp;|&nbsp; " +
-                "🇩🇪 Germany: " + deLeft + " &nbsp;|&nbsp; " +
-                "🇸🇬 Singapore: " + sgLeft +
+                "<div class='country-row'>🇺🇸 <b>US:</b> " + getStatusText(usCount) + "</div>" +
+                "<div class='country-row'>🇩🇪 <b>DE:</b> " + getStatusText(deCount) + "</div>" +
+                "<div class='country-row'>🇸🇬 <b>SG:</b> " + getStatusText(sgCount) + "</div>" +
                 "</div>";
         })
         .catch(err => {
-            document.getElementById("counter").innerHTML = "Quota system initializing... / 额度系统初始化中...";
+            document.getElementById("counter").innerHTML = "System initializing... / 系统初始化中...";
         });
     </script>
 </body>
