@@ -341,7 +341,11 @@ function handleOptIn(wantsLottery) {
   document.getElementById("btnOptNo").classList.toggle("active", !wantsLottery);
   
   document.getElementById("ctaContainer").style.display = "block";
-  document.getElementById("ctaBtn").href = SURVEY_URLS[selectedCountry];
+  
+  // 【核心修改】给跳转链接加上 lottery=yes 或 lottery=no 的暗号
+  var baseUrl = SURVEY_URLS[selectedCountry];
+  var lotteryParam = wantsLottery ? "?lottery=yes" : "?lottery=no";
+  document.getElementById("ctaBtn").href = baseUrl + lotteryParam;
 
   if (wantsLottery) {
     document.getElementById("lotteryDetails").style.display = "block";
