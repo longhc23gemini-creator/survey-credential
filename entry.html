@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professional Governance &amp; Trust Survey — NCCL Tsinghua University</title>
+<style>
+  :root {
+    --blue: #1a56db;
+    --blue-light: #ebf5ff;
+    --blue-dark: #1e429f;
+    --green: #276749;
+    --green-bg: #f0fff4;
+    --amber: #b7791f;
+    --amber-bg: #fefcbf;
+    --red: #c53030;
+    --gray-50: #f7fafc;
+    --gray-100: #f0f4f8;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e0;
+    --gray-400: #a0aec0;
+    --gray-500: #718096;
+    --gray-600: #4a5568;
+    --gray-700: #2d3748;
+    --gray-900: #1a202c;
+    --radius: 10px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+    background: linear-gradient(135deg, #f0f4f8 0%, #e8edf2 100%);
+    color: var(--gray-900);
+    line-height: 1.65;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 680px;
+    margin: 24px auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    padding: 44px 40px;
+  }
+  @media (max-width: 700px) {
+    .container { padding: 28px 20px; margin: 12px auto; }
+  }
+
+  /* Institution header */
+  .institution {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .institution-name {
+    font-size: 13px;
+    color: var(--gray-500);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* Hero */
+  .hero { text-align: center; margin-bottom: 32px; }
+  .hero h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gray-900);
+    line-height: 1.35;
+    margin-bottom: 8px;
+  }
+  .hero .sub {
+    font-size: 14px;
+    color: var(--gray-500);
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* Section */
+  h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--gray-700);
+    margin: 28px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h2 .icon { font-size: 18px; }
+
+  /* Country cards */
+  .country-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 14px 0 8px;
+  }
+  @media (max-width: 500px) {
+    .country-grid { grid-template-columns: 1fr; }
+  }
+  .country-card {
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 18px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fff;
+  }
+  .country-card:hover {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+  .country-card.selected {
+    border-color: var(--blue);
+    background: var(--blue-light);
+    box-shadow: 0 0 0 3px rgba(26,86,219,0.12);
+  }
+  .country-card .flag { font-size: 32px; margin-bottom: 6px; }
+  .country-card .name { font-size: 14px; font-weight: 600; color: var(--gray-700); }
+  .country-card .name-sub { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+
+  /* Progress section */
+  .progress-section {
+    display: none;
+    margin-top: 24px;
+    animation: fadeIn 0.3s ease;
+  }
+  .progress-section.visible { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .progress-box {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .progress-label {
+    font-size: 14px;
+    color: var(--gray-600);
+    margin-bottom: 10px;
+  }
+  .progress-bar-bg {
+    height: 28px;
+    background: var(--gray-200);
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, var(--blue));
+    border-radius: 14px;
+    transition: width 0.8s ease;
+    min-width: 0;
+  }
+  .progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gray-700);
+    white-space: nowrap;
+  }
+  .progress-phase {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--gray-500);
+    text-align: center;
+  }
+  .progress-phase strong { color: var(--blue); }
+
+  /* Prize table */
+  .prize-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+  .prize-table th {
+    background: var(--blue);
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .prize-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .prize-table tr:last-child td { border-bottom: none; }
+  .prize-table tr:nth-child(even) td { background: var(--gray-50); }
+  .prize-table .total-row td {
+    font-weight: 700;
+    background: var(--blue-light);
+    border-top: 2px solid var(--blue);
+  }
+
+  /* Rules */
+  .rules-list {
+    font-size: 14px;
+    color: var(--gray-600);
+    padding-left: 20px;
+    margin: 10px 0;
+  }
+  .rules-list li { margin-bottom: 8px; line-height: 1.6; }
+
+  .hint-box {
+    background: var(--blue-light);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 14px 18px;
+    font-size: 14px;
+    margin: 16px 0;
+    line-height: 1.6;
+  }
+
+  /* CTA */
+  .cta-section { text-align: center; margin-top: 28px; }
+  .cta-btn {
+    display: inline-block;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .cta-btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+  .cta-btn:disabled { background: var(--gray-400); cursor: not-allowed; transform: none; }
+  .cta-note {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-top: 10px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 32px;
+    padding-top: 18px;
+    border-top: 1px solid var(--gray-200);
+    font-size: 12px;
+    color: var(--gray-400);
+    line-height: 1.6;
+  }
+
+  /* Loading */
+  .counter-loading { color: var(--gray-400); font-size: 13px; text-align: center; padding: 16px; }
+  .mini-spinner {
+    display: inline-block; width: 14px; height: 14px;
+    border: 2px solid var(--gray-200); border-top-color: var(--blue);
+    border-radius: 50%; animation: spin 0.7s linear infinite;
+    vertical-align: middle; margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- INSTITUTION HEADER -->
+  <div class="institution">
+    <div class="institution-name">New Construction Cross-Laboratory (NCCL)</div>
+    <div class="institution-name">Tsinghua University</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1 id="t-title"></h1>
+    <p class="sub" id="t-subtitle"></p>
+  </div>
+
+  <!-- STEP 1: COUNTRY SELECTION -->
+  <h2><span class="icon">🌍</span> <span id="t-step1"></span></h2>
+  <p style="font-size:14px; color:var(--gray-600);" id="t-step1-desc"></p>
+  <div class="country-grid">
+    <div class="country-card" onclick="selectCountry('US')" id="card-US">
+      <div class="flag">🇺🇸</div>
+      <div class="name">United States</div>
+      <div class="name-sub">美国</div>
+    </div>
+    <div class="country-card" onclick="selectCountry('DE')" id="card-DE">
+      <div class="flag">🇩🇪</div>
+      <div class="name">Deutschland</div>
+      <div class="name-sub">德国</div>
+    </div>
+    <div class="country-card" onclick="selectCountry('SG')" id="card-SG">
+      <div class="flag">🇸🇬</div>
+      <div class="name">Singapore</div>
+      <div class="name-sub">新加坡</div>
+    </div>
+    <div class="country-card" onclick="selectCountry('INT')" id="card-INT">
+      <div class="flag">🌍</div>
+      <div class="name">Other Countries</div>
+      <div class="name-sub">其他国家</div>
+    </div>
+  </div>
+
+  <!-- STEP 2: PROGRESS + LOTTERY (appears after country selection) -->
+  <div class="progress-section" id="progressSection">
+
+    <!-- Live progress bar -->
+    <h2><span class="icon">📊</span> <span id="t-progress-heading"></span></h2>
+    <div class="progress-box">
+      <div id="counterLoading" class="counter-loading">
+        <span class="mini-spinner"></span> <span id="t-loading-counter"></span>
+      </div>
+      <div id="progressContent" style="display:none;">
+        <div class="progress-label" id="progressLabel"></div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+          <span class="progress-text" id="progressText"></span>
+        </div>
+        <div class="progress-phase" id="progressPhase"></div>
+      </div>
+    </div>
+
+    <!-- Prize table -->
+    <h2><span class="icon">🎁</span> <span id="t-prize-heading"></span></h2>
+    <p style="font-size:14px; color:var(--gray-600); margin-bottom:6px;" id="t-prize-intro"></p>
+    <table class="prize-table">
+      <thead><tr>
+        <th id="t-th-tier"></th>
+        <th id="t-th-amount"></th>
+        <th id="t-th-winners"></th>
+      </tr></thead>
+      <tbody>
+        <tr><td id="t-p1-name"></td><td>$500</td><td>1</td></tr>
+        <tr><td id="t-p2-name"></td><td>$100</td><td>2</td></tr>
+        <tr><td id="t-p3-name"></td><td>$25</td><td>6</td></tr>
+        <tr><td id="t-p4-name"></td><td>$5</td><td>51</td></tr>
+        <tr class="total-row"><td id="t-p-total"></td><td>$1,105</td><td>60</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Rules -->
+    <h2><span class="icon">📋</span> <span id="t-rules-heading"></span></h2>
+    <ol class="rules-list" id="rulesList"></ol>
+
+    <div class="hint-box" id="t-hint"></div>
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <a class="cta-btn" id="ctaBtn" href="#"><span id="t-cta"></span></a>
+      <p class="cta-note" id="t-cta-note"></p>
+    </div>
+  </div>
+
+  <!-- INTERNATIONAL: no lottery, report only -->
+  <div class="progress-section" id="intSection">
+    <div class="hint-box" style="border-left-color: var(--amber); background: var(--amber-bg);">
+      <span id="t-int-info"></span>
+    </div>
+    <div class="cta-section">
+      <a class="cta-btn" id="ctaBtnInt" href="#"><span id="t-cta-int"></span></a>
+      <p class="cta-note" id="t-cta-note-int"></p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    New Construction Cross-Laboratory (NCCL), Tsinghua University<br>
+    <a href="/cdn-cgi/l/email-protection#127c71717e5266617b7c757a67733c7776673c717c" style="color:#718096;"><span class="__cf_email__" data-cfemail="177974747b5763647e79707f627639727362397479">[email&#160;protected]</span></a>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ═══════════════════════════════════════════════════════
+//  CONFIGURATION
+const API_URL = "https://survey-counter.longhc23gemini.workers.dev";
+const SURVEY_URLS = {
+  US: "https://qualtricsxmzpmj6w4xr.qualtrics.com/jfe/form/SV_0VasFKkZH8FBqmO",
+  DE: "https://qualtricsxmzpmj6w4xr.qualtrics.com/jfe/form/SV_6niPFiRbbFDx8ZE",
+  SG: "https://qualtricsxmzpmj6w4xr.qualtrics.com/jfe/form/SV_1MLQnCGQk8OVYua",
+  INT: "https://qualtricsxm2f8r6d76j.qualtrics.com/jfe/form/SV_e9DlJW2h1kaJzDw",
+};
+const DRAW_THRESHOLD = 150; // responses per draw
+const TOTAL_TARGET = 300;   // per country
+// ═══════════════════════════════════════════════════════
+
+let selectedCountry = null;
+let counts = { US: 0, DE: 0, SG: 0 };
+
+// ── Language packs ──
+const T = {
+  en: {
+    title: "Professional Governance & Trust in Construction",
+    subtitle: "A global academic study by Tsinghua University — your professional insights matter.\n建设市场专业治理与信任 — 清华大学全球学术研究，期待您的专业见解。",
+    step1: "Step 1: Select Your Survey / 第一步：选择问卷",
+    step1Desc: "Please select the country whose professional community you are qualified to evaluate. You should either (a) primarily practice and reside in that country, or (b) have obtained your professional qualifications there. If neither applies, please choose \"Other Countries.\"\n请选择您有资格评价其专业共同体治理水平的国家。您需满足以下条件之一：(a) 在该国主要执业并常驻，或 (b) 在该国取得专业资格。如均不符合，请选择「其他国家」。",
+    progressHeading: "Survey Progress / 问卷进度",
+    loadingCounter: "Loading live data... / 正在获取实时数据...",
+    prizeHeading: "Prize Draw — Amazon eGift Cards / 抽奖奖品 — 亚马逊电子礼品卡",
+    prizeIntro: "Each country holds two independent draws (at 150 and 300 responses). Every eligible participant is entered into the draw for their response milestone.\n每个国家进行两轮独立抽奖（分别在第150和第300份时）。每位符合条件的参与者自动进入所属轮次的抽奖。",
+    thTier: "Prize Tier / 奖项",
+    thAmount: "Amount / 金额",
+    thWinners: "Winners per Draw / 每轮中奖人数",
+    p1: "Grand Prize / 一等奖",
+    p2: "Second Prize / 二等奖",
+    p3: "Third Prize / 三等奖",
+    p4: "Lucky Prize / 幸运奖",
+    pTotal: "Total per Draw / 每轮合计",
+    rulesHeading: "How It Works / 抽奖规则",
+    rules: [
+      "Complete the full survey to be eligible. Your response number determines which draw you enter.\n完整填写问卷即有资格参与。您的问卷序号决定您参加哪一轮抽奖。",
+      "Draw 1 is held when a country reaches 150 responses; Draw 2 at 300 responses.\n第一轮抽奖在该国达到150份时进行，第二轮在300份时进行。",
+      "Winners are selected randomly and announced on Tsinghua University Cloud. You can also leave your email after the survey to be notified directly.\n中奖者随机抽取，结果公布在清华大学云盘。答题后也可留下邮箱以便直接通知。",
+      "Amazon eGift cards are region-specific (amazon.com for US, amazon.de for Germany, amazon.sg for Singapore).\n亚马逊礼品卡按地区发放（美国 amazon.com，德国 amazon.de，新加坡 amazon.sg）。",
+      "Each draw is independent — you are in one draw only, based on when you submit.\n每轮抽奖独立进行 — 根据提交时间，您只参加一轮。",
+    ],
+    hint: "After completing the survey, you will receive a unique Participant ID as your lottery credential. We recommend taking a screenshot to keep it.\n问卷完成后，您将获得一个唯一的参与编号作为抽奖凭证。建议截图保存。",
+    cta: "Start the Survey / 开始填写问卷",
+    ctaNote: "Estimated time: 15–20 minutes. Fully anonymous.\n预计用时15-20分钟，完全匿名。",
+    intInfo: "The international survey does not include a prize draw. However, as a thank-you for your participation, you will receive our international comparative research report (estimated December 2026) once the study is complete.\n\n国际问卷不设抽奖。但作为对您参与的感谢，研究完成后您将收到我们的国际比较研究报告（预计2026年12月）。",
+    ctaInt: "Start International Survey / 开始填写国际问卷",
+    ctaNoteInt: "Estimated time: 15–20 minutes. Fully anonymous.\n预计用时15-20分钟，完全匿名。",
+    progressLabel: function(c, n) {
+      var cname = {US:"United States / 美国", DE:"Germany / 德国", SG:"Singapore / 新加坡"}[c];
+      return cname + " — " + n + " responses so far / 已收到 " + n + " 份问卷";
+    },
+    phaseText: function(n) {
+      if (n < DRAW_THRESHOLD) {
+        var left = DRAW_THRESHOLD - n;
+        return "<strong>" + left + "</strong> more needed for Draw 1 / 距第一轮抽奖还差 <strong>" + left + "</strong> 份";
+      } else if (n < TOTAL_TARGET) {
+        var left = TOTAL_TARGET - n;
+        return "Draw 1 complete! <strong>" + left + "</strong> more for Draw 2 / 第一轮已完成！距第二轮还差 <strong>" + left + "</strong> 份";
+      } else {
+        return "Both draws complete / 两轮抽奖均已完成";
+      }
+    },
+  },
+  de: {
+    title: "Berufsständische Governance & Vertrauen im Bauwesen",
+    subtitle: "Eine globale akademische Studie der Tsinghua-Universität — Ihre fachliche Einschätzung zählt.\nProfessional Governance & Trust in Construction — a global study by Tsinghua University.",
+    step1: "Schritt 1: Umfrage wählen / Step 1: Select Your Survey",
+    step1Desc: "Bitte wählen Sie das Land, dessen Berufsgemeinschaft Sie qualifiziert beurteilen können. Sie sollten entweder (a) hauptsächlich in diesem Land tätig sein und dort leben, oder (b) dort Ihre berufliche Qualifikation erworben haben. Wenn keines davon zutrifft, wählen Sie bitte 'Andere Länder'.\nPlease select the country whose professional community you are qualified to evaluate.",
+    progressHeading: "Umfragefortschritt / Survey Progress",
+    loadingCounter: "Lade Echtzeitdaten... / Loading live data...",
+    prizeHeading: "Verlosung — Amazon-Gutscheine / Prize Draw — Amazon eGift Cards",
+    prizeIntro: "Jedes Land führt zwei unabhängige Verlosungen durch (bei 150 und 300 Antworten). Jeder berechtigte Teilnehmer nimmt automatisch an der Verlosung seines Meilensteins teil.\nTwo independent draws per country (at 150 and 300 responses).",
+    thTier: "Preiskategorie / Prize Tier",
+    thAmount: "Betrag / Amount",
+    thWinners: "Gewinner je Ziehung / Winners per Draw",
+    p1: "Hauptpreis / Grand Prize",
+    p2: "Zweiter Preis / Second Prize",
+    p3: "Dritter Preis / Third Prize",
+    p4: "Trostpreis / Lucky Prize",
+    pTotal: "Gesamt je Ziehung / Total per Draw",
+    rulesHeading: "So funktioniert es / How It Works",
+    rules: [
+      "Füllen Sie die gesamte Umfrage aus, um teilnahmeberechtigt zu sein. Ihre Antwortnummer bestimmt, an welcher Ziehung Sie teilnehmen.\nComplete the full survey to be eligible.",
+      "Ziehung 1 erfolgt, wenn ein Land 150 Antworten erreicht; Ziehung 2 bei 300 Antworten.\nDraw 1 at 150 responses; Draw 2 at 300.",
+      "Gewinner werden zufällig ermittelt und auf der Tsinghua University Cloud bekannt gegeben. Sie können nach der Umfrage auch Ihre E-Mail hinterlassen.\nWinners announced on Tsinghua Cloud; leave your email to be notified.",
+      "Amazon-Gutscheine sind regionsspezifisch (amazon.de für Deutschland, amazon.com für USA, amazon.sg für Singapur).\nRegion-specific Amazon eGift cards.",
+      "Jede Ziehung ist unabhängig — Sie nehmen nur an einer Ziehung teil.\nEach draw is independent.",
+    ],
+    hint: "Nach Abschluss der Umfrage erhalten Sie eine eindeutige Teilnahme-Nr. als Verlosungsnachweis. Wir empfehlen, einen Screenshot zu machen.\nAfter completing the survey, you'll receive a unique Participant ID. Screenshot recommended.",
+    cta: "Umfrage starten / Start the Survey",
+    ctaNote: "Geschätzte Dauer: 15–20 Minuten. Vollständig anonym.\nEstimated time: 15–20 min. Fully anonymous.",
+    intInfo: "Die internationale Umfrage beinhaltet keine Verlosung. Als Dankeschön für Ihre Teilnahme erhalten Sie jedoch unseren internationalen Vergleichsbericht (voraussichtlich Dezember 2026).\nThe international survey does not include a prize draw. You will receive our research report upon completion.",
+    ctaInt: "Internationale Umfrage starten / Start International Survey",
+    ctaNoteInt: "Geschätzte Dauer: 15–20 Minuten. Vollständig anonym.\nEstimated time: 15–20 min. Fully anonymous.",
+    progressLabel: function(c, n) {
+      return "Deutschland — " + n + " Antworten bisher / " + n + " responses so far";
+    },
+    phaseText: function(n) {
+      if (n < DRAW_THRESHOLD) {
+        var left = DRAW_THRESHOLD - n;
+        return "Noch <strong>" + left + "</strong> für Ziehung 1 / <strong>" + left + "</strong> more for Draw 1";
+      } else if (n < TOTAL_TARGET) {
+        var left = TOTAL_TARGET - n;
+        return "Ziehung 1 abgeschlossen! Noch <strong>" + left + "</strong> für Ziehung 2 / Draw 1 done! <strong>" + left + "</strong> more for Draw 2";
+      } else {
+        return "Beide Ziehungen abgeschlossen / Both draws complete";
+      }
+    },
+  },
+};
+
+function getLang() { return selectedCountry === "DE" ? "de" : "en"; }
+
+function applyLanguage() {
+  var t = T[getLang()];
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-subtitle").textContent = t.subtitle;
+  document.getElementById("t-step1").textContent = t.step1;
+  document.getElementById("t-step1-desc").textContent = t.step1Desc;
+  document.getElementById("t-progress-heading").textContent = t.progressHeading;
+  document.getElementById("t-loading-counter").textContent = t.loadingCounter;
+  document.getElementById("t-prize-heading").textContent = t.prizeHeading;
+  document.getElementById("t-prize-intro").textContent = t.prizeIntro;
+  document.getElementById("t-th-tier").textContent = t.thTier;
+  document.getElementById("t-th-amount").textContent = t.thAmount;
+  document.getElementById("t-th-winners").textContent = t.thWinners;
+  document.getElementById("t-p1-name").textContent = t.p1;
+  document.getElementById("t-p2-name").textContent = t.p2;
+  document.getElementById("t-p3-name").textContent = t.p3;
+  document.getElementById("t-p4-name").textContent = t.p4;
+  document.getElementById("t-p-total").textContent = t.pTotal;
+  document.getElementById("t-rules-heading").textContent = t.rulesHeading;
+  var ol = document.getElementById("rulesList");
+  ol.innerHTML = "";
+  t.rules.forEach(function(r) { var li = document.createElement("li"); li.textContent = r; ol.appendChild(li); });
+  document.getElementById("t-hint").textContent = t.hint;
+  document.getElementById("t-cta").textContent = t.cta;
+  document.getElementById("t-cta-note").textContent = t.ctaNote;
+  // INT section text
+  document.getElementById("t-int-info").textContent = t.intInfo;
+  document.getElementById("t-cta-int").textContent = t.ctaInt;
+  document.getElementById("t-cta-note-int").textContent = t.ctaNoteInt;
+}
+
+function selectCountry(code) {
+  selectedCountry = code;
+  document.querySelectorAll(".country-card").forEach(function(el) { el.classList.remove("selected"); });
+  document.getElementById("card-" + code).classList.add("selected");
+
+  applyLanguage();
+
+  var lotterySection = document.getElementById("progressSection");
+  var intSection = document.getElementById("intSection");
+
+  if (code === "INT") {
+    lotterySection.classList.remove("visible");
+    intSection.classList.add("visible");
+    document.getElementById("ctaBtnInt").href = SURVEY_URLS[code];
+  } else {
+    intSection.classList.remove("visible");
+    lotterySection.classList.add("visible");
+    document.getElementById("ctaBtn").href = SURVEY_URLS[code];
+    loadCounter(code);
+  }
+}
+
+function loadCounter(code) {
+  var loading = document.getElementById("counterLoading");
+  var content = document.getElementById("progressContent");
+  loading.style.display = "block";
+  content.style.display = "none";
+
+  fetch(API_URL + "?action=read")
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      counts = data.counts || data;
+      renderProgress(code);
+    })
+    .catch(function() {
+      // If API unavailable, show 0
+      renderProgress(code);
+    });
+}
+
+function renderProgress(code) {
+  var t = T[getLang()];
+  var n = counts[code] || 0;
+  var pct = Math.min(100, Math.round((n / TOTAL_TARGET) * 100));
+
+  document.getElementById("counterLoading").style.display = "none";
+  document.getElementById("progressContent").style.display = "block";
+
+  document.getElementById("progressLabel").textContent = t.progressLabel(code, n);
+  document.getElementById("progressText").textContent = n + " / " + TOTAL_TARGET + " (" + pct + "%)";
+  document.getElementById("progressPhase").innerHTML = t.phaseText(n);
+
+  // Animate fill
+  setTimeout(function() {
+    document.getElementById("progressFill").style.width = pct + "%";
+  }, 100);
+}
+
+// ── Initialize with default EN text ──
+applyLanguage = (function(orig) {
+  return function() {
+    if (!selectedCountry) {
+      // Pre-selection: show EN defaults
+      var t = T.en;
+      document.getElementById("t-title").textContent = t.title;
+      document.getElementById("t-subtitle").textContent = t.subtitle;
+      document.getElementById("t-step1").textContent = t.step1;
+      document.getElementById("t-step1-desc").textContent = t.step1Desc;
+      return;
+    }
+    orig();
+  };
+})(applyLanguage);
+
+// Init
+(function() {
+  var t = T.en;
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-subtitle").textContent = t.subtitle;
+  document.getElementById("t-step1").textContent = t.step1;
+  document.getElementById("t-step1-desc").textContent = t.step1Desc;
+})();
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
