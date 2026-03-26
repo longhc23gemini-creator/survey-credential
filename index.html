@@ -35,7 +35,7 @@
     min-height: 100vh;
   }
   .container {
-    max-width: 680px;
+    max-width: 720px;
     margin: 24px auto;
     background: #fff;
     border-radius: 16px;
@@ -46,12 +46,12 @@
     .container { padding: 28px 20px; margin: 12px auto; }
   }
 
-  /* Header */
+  /* Header & Hero */
   .institution { text-align: center; margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--gray-200); }
   .institution-name { font-size: 13px; color: var(--gray-500); letter-spacing: 0.5px; text-transform: uppercase; }
-  .hero { text-align: center; margin-bottom: 32px; }
-  .hero h1 { font-size: 22px; font-weight: 700; color: var(--gray-900); line-height: 1.35; margin-bottom: 8px; }
-  .hero .sub { font-size: 14px; color: var(--gray-500); max-width: 520px; margin: 0 auto; }
+  .hero { text-align: left; margin-bottom: 32px; background: var(--gray-50); padding: 24px; border-radius: var(--radius); border: 1px solid var(--gray-200); }
+  .hero h1 { font-size: 22px; font-weight: 700; color: var(--gray-900); line-height: 1.35; margin-bottom: 16px; text-align: center; }
+  .hero .sub { font-size: 14.5px; color: var(--gray-700); margin: 0 auto; line-height: 1.7; }
 
   h2 { font-size: 15px; font-weight: 700; color: var(--gray-700); margin: 28px 0 14px; display: flex; align-items: center; gap: 8px; }
   h2 .icon { font-size: 18px; }
@@ -78,8 +78,8 @@
   .progress-bar-bg { height: 28px; background: var(--gray-200); border-radius: 14px; overflow: hidden; position: relative; }
   .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, var(--blue)); border-radius: 14px; transition: width 0.8s ease; min-width: 0; }
   .progress-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 13px; font-weight: 700; color: var(--gray-700); white-space: nowrap; }
-  .progress-phase { margin-top: 10px; font-size: 13px; color: var(--gray-500); text-align: center; }
-  .progress-phase strong { color: var(--red); font-weight: bold; }
+  .progress-phase { margin-top: 12px; font-size: 14px; color: var(--gray-700); text-align: center; background: #fff; padding: 10px; border-radius: 8px; border: 1px dashed var(--blue); }
+  .progress-phase strong { color: var(--red); font-size: 16px; font-weight: 800; }
 
   .prize-table { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; margin: 14px 0; font-size: 14px; }
   .prize-table th { background: var(--blue); color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 13px; }
@@ -89,7 +89,7 @@
   .prize-table .total-row td { font-weight: 700; background: var(--blue-light); border-top: 2px solid var(--blue); }
 
   .rules-list { font-size: 14px; color: var(--gray-600); padding-left: 20px; margin: 10px 0; }
-  .rules-list li { margin-bottom: 8px; line-height: 1.6; }
+  .rules-list li { margin-bottom: 12px; line-height: 1.6; }
 
   .hint-box { background: var(--blue-light); border-left: 4px solid var(--blue); border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 18px; font-size: 14px; margin: 16px 0; line-height: 1.6; }
 
@@ -112,7 +112,7 @@
 
   <div class="hero">
     <h1 id="t-title"></h1>
-    <p class="sub" id="t-subtitle"></p>
+    <div class="sub" id="t-subtitle"></div>
   </div>
 
   <h2><span class="icon">🌍</span> <span id="t-step1"></span></h2>
@@ -166,9 +166,9 @@
       <tbody>
         <tr><td id="t-p1-name"></td><td>$500</td><td>1</td></tr>
         <tr><td id="t-p2-name"></td><td>$100</td><td>2</td></tr>
-        <tr><td id="t-p3-name"></td><td>$20</td><td>6</td></tr>
-        <tr><td id="t-p4-name"></td><td>$5</td><td>20</td></tr>
-        <tr><td id="t-p5-name"></td><td>$1</td><td>271</td></tr>
+        <tr><td id="t-p3-name"></td><td>$20</td><td>10</td></tr>
+        <tr><td id="t-p4-name"></td><td>$5</td><td>50</td></tr>
+        <tr><td id="t-p5-name"></td><td>$1</td><td>237</td></tr>
         <tr class="total-row"><td id="t-p-total"></td><td>$1,191</td><td id="t-p-total-win">300</td></tr>
       </tbody>
     </table>
@@ -200,11 +200,11 @@
 const API_URL = "https://survey-counter.longhc23gemini.workers.dev";
 const SURVEY_URLS = {
   US: "https://qualtricsxmzpmj6w4xr.qualtrics.com/jfe/form/SV_0VasFKkZH8FBqmO",
-  DE: "https://qualtricsxmzpmj6w4xr.qualtrics.com/jfe/form/SV_0GRxbYzRRz4KBZc",
-  SG: "https://qualtricsxmzpmj6w4xr.qualtrics.com/jfe/form/SV_4YHRCMI8JejgOLY",
-  INT: "https://qualtricsxm2f8r6d76j.qualtrics.com/jfe/form/SV_cVk2kqgp3tACLtA",
+  DE: "https://qualtricsxmzpmj6w4xr.qualtrics.com/jfe/form/SV_6niPFiRbbFDx8ZE",
+  SG: "https://qualtricsxmzpmj6w4xr.qualtrics.com/jfe/form/SV_1MLQnCGQk8OVYua",
+  INT: "https://qualtricsxm2f8r6d76j.qualtrics.com/jfe/form/SV_e9DlJW2h1kaJzDw",
 };
-const TOTAL_TARGET = 300; // 人人有奖满额总人数
+const TOTAL_TARGET = 300; 
 // ═══════════════════════════════════════════════════════
 
 let selectedCountry = null;
@@ -213,9 +213,9 @@ let counts = { US: 0, DE: 0, SG: 0 };
 const T = {
   en: {
     title: "Professional Governance & Trust in Construction",
-    subtitle: "A global academic study by Tsinghua University — your professional insights matter.\n建设市场专业治理与信任 — 清华大学全球学术研究，期待您的专业见解。",
+    subtitle: "<b>Dear fellow professional,</b><br><br>The construction industry stands at a crossroads.<br><br>Your participation matters.<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br><br>🎁 <b style='color:var(--red);'>For participants who reside in, practice in, or hold professional qualifications from the United States, Germany, or Singapore, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</b><hr style='margin:18px 0; border:0; border-top:1px solid #cbd5e0;'><span style='font-size:13.5px; color:#4a5568;'><b>尊敬的专业同仁：</b><br>建筑行业正处于十字路口。<br>您的参与至关重要。<br>我们诚挚邀请您加入一项全球学术研究，记录建设市场专业治理与信任的真实状态。通过分享您的观察，您将与面临同样挑战的跨国同行展开对话：在技术颠覆、公众期望转变和项目复杂性增加的时代，成为值得信赖的专业人士意味着什么？在不断变化的世界中，我们的行业如何继续赢得信任？<br><br>🎁 <b style='color:var(--red);'>对于在美国、德国或新加坡居住、执业或拥有专业资格的参与者，我们提供分两个阶段进行的100%中奖率抽奖活动，最高奖金为500美元！</b></span>",
     step1: "Step 1: Select Your Survey / 第一步：选择问卷",
-    step1Desc: "Please select the country whose professional community you are qualified to evaluate.\n请选择您有资格评价其专业共同体治理水平的国家。",
+    step1Desc: "Please select the country whose professional community you <b>feel comfortable evaluating</b>.<br>请选择您最熟悉、且最适合评价其专业共同体治理水平的国家。",
     optHeading: "Do you want to participate in the Prize Draw? / 您是否希望参与问卷抽奖？",
     optDesc: "Participation in the lottery is entirely optional. Your choice will not affect your survey data.\n参与抽奖完全自愿。您的选择不会影响问卷数据的有效性。",
     optYes: "🎁 Yes, I want to join the draw / 是的，我要参与抽奖",
@@ -224,30 +224,33 @@ const T = {
     prizeHeading: "Prize Pool (Amazon eGift Cards) / 抽奖奖池 (亚马逊礼品卡)",
     prizeIntro: "The first 300 eligible participants per country are GUARANTEED to win a prize! / 每个国家前300名符合条件的参与者 100% 获得以下奖项之一！",
     thTier: "Prize Tier / 奖项", thAmount: "Amount / 奖品", thWinners: "Winners / 人数",
-    p1: "Grand Prize / 一等奖", p2: "Second Prize / 二等奖", p3: "Third Prize / 三等奖", p4: "Lucky Prize / 幸运奖", p5: "Participation Prize / 参与奖",
+    p1: "First Prize / 一等奖", p2: "Second Prize / 二等奖", p3: "Third Prize / 三等奖", p4: "Participation Prize / 参与奖", p5: "Guaranteed Prize / 保底参与奖",
     pTotal: "Total / 合计", pTotalWin: "300 (Guaranteed / 人人有奖)",
-    rulesHeading: "How It Works / 抽奖规则",
+    rulesHeading: "How It Works & Prize Delivery / 抽奖规则与奖品发放",
     rules: [
-      "Prizes are guaranteed for the first 300 valid respondents per country. / 每个国家前300名有效答卷者100%获得上述奖项之一。",
-      "Complete the full survey to be eligible. Your final Participant ID determines your exact prize tier. / 完整填写问卷即有资格参与。最终凭借参与凭证编号进行抽奖兑换。",
-      "Specific prize tiers are drawn randomly and announced on Tsinghua Cloud. / 具体奖项等级由随机抽取产生，结果将公布在清华大学云盘。",
-      "Amazon eGift cards are region-specific (amazon.com for US, amazon.de for DE, amazon.sg for SG). / 亚马逊礼品卡按所在地区属地化发放。"
+      "<b>First draw (when 150 valid responses are reached in a country):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>首轮开奖（该国满150份有效答卷时）：</b>抽取二等奖1名，三等奖5名，参与奖25名。<i>注：本阶段不抽取一等奖。</i>",
+      "<b>Second draw (when 300 valid responses are reached in a country):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.<br><b>次轮开奖（该国满300份有效答卷时）：</b>在第151至300名参与者中抽取剩余的二等奖1名，三等奖5名和参与奖25名。",
+      "<b>First Prize ($500):</b> Drawn once among ALL 300 participants regardless of phase, as long as you have not won a prize before.<br><b>一等奖 ($500)：</b>在全部300名参与者中统一抽取一次（排除已中奖者）。",
+      "<b>Draw Results Notification:</b> All participants will receive the draw results by email (regardless of whether they won).<br><b>开奖通知：</b>无论是否中奖，所有参与者都将通过邮件收到开奖结果通知。",
+      "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.<br><b>云盘公示：</b>抽奖结果同时将在清华大学云盘公示，问卷提交后将显示下载链接。",
+      "<b>Prize Delivery:</b> Winners will receive their Amazon Gift Cards by email.<br><b>奖品发放：</b>中奖者将通过邮件直接收到亚马逊电子礼品卡。"
     ],
-    hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.\n问卷完成后，您将获得一个唯一的参与编号。建议截图保存作为兑奖凭证。",
+    hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.\n问卷完成后，您将获得一个唯一的参与编号。建议截图保存作为凭证。",
     cta: "Start the Survey / 开始填写问卷",
     ctaNote: "Estimated time: 15–20 minutes. Fully anonymous.\n预计用时15-20分钟，完全匿名。",
-    intInfo: "The international survey does not include a prize draw. However, you will receive our research report (est. Dec 2026) once the study is complete.\n国际问卷不设抽奖。但研究完成后，您将收到我们的国际比较研究报告（预计2026年12月）。",
+    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br><br>本国际问卷无现金报酬，但您的声音比金钱更有价值：您的见解将与来自不同国家和背景的专业人士汇聚在一起，共同塑造行业的未来。<br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete. (研究完成后，您将收到我们的国际比较研究报告。)</i>",
     progressLabel: function(c, n) { var cname = {US:"United States / 美国", DE:"Germany / 德国", SG:"Singapore / 新加坡"}[c]; return cname + " — " + n + " spots claimed / 已领取 " + n + " 个名额"; },
     phaseText: function(n) {
-      if (n < TOTAL_TARGET) { return "Hurry! <strong>" + (TOTAL_TARGET - n) + "</strong> guaranteed winning spots left! / 抓紧时间，还有 <strong>" + (TOTAL_TARGET - n) + "</strong> 个100%中奖名额！"; } 
-      else { return "300 spots have been filled. You can still take the survey. / 300个中奖名额已满，您仍可正常提交问卷。"; }
+      if (n < 150) { return "Only <strong>" + (150 - n) + "</strong> more responses needed to trigger the <b>First Draw</b>! <br> 仅需再提交 <strong>" + (150 - n) + "</strong> 份问卷即可触发<b>首轮开奖</b>！"; } 
+      else if (n < 300) { return "First Draw condition met! Only <strong>" + (300 - n) + "</strong> more responses needed to trigger the <b>Second Draw & Grand Prize</b>! <br> 首轮已达标！仅需再提交 <strong>" + (300 - n) + "</strong> 份问卷即可触发<b>次轮及一等奖开奖</b>！"; } 
+      else { return "Both draw conditions have been met. You can still participate. / 两个阶段的开奖条件均已达成，您仍可正常提交问卷。"; }
     },
   },
   de: {
     title: "Berufsständische Governance & Vertrauen im Bauwesen",
-    subtitle: "Eine globale akademische Studie der Tsinghua-Universität.\nProfessional Governance & Trust in Construction — a global study by Tsinghua University.",
+    subtitle: "<b>Dear fellow professional,</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br><br>🎁 <b style='color:var(--red);'>For participants who reside in, practice in, or hold professional qualifications from the United States, Germany, or Singapore, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</b>",
     step1: "Schritt 1: Umfrage wählen / Step 1: Select Your Survey",
-    step1Desc: "Bitte wählen Sie das Land, dessen Berufsgemeinschaft Sie qualifiziert beurteilen können.\nPlease select the country whose professional community you are qualified to evaluate.",
+    step1Desc: "Please select the country whose professional community you <b>feel comfortable evaluating</b>.",
     optHeading: "Möchten Sie an der Verlosung teilnehmen? / Participate in the Prize Draw?",
     optDesc: "Die Teilnahme an der Verlosung ist freiwillig. Ihre Wahl hat keinen Einfluss auf die Umfragedaten.\nParticipation is optional. Your choice won't affect the survey.",
     optYes: "🎁 Ja, ich möchte teilnehmen / Yes, join the draw",
@@ -256,23 +259,26 @@ const T = {
     prizeHeading: "Preispool (Amazon-Gutscheine) / Prize Pool",
     prizeIntro: "Die ersten 300 qualifizierten Teilnehmer aus jedem Land erhalten GARANTIERT einen Preis! / The first 300 eligible participants are GUARANTEED a prize!",
     thTier: "Preiskategorie / Prize Tier", thAmount: "Betrag / Amount", thWinners: "Gewinner / Winners",
-    p1: "Hauptpreis / Grand Prize", p2: "Zweiter Preis / Second Prize", p3: "Dritter Preis / Third Prize", p4: "Glückspreis / Lucky Prize", p5: "Teilnahmepreis / Participation Prize",
+    p1: "Hauptpreis / First Prize", p2: "Zweiter Preis / Second Prize", p3: "Dritter Preis / Third Prize", p4: "Teilnahmepreis / Participation Prize", p5: "Garantierter Preis / Guaranteed Prize",
     pTotal: "Gesamt / Total", pTotalWin: "300 (Garantiert / Guaranteed)",
     rulesHeading: "So funktioniert es / How It Works",
     rules: [
-      "Die ersten 300 gültigen Antworten pro Land erhalten garantiert einen der oben genannten Preise. / Guaranteed prizes for the first 300 valid respondents.",
-      "Füllen Sie die gesamte Umfrage aus. Ihre finale Teilnahme-Nr. bestimmt Ihren Preis. / Complete the survey to be eligible.",
-      "Die spezifischen Gewinnstufen werden zufällig gezogen und in der Tsinghua Cloud bekannt gegeben. / Prize tiers are drawn randomly.",
-      "Amazon-Gutscheine sind regionsspezifisch. / Amazon eGift cards are region-specific."
+      "<b>First draw (when 150 valid responses are reached):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i>",
+      "<b>Second draw (when 300 valid responses are reached):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.",
+      "<b>First Prize ($500):</b> Drawn once among ALL 300 participants regardless of phase.",
+      "<b>Draw Results Notification:</b> All participants will receive the draw results by email.",
+      "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive.",
+      "<b>Prize Delivery:</b> Winners will receive their Amazon Gift Cards by email."
     ],
     hint: "Nach Abschluss der Umfrage erhalten Sie eine Teilnahme-Nr. als Verlosungsnachweis. Bitte machen Sie einen Screenshot.\nAfter completing the survey, you'll receive a Participant ID. Screenshot recommended.",
     cta: "Umfrage starten / Start the Survey",
     ctaNote: "Geschätzte Dauer: 15–20 Minuten. Vollständig anonym.\nEstimated time: 15–20 min. Fully anonymous.",
-    intInfo: "Die internationale Umfrage beinhaltet keine Verlosung. Als Dankeschön erhalten Sie jedoch unseren Bericht (voraussichtlich Dez 2026).\nThe international survey does not include a prize draw. You will receive our research report.",
+    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete.</i>",
     progressLabel: function(c, n) { return "Deutschland — " + n + " Plätze vergeben / " + n + " spots claimed"; },
     phaseText: function(n) {
-      if (n < TOTAL_TARGET) { return "Schnell! Noch <strong>" + (TOTAL_TARGET - n) + "</strong> garantierte Gewinnplätze! / <strong>" + (TOTAL_TARGET - n) + "</strong> guaranteed spots left!"; } 
-      else { return "300 Plätze sind belegt. Sie können die Umfrage weiterhin ausfüllen. / 300 spots filled. You can still participate."; }
+      if (n < 150) { return "Only <strong>" + (150 - n) + "</strong> more responses needed to trigger the <b>First Draw</b>!"; } 
+      else if (n < 300) { return "First Draw condition met! Only <strong>" + (300 - n) + "</strong> more responses needed to trigger the <b>Second Draw</b>!"; } 
+      else { return "Both draw conditions have been met. You can still participate."; }
     },
   }
 };
@@ -281,37 +287,37 @@ function getLang() { return selectedCountry === "DE" ? "de" : "en"; }
 
 function applyLanguage() {
   var t = T[getLang()];
-  document.getElementById("t-title").textContent = t.title;
-  document.getElementById("t-subtitle").textContent = t.subtitle;
-  document.getElementById("t-step1").textContent = t.step1;
-  document.getElementById("t-step1-desc").textContent = t.step1Desc;
-  document.getElementById("t-opt-heading").textContent = t.optHeading;
-  document.getElementById("t-opt-desc").textContent = t.optDesc;
-  document.getElementById("t-opt-yes").textContent = t.optYes;
-  document.getElementById("t-opt-no").textContent = t.optNo;
-  document.getElementById("t-progress-heading").textContent = t.progressHeading;
-  document.getElementById("t-prize-heading").textContent = t.prizeHeading;
-  document.getElementById("t-prize-intro").textContent = t.prizeIntro;
-  document.getElementById("t-th-tier").textContent = t.thTier;
-  document.getElementById("t-th-amount").textContent = t.thAmount;
-  document.getElementById("t-th-winners").textContent = t.thWinners;
-  document.getElementById("t-p1-name").textContent = t.p1;
-  document.getElementById("t-p2-name").textContent = t.p2;
-  document.getElementById("t-p3-name").textContent = t.p3;
-  document.getElementById("t-p4-name").textContent = t.p4;
-  document.getElementById("t-p5-name").textContent = t.p5;
-  document.getElementById("t-p-total").textContent = t.pTotal;
-  document.getElementById("t-p-total-win").textContent = t.pTotalWin;
-  document.getElementById("t-rules-heading").textContent = t.rulesHeading;
+  document.getElementById("t-title").innerHTML = t.title;
+  document.getElementById("t-subtitle").innerHTML = t.subtitle;
+  document.getElementById("t-step1").innerHTML = t.step1;
+  document.getElementById("t-step1-desc").innerHTML = t.step1Desc;
+  document.getElementById("t-opt-heading").innerHTML = t.optHeading;
+  document.getElementById("t-opt-desc").innerHTML = t.optDesc;
+  document.getElementById("t-opt-yes").innerHTML = t.optYes;
+  document.getElementById("t-opt-no").innerHTML = t.optNo;
+  document.getElementById("t-progress-heading").innerHTML = t.progressHeading;
+  document.getElementById("t-prize-heading").innerHTML = t.prizeHeading;
+  document.getElementById("t-prize-intro").innerHTML = t.prizeIntro;
+  document.getElementById("t-th-tier").innerHTML = t.thTier;
+  document.getElementById("t-th-amount").innerHTML = t.thAmount;
+  document.getElementById("t-th-winners").innerHTML = t.thWinners;
+  document.getElementById("t-p1-name").innerHTML = t.p1;
+  document.getElementById("t-p2-name").innerHTML = t.p2;
+  document.getElementById("t-p3-name").innerHTML = t.p3;
+  document.getElementById("t-p4-name").innerHTML = t.p4;
+  document.getElementById("t-p5-name").innerHTML = t.p5;
+  document.getElementById("t-p-total").innerHTML = t.pTotal;
+  document.getElementById("t-p-total-win").innerHTML = t.pTotalWin;
+  document.getElementById("t-rules-heading").innerHTML = t.rulesHeading;
   
   var ol = document.getElementById("rulesList");
   ol.innerHTML = "";
-  t.rules.forEach(function(r) { var li = document.createElement("li"); li.textContent = r; ol.appendChild(li); });
+  t.rules.forEach(function(r) { var li = document.createElement("li"); li.innerHTML = r; ol.appendChild(li); });
   
-  document.getElementById("t-hint").textContent = t.hint;
-  document.getElementById("t-cta").textContent = t.cta;
-  document.getElementById("t-cta-note").textContent = t.ctaNote;
-  document.getElementById("t-int-info").textContent = t.intInfo;
+  document.getElementById("t-hint").innerHTML = t.hint;
+  document.getElementById("t-cta").innerHTML = t.cta;
+  document.getElementById("t-cta-note").innerHTML = t.ctaNote;
+  document.getElementById("t-int-info").innerHTML = t.intInfo;
 }
 
 function selectCountry(code) {
@@ -342,7 +348,6 @@ function handleOptIn(wantsLottery) {
   
   document.getElementById("ctaContainer").style.display = "block";
   
-  // 【核心修改】给跳转链接加上 lottery=yes 或 lottery=no 的暗号
   var baseUrl = SURVEY_URLS[selectedCountry];
   var lotteryParam = wantsLottery ? "?lottery=yes" : "?lottery=no";
   document.getElementById("ctaBtn").href = baseUrl + lotteryParam;
@@ -375,8 +380,8 @@ function renderProgress(code) {
 
   document.getElementById("counterLoading").style.display = "none";
   document.getElementById("progressContent").style.display = "block";
-  document.getElementById("progressLabel").textContent = t.progressLabel(code, n);
-  document.getElementById("progressText").textContent = n + " / " + TOTAL_TARGET + " (" + pct + "%)";
+  document.getElementById("progressLabel").innerHTML = t.progressLabel(code, n);
+  document.getElementById("progressText").innerHTML = n + " / " + TOTAL_TARGET + " (" + pct + "%)";
   document.getElementById("progressPhase").innerHTML = t.phaseText(n);
   setTimeout(function() { document.getElementById("progressFill").style.width = pct + "%"; }, 100);
 }
@@ -384,10 +389,10 @@ function renderProgress(code) {
 // Init default English text
 (function() {
   var t = T.en;
-  document.getElementById("t-title").textContent = t.title;
-  document.getElementById("t-subtitle").textContent = t.subtitle;
-  document.getElementById("t-step1").textContent = t.step1;
-  document.getElementById("t-step1-desc").textContent = t.step1Desc;
+  document.getElementById("t-title").innerHTML = t.title;
+  document.getElementById("t-subtitle").innerHTML = t.subtitle;
+  document.getElementById("t-step1").innerHTML = t.step1;
+  document.getElementById("t-step1-desc").innerHTML = t.step1Desc;
 })();
 </script>
 </body>
