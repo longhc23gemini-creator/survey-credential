@@ -106,6 +106,7 @@
 <body>
 <div class="container">
 
+  <!-- HEADER -->
   <div class="institution">
     <div class="institution-name">New Construction Cross-Laboratory (NCCL)</div>
     <div class="institution-name">Tsinghua University</div>
@@ -116,23 +117,25 @@
     <div class="sub" id="t-subtitle"></div>
   </div>
 
+  <!-- STEP 1: COUNTRY -->
   <h2><span class="icon">🌍</span> <span id="t-step1"></span></h2>
   <p style="font-size:14px; color:var(--gray-600);" id="t-step1-desc"></p>
   <div class="country-grid">
     <div class="country-card" onclick="selectCountry('US')" id="card-US">
-      <div class="name">United States</div><div class="name-sub">美国</div>
+      <div class="name">United States</div>
     </div>
     <div class="country-card" onclick="selectCountry('DE')" id="card-DE">
-      <div class="name">Deutschland</div><div class="name-sub">德国</div>
+      <div class="name">Deutschland</div>
     </div>
     <div class="country-card" onclick="selectCountry('SG')" id="card-SG">
       <div class="name">Singapore</div><div class="name-sub">新加坡</div>
     </div>
     <div class="country-card" onclick="selectCountry('INT')" id="card-INT">
-      <div class="name">Other Countries</div><div class="name-sub">其他国家</div>
+      <div class="name">Other Countries</div>
     </div>
   </div>
 
+  <!-- STEP 2: OPT-IN (Hidden initially) -->
   <div id="optInSection" style="display:none; margin-top: 32px;">
     <h2 style="justify-content: center;"><span class="icon">🎟️</span> <span id="t-opt-heading"></span></h2>
     <p style="text-align:center; font-size:14px; color:var(--gray-600);" id="t-opt-desc"></p>
@@ -142,6 +145,7 @@
     </div>
   </div>
 
+  <!-- STEP 3: LOTTERY DETAILS (Hidden until YES is clicked) -->
   <div id="lotteryDetails" style="display:none; margin-top: 24px; animation: fadeIn 0.4s ease;">
     <h2><span class="icon">📊</span> <span id="t-progress-heading"></span></h2>
     <div class="progress-box">
@@ -175,12 +179,14 @@
     <div class="hint-box" id="t-hint"></div>
   </div>
 
+  <!-- INT INFO (For Other Countries) -->
   <div id="intSection" style="display:none; margin-top: 24px;">
     <div class="hint-box" style="border-left-color: var(--amber); background: var(--amber-bg);">
       <span id="t-int-info"></span>
     </div>
   </div>
 
+  <!-- CTA BUTTON (Hidden until choice is made) -->
   <div class="cta-section" id="ctaContainer" style="display:none;">
     <a class="cta-btn" id="ctaBtn" href="#"><span id="t-cta"></span></a>
     <p class="cta-note" id="t-cta-note"></p>
@@ -208,41 +214,43 @@ let selectedCountry = null;
 let counts = { US: 0, DE: 0, SG: 0 };
 
 const T = {
+  // Pure English for US and INT
   en: {
     title: "Professional Governance & Trust in Construction",
-    subtitle: "<b>Dear fellow professional,</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br><br><div class='return-box'><b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br>We value your time and expertise. Here is what we offer all participants:<br><br><b>① Research Report</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br><br><b>② Prize Draw (US, Germany & Singapore only)</b><br><span style='color:var(--red); font-weight:bold;'>For participants who reside in, practice in, or hold professional qualifications from the United States, Germany, or Singapore, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</span></div><hr style='margin:22px 0; border:0; border-top:1px solid #cbd5e0;'><span style='font-size:13.5px; color:#4a5568;'><b>尊敬的专业同仁：</b><br>建筑行业正处于十字路口。您的参与至关重要。<br><br>我们诚挚邀请您加入一项全球学术研究，记录建设市场专业治理与信任的真实状态。通过分享您的观察，您将与面临同样挑战的跨国同行展开对话：在技术颠覆、公众期望转变和项目复杂性增加的时代，成为值得信赖的专业人士意味着什么？在不断变化的世界中，我们的行业如何继续赢得信任？<br><br><b style='color:var(--blue);'>您的参与回报：</b><br>我们十分重视您的时间与专业知识。我们为所有参与者提供以下回报：<br><br><b>① 研究报告</b><br>研究完成后，我们将与所有参与者分享一份国际比较研究报告。您可通过清华大学云盘获取，或者我们也可以直接发送到您提供的电子邮箱。<br><br><b>② 问卷抽奖（仅限美国、德国与新加坡）</b><br><span style='color:var(--red); font-weight:bold;'>对于在美国、德国或新加坡居住、执业或拥有专业资格的参与者，我们提供分两个阶段进行的100%中奖率抽奖活动，最高奖金为500美元！</span></span>",
-    step1: "Step 1: Select Your Survey / 第一步：选择问卷",
-    step1Desc: "Please select the country whose professional community you <b>feel comfortable evaluating</b>.<br>请选择您最熟悉、且最适合评价其专业共同体治理水平的国家。",
-    optHeading: "Do you want to participate in the Prize Draw? / 您是否希望参与问卷抽奖？",
-    optDesc: "Participation in the lottery is entirely optional. Your choice will not affect your survey data.\n参与抽奖完全自愿。您的选择不会影响问卷数据的有效性。",
-    optYes: "🎁 Yes, I want to join the draw / 是的，我要参与抽奖",
-    optNo: "📝 No, just take the survey / 不参与，我仅填写问卷",
-    progressHeading: "Live Claimed Spots / 实时已领名额",
-    prizeHeading: "Prize Pool (Amazon eGift Cards) / 抽奖奖池 (亚马逊礼品卡)",
-    prizeIntro: "The first 300 eligible participants per country are GUARANTEED to win a prize! / 每个国家前300名符合条件的参与者 100% 获得以下奖项之一！",
-    thTier: "Prize Tier / 奖项", thAmount: "Amount / 奖品", thWinners: "Winners / 人数",
-    p1: "First Prize / 一等奖", p2: "Second Prize / 二等奖", p3: "Third Prize / 三等奖", p4: "Participation Prize / 参与奖", p5: "Guaranteed Prize / 保底参与奖",
-    pTotal: "Total / 合计", pTotalWin: "300 (Guaranteed / 人人有奖)",
-    rulesHeading: "How It Works & Prize Delivery / 抽奖规则与奖品发放",
+    subtitle: "<b>Dear fellow professional,</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br><br><div class='return-box'><b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br>We value your time and expertise. Here is what we offer all participants:<br><br><b>① Research Report</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br><br><b>② Prize Draw (US, Germany & Singapore only)</b><br><span style='color:var(--red); font-weight:bold;'>For participants who reside in, practice in, or hold professional qualifications from the United States, Germany, or Singapore, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</span></div>",
+    step1: "Step 1: Select Your Survey",
+    step1Desc: "Please select the country whose professional community you <b>feel comfortable evaluating</b>.",
+    optHeading: "Do you want to participate in the Prize Draw?",
+    optDesc: "Participation in the lottery is entirely optional. Your choice will not affect your survey data.",
+    optYes: "🎁 Yes, I want to join the draw",
+    optNo: "📝 No, just take the survey",
+    progressHeading: "Live Claimed Spots",
+    prizeHeading: "Prize Pool (Amazon eGift Cards)",
+    prizeIntro: "The first 300 eligible participants per country are GUARANTEED to win a prize!",
+    thTier: "Prize Tier", thAmount: "Amount", thWinners: "Winners",
+    p1: "First Prize", p2: "Second Prize", p3: "Third Prize", p4: "Participation Prize", p5: "Guaranteed Prize",
+    pTotal: "Total", pTotalWin: "300 (Guaranteed)",
+    rulesHeading: "How It Works & Prize Delivery",
     rules: [
-      "<b>First draw (when 150 valid responses are reached in a country):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>首轮开奖（该国满150份有效答卷时）：</b>抽取二等奖1名，三等奖5名，参与奖25名。<i>注：本阶段不抽取一等奖。</i>",
-      "<b>Second draw (when 300 valid responses are reached in a country):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.<br><b>次轮开奖（该国满300份有效答卷时）：</b>在第151至300名参与者中抽取剩余的二等奖1名，三等奖5名和参与奖25名。",
-      "<b>First Prize ($500):</b> Drawn once among ALL 300 participants regardless of phase, as long as you have not won a prize before.<br><b>一等奖 ($500)：</b>在全部300名参与者中统一抽取一次（排除已中奖者）。",
-      "<b>Draw Results Notification:</b> All participants will receive the draw results by email (regardless of whether they won).<br><b>开奖通知：</b>无论是否中奖，所有参与者都将通过邮件收到开奖结果通知。",
-      "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.<br><b>云盘公示：</b>抽奖结果同时将在清华大学云盘公示，问卷提交后将显示下载链接。",
-      "<b>Prize Delivery:</b> Winners will receive their Amazon Gift Cards by email.<br><b>奖品发放：</b>中奖者将通过邮件直接收到亚马逊电子礼品卡。"
+      "<b>First draw (when 150 valid responses are reached in a country):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i>",
+      "<b>Second draw (when 300 valid responses are reached in a country):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.",
+      "<b>First Prize ($500):</b> Drawn once among ALL 300 participants regardless of phase, as long as you have not won a prize before.",
+      "<b>Draw Results Notification:</b> All participants will receive the draw results by email (regardless of whether they won).",
+      "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.",
+      "<b>Prize Delivery:</b> Winners will receive their Amazon Gift Cards by email."
     ],
-    hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.\n问卷完成后，您将获得一个唯一的参与编号。建议截图保存作为凭证。",
-    cta: "Start the Survey / 开始填写问卷",
-    ctaNote: "Estimated time: 15–20 minutes. Fully anonymous.\n预计用时15-20分钟，完全匿名。",
-    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br><br>本国际问卷无现金报酬，但您的声音比金钱更有价值：您的见解将与来自不同国家和背景的专业人士汇聚在一起，共同塑造行业的未来。<br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete. (研究完成后，您将收到我们的国际比较研究报告。)</i>",
-    progressLabel: function(c, n) { var cname = {US:"United States / 美国", DE:"Germany / 德国", SG:"Singapore / 新加坡"}[c]; return cname + " — " + n + " spots claimed / 已领取 " + n + " 个名额"; },
+    hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.",
+    cta: "Start the Survey",
+    ctaNote: "Estimated time: 15–20 minutes. Fully anonymous.",
+    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete.</i>",
+    progressLabel: function(c, n) { var cname = {US:"United States", DE:"Germany", SG:"Singapore"}[c]; return cname + " — " + n + " spots claimed"; },
     phaseText: function(n) {
-      if (n < 150) { return "Only <strong>" + (150 - n) + "</strong> more responses needed to trigger the <b>First Draw</b>! <br> 仅需再提交 <strong>" + (150 - n) + "</strong> 份问卷即可触发<b>首轮开奖</b>！"; } 
-      else if (n < 300) { return "First Draw condition met! Only <strong>" + (300 - n) + "</strong> more responses needed to trigger the <b>Second Draw & Grand Prize</b>! <br> 首轮已达标！仅需再提交 <strong>" + (300 - n) + "</strong> 份问卷即可触发<b>次轮及一等奖开奖</b>！"; } 
-      else { return "Both draw conditions have been met. You can still participate. / 两个阶段的开奖条件均已达成，您仍可正常提交问卷。"; }
+      if (n < 150) { return "Only <strong>" + (150 - n) + "</strong> more responses needed to trigger the <b>First Draw</b>!"; } 
+      else if (n < 300) { return "First Draw condition met! Only <strong>" + (300 - n) + "</strong> more responses needed to trigger the <b>Second Draw & Grand Prize</b>!"; } 
+      else { return "Both draw conditions have been met. You can still participate."; }
     },
   },
+  // English + German for DE
   de: {
     title: "Berufsständische Governance & Vertrauen im Bauwesen",
     subtitle: "<b>Dear fellow professional,</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br><br><div class='return-box'><b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br>We value your time and expertise. Here is what we offer all participants:<br><br><b>① Research Report</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br><br><b>② Prize Draw (US, Germany & Singapore only)</b><br><span style='color:var(--red); font-weight:bold;'>For participants who reside in, practice in, or hold professional qualifications from the United States, Germany, or Singapore, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</span></div>",
@@ -277,10 +285,50 @@ const T = {
       else if (n < 300) { return "First Draw condition met! Only <strong>" + (300 - n) + "</strong> more responses needed to trigger the <b>Second Draw</b>!"; } 
       else { return "Both draw conditions have been met. You can still participate."; }
     },
+  },
+  // English + Chinese for SG
+  sg: {
+    title: "Professional Governance & Trust in Construction",
+    subtitle: "<b>Dear fellow professional,</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br><br><div class='return-box'><b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br>We value your time and expertise. Here is what we offer all participants:<br><br><b>① Research Report</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br><br><b>② Prize Draw (US, Germany & Singapore only)</b><br><span style='color:var(--red); font-weight:bold;'>For participants who reside in, practice in, or hold professional qualifications from the United States, Germany, or Singapore, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</span></div><hr style='margin:22px 0; border:0; border-top:1px solid #cbd5e0;'><span style='font-size:13.5px; color:#4a5568;'><b>尊敬的专业同仁：</b><br>建筑行业正处于十字路口。您的参与至关重要。<br><br>我们诚挚邀请您加入一项全球学术研究，记录建设市场专业治理与信任的真实状态。通过分享您的观察，您将与面临同样挑战的跨国同行展开对话：在技术颠覆、公众期望转变和项目复杂性增加的时代，成为值得信赖的专业人士意味着什么？在不断变化的世界中，我们的行业如何继续赢得信任？<br><br><b style='color:var(--blue);'>您的参与回报：</b><br>我们十分重视您的时间与专业知识。我们为所有参与者提供以下回报：<br><br><b>① 研究报告</b><br>研究完成后，我们将与所有参与者分享一份国际比较研究报告。您可通过清华大学云盘获取，或者我们也可以直接发送到您提供的电子邮箱。<br><br><b>② 问卷抽奖（仅限美国、德国与新加坡）</b><br><span style='color:var(--red); font-weight:bold;'>对于在美国、德国或新加坡居住、执业或拥有专业资格的参与者，我们提供分两个阶段进行的100%中奖率抽奖活动，最高奖金为500美元！</span></span>",
+    step1: "Step 1: Select Your Survey / 第一步：选择问卷",
+    step1Desc: "Please select the country whose professional community you <b>feel comfortable evaluating</b>.<br>请选择您最熟悉、且最适合评价其专业共同体治理水平的国家。",
+    optHeading: "Do you want to participate in the Prize Draw? / 您是否希望参与问卷抽奖？",
+    optDesc: "Participation in the lottery is entirely optional. Your choice will not affect your survey data.\n参与抽奖完全自愿。您的选择不会影响问卷数据的有效性。",
+    optYes: "🎁 Yes, I want to join the draw / 是的，我要参与抽奖",
+    optNo: "📝 No, just take the survey / 不参与，我仅填写问卷",
+    progressHeading: "Live Claimed Spots / 实时已领名额",
+    prizeHeading: "Prize Pool (Amazon eGift Cards) / 抽奖奖池 (亚马逊礼品卡)",
+    prizeIntro: "The first 300 eligible participants per country are GUARANTEED to win a prize! / 每个国家前300名符合条件的参与者 100% 获得以下奖项之一！",
+    thTier: "Prize Tier / 奖项", thAmount: "Amount / 奖品", thWinners: "Winners / 人数",
+    p1: "First Prize / 一等奖", p2: "Second Prize / 二等奖", p3: "Third Prize / 三等奖", p4: "Participation Prize / 参与奖", p5: "Guaranteed Prize / 保底参与奖",
+    pTotal: "Total / 合计", pTotalWin: "300 (Guaranteed / 人人有奖)",
+    rulesHeading: "How It Works & Prize Delivery / 抽奖规则与奖品发放",
+    rules: [
+      "<b>First draw (when 150 valid responses are reached in a country):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>首轮开奖（该国满150份有效答卷时）：</b>抽取二等奖1名，三等奖5名，参与奖25名。<i>注：本阶段不抽取一等奖。</i>",
+      "<b>Second draw (when 300 valid responses are reached in a country):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.<br><b>次轮开奖（该国满300份有效答卷时）：</b>在第151至300名参与者中抽取剩余的二等奖1名，三等奖5名和参与奖25名。",
+      "<b>First Prize ($500):</b> Drawn once among ALL 300 participants regardless of phase, as long as you have not won a prize before.<br><b>一等奖 ($500)：</b>在全部300名参与者中统一抽取一次（排除已中奖者）。",
+      "<b>Draw Results Notification:</b> All participants will receive the draw results by email (regardless of whether they won).<br><b>开奖通知：</b>无论是否中奖，所有参与者都将通过邮件收到开奖结果通知。",
+      "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.<br><b>云盘公示：</b>抽奖结果同时将在清华大学云盘公示，问卷提交后将显示下载链接。",
+      "<b>Prize Delivery:</b> Winners will receive their Amazon Gift Cards by email.<br><b>奖品发放：</b>中奖者将通过邮件直接收到亚马逊电子礼品卡。"
+    ],
+    hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.\n问卷完成后，您将获得一个唯一的参与编号。建议截图保存作为凭证。",
+    cta: "Start the Survey / 开始填写问卷",
+    ctaNote: "Estimated time: 15–20 minutes. Fully anonymous.\n预计用时15-20分钟，完全匿名。",
+    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br><br>本国际问卷无现金报酬，但您的声音比金钱更有价值：您的见解将与来自不同国家和背景的专业人士汇聚在一起，共同塑造行业的未来。<br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete. (研究完成后，您将收到我们的国际比较研究报告。)</i>",
+    progressLabel: function(c, n) { var cname = {US:"United States / 美国", DE:"Germany / 德国", SG:"Singapore / 新加坡"}[c]; return cname + " — " + n + " spots claimed / 已领取 " + n + " 个名额"; },
+    phaseText: function(n) {
+      if (n < 150) { return "Only <strong>" + (150 - n) + "</strong> more responses needed to trigger the <b>First Draw</b>! <br> 仅需再提交 <strong>" + (150 - n) + "</strong> 份问卷即可触发<b>首轮开奖</b>！"; } 
+      else if (n < 300) { return "First Draw condition met! Only <strong>" + (300 - n) + "</strong> more responses needed to trigger the <b>Second Draw & Grand Prize</b>! <br> 首轮已达标！仅需再提交 <strong>" + (300 - n) + "</strong> 份问卷即可触发<b>次轮及一等奖开奖</b>！"; } 
+      else { return "Both draw conditions have been met. You can still participate. / 两个阶段的开奖条件均已达成，您仍可正常提交问卷。"; }
+    },
   }
 };
 
-function getLang() { return selectedCountry === "DE" ? "de" : "en"; }
+function getLang() { 
+  if (selectedCountry === "DE") return "de";
+  if (selectedCountry === "SG") return "sg";
+  return "en"; 
+}
 
 function applyLanguage() {
   var t = T[getLang()];
