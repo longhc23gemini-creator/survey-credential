@@ -131,6 +131,37 @@
     border-color: var(--blue);
     box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
   }
+
+  .other-input-group {
+    display: none;
+    margin-top: 10px;
+    margin-left: 6px;
+    padding-left: 4px;
+  }
+  .other-input-group.visible {
+    display: block;
+  }
+  .other-input-group input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 14px;
+    border: 2px solid var(--gray-200);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--gray-900);
+    transition: border-color 0.2s;
+    font-family: inherit;
+  }
+  .other-input-group input:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
+  }
+  .other-input-group input.error {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(197,48,48,0.15);
+  }
+
   .btn-primary {
     display: block;
     width: 100%;
@@ -233,7 +264,7 @@
     <div class="institution-name">Tsinghua University</div>
   </div>
 
-  <!-- Hero (仅保留标题，副标题留空避免重复) -->
+  <!-- Hero -->
   <div class="hero">
     <h1 id="mainTitle"></h1>
     <div class="sub" id="mainSub"></div>
@@ -264,6 +295,10 @@
         <option value="11">Urban Planning</option>
         <option value="12">Other</option>
       </select>
+
+      <div class="other-input-group" id="otherInputGroup">
+        <input type="text" id="otherProfession" placeholder="" />
+      </div>
     </div>
 
     <div class="form-group">
@@ -342,17 +377,21 @@
 </div>
 
 <script>
-// ========== 语言文本 ==========
+// ============================================================
+// 语言文本
+// ============================================================
 const T = {
   en: {
     title: "Professional Governance & Trust in Construction",
     subtitle: "<b>Dear fellow professional,</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?",
-    returnBox: "<b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br>We value your time and expertise. Here is what we offer all participants:<br><br><b>① Research Report</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br><br><b>② Prize Draw (US, Germany & Singapore only)</b><br><span style='color:var(--red); font-weight:bold;'>For participants who reside in, practice in, or hold professional qualifications from the United States, Germany, or Singapore, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</span>",
+    returnBox: "<b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br>We value your time and expertise. Here is what we offer all participants:<br><br><b>① Research Report</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br><br><b>② Prize Draw</b><br><span style='color:var(--red); font-weight:bold;'>For participants from the specific countries selected by this study for their typical representativeness in professional governance, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</span>",
     step1Heading: "About This Study",
     formHeading: "Your Professional Background",
     profLabel: "1. Which professional field do you most identify with?",
     countryLabel: "2. In this field, which country/region are you most confident to evaluate in terms of its professional governance environment?",
     submitBtn: "Continue",
+    otherPlaceholder: "Please specify your professional field",
+    otherRequired: "Please specify your professional field before continuing.",
     congratsHeading: "🎉 Congratulations!",
     congratsDesc: "The country you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries eligible for lottery rewards. Would you like to join the prize draw?",
     optYes: "🎁 Yes, I want to join the draw",
@@ -390,12 +429,14 @@ const T = {
   de: {
     title: "Professional Governance & Trust in Construction<br>Berufsständische Governance & Vertrauen im Bauwesen",
     subtitle: "<b>Dear fellow professional / Sehr geehrte(r) Kollege(in),</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br>Die Bauindustrie steht an einem Wendepunkt. Ihre Teilnahme ist wichtig.<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br>Wir laden Sie ein, an einer globalen akademischen Studie teilzunehmen, die den tatsächlichen Stand der berufsständischen Governance und der Vertrauensbildung dokumentiert. Durch das Teilen Ihrer Beobachtungen nehmen Sie an einem grenzüberschreitenden Dialog unter Fachkollegen teil.",
-    returnBox: "<b style='color:var(--blue); font-size:16px;'>What You Get in Return / Was Sie als Gegenleistung erhalten:</b><br>We value your time and expertise. Here is what we offer all participants:<br>Wir schätzen Ihre Zeit und Expertise. Hier ist, was wir allen Teilnehmern bieten:<br><br><b>① Research Report / Forschungsbericht</b><br>Upon completion of our study, we will share an international comparative research report with all participants.<br>Nach Abschluss unserer Studie werden wir einen internationalen vergleichenden Forschungsbericht mit allen Teilnehmern teilen.<br><br><b>② Prize Draw / Gewinnspiel</b><br><span style='color:var(--red); font-weight:bold;'>For participants who reside in, practice in, or hold professional qualifications from Germany, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!<br>Für Teilnehmer, die in Deutschland ansässig sind, dort praktizieren oder eine berufliche Qualifikation aus Deutschland besitzen, bieten wir ein zweistufiges Gewinnspiel mit einer 100%igen Gewinnchance und einem Hauptpreis von $500!</span>",
+    returnBox: "<b style='color:var(--blue); font-size:16px;'>What You Get in Return / Was Sie als Gegenleistung erhalten:</b><br>We value your time and expertise. Here is what we offer all participants:<br>Wir schätzen Ihre Zeit und Expertise. Hier ist, was wir allen Teilnehmern bieten:<br><br><b>① Research Report / Forschungsbericht</b><br>Upon completion of our study, we will share an international comparative research report with all participants.<br>Nach Abschluss unserer Studie werden wir einen internationalen vergleichenden Forschungsbericht mit allen Teilnehmern teilen.<br><br><b>② Prize Draw / Gewinnspiel</b><br><span style='color:var(--red); font-weight:bold;'>For participants from the specific countries selected by this study for their typical representativeness in professional governance, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!<br>Für Teilnehmer aus den von dieser Studie aufgrund ihrer typischen Repräsentativität in der berufsständischen Governance ausgewählten Ländern bieten wir ein zweistufiges Gewinnspiel mit einer 100%igen Gewinnchance und einem Hauptpreis von $500!</span>",
     step1Heading: "About This Study / Über diese Studie",
     formHeading: "Your Professional Background / Ihr beruflicher Hintergrund",
     profLabel: "1. Which professional field do you most identify with? / Mit welchem Berufsfeld identifizieren Sie sich am meisten?",
     countryLabel: "2. In this field, which country/region are you most confident to evaluate in terms of its professional governance environment? / In welchem Land / welcher Region können Sie die berufsständische Governance am besten beurteilen?",
     submitBtn: "Continue / Weiter",
+    otherPlaceholder: "Bitte geben Sie Ihr Berufsfeld an",
+    otherRequired: "Bitte geben Sie Ihr Berufsfeld an, bevor Sie fortfahren.",
     congratsHeading: "🎉 Congratulations! / Herzlichen Glückwunsch!",
     congratsDesc: "The country you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries eligible for lottery rewards. Would you like to join the prize draw?<br>Das von Ihnen gewählte Land — <strong id='lotteryCountryName_de'></strong> — ist eines unserer ausgewählten Länder, das an der Verlosung teilnehmen kann. Möchten Sie am Gewinnspiel teilnehmen?",
     optYes: "🎁 Yes, I want to join the draw / Ja, ich möchte teilnehmen",
@@ -432,13 +473,15 @@ const T = {
   },
   sg: {
     title: "Professional Governance & Trust in Construction",
-    subtitle: "<b>Dear fellow professional,</b><br><br><b>尊敬的专业同仁：</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br>建筑行业正处于十字路口。您的参与至关重要。<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br>我们诚挚邀请您加入一项全球学术研究，记录建设市场专业治理与信任的真实状态。通过分享您的观察，您将与面临同样挑战的跨国同行展开对话：在技术颠覆、公众期望转变和项目复杂性增加的时代，成为值得信赖的专业人士意味着什么？在不断变化的世界中，我们的行业如何继续赢得信任？<br><br><div class='return-box'><b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br><b style='color:var(--blue); font-size:16px;'>您的参与回报：</b><br>We value your time and expertise. Here is what we offer all participants:<br>我们十分重视您的时间与专业知识。我们为所有参与者提供以下回报：<br><br><b>① Research Report</b><br><b>① 研究报告</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br>研究完成后，我们将与所有参与者分享一份国际比较研究报告。您可通过清华大学云盘获取，或者我们也可以直接发送到您提供的电子邮箱。<br><br><b>② Prize Draw (US, Germany & Singapore only)</b><br><b>② 问卷抽奖（仅限美国、德国与新加坡）</b><br><span style='color:var(--red); font-weight:bold;'>For participants who reside in, practice in, or hold professional qualifications from the United States, Germany, or Singapore, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</span><br><span style='color:var(--red); font-weight:bold;'>对于在美国、德国或新加坡居住、执业或拥有专业资格的参与者，我们提供分两个阶段进行的100%中奖率抽奖活动，最高奖金为500美元！</span></div>",
+    subtitle: "<b>Dear fellow professional,</b><br><br><b>尊敬的专业同仁：</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br>建筑行业正处于十字路口。您的参与至关重要。<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br>我们诚挚邀请您加入一项全球学术研究，记录建设市场专业治理与信任的真实状态。通过分享您的观察，您将与面临同样挑战的跨国同行展开对话：在技术颠覆、公众期望转变和项目复杂性增加的时代，成为值得信赖的专业人士意味着什么？在不断变化的世界中，我们的行业如何继续赢得信任？<br><br><div class='return-box'><b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br><b style='color:var(--blue); font-size:16px;'>您的参与回报：</b><br>We value your time and expertise. Here is what we offer all participants:<br>我们十分重视您的时间与专业知识。我们为所有参与者提供以下回报：<br><br><b>① Research Report</b><br><b>① 研究报告</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br>研究完成后，我们将与所有参与者分享一份国际比较研究报告。您可通过清华大学云盘获取，或者我们也可以直接发送到您提供的电子邮箱。<br><br><b>② Prize Draw</b><br><b>② 问卷抽奖</b><br><span style='color:var(--red); font-weight:bold;'>For participants from the specific countries selected by this study for their typical representativeness in professional governance, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</span><br><span style='color:var(--red); font-weight:bold;'>对于来自本研究选择的在专业治理方面具有典型代表意义的特定国家的参与者，我们提供分两个阶段进行的100%中奖率抽奖活动，最高奖金为500美元！</span></div>",
     returnBox: "",
     step1Heading: "About This Study / 关于本研究",
     formHeading: "Your Professional Background / 您的专业背景",
-    profLabel: "1. Which professional field do you most identify with? / 您最认同哪个专业领域？",
+    profLabel: "1. Which professional field do you most identify with? / 您最认可自己属于哪个专业领域？",
     countryLabel: "2. In this field, which country/region are you most confident to evaluate in terms of its professional governance environment? / 在该领域，您最能够评价其专业治理环境的国家/地区是？",
     submitBtn: "Continue / 继续",
+    otherPlaceholder: "请填写您的具体专业领域",
+    otherRequired: "请填写您的具体专业领域后再继续。",
     congratsHeading: "🎉 Congratulations! / 恭喜！",
     congratsDesc: "The country you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries eligible for lottery rewards. Would you like to join the prize draw?<br>您选择的国家 — <strong id='lotteryCountryName_cn'></strong> — 是我们的抽奖国家之一。您希望参与抽奖吗？",
     optYes: "🎁 Yes, I want to join the draw / 是的，我要参与抽奖",
@@ -475,12 +518,14 @@ const T = {
   }
 };
 
-// ========== 配置 ==========
+// ============================================================
+// 配置 — 使用 index1 中的问卷链接
+// ============================================================
 const SURVEY_URLS = {
-  US: "https://qualtricsxm9w64qn9tz.qualtrics.com/jfe/form/SV_9YKS5kP4dc4s2yO",
-  DE: "https://qualtricsxm9w64qn9tz.qualtrics.com/jfe/form/SV_29ldOp4LfH3fBmm",
-  SG: "https://qualtricsxm9w64qn9tz.qualtrics.com/jfe/form/SV_dpeEKHehYLq9RnU",
-  INT: "https://qualtricsxm9w64qn9tz.qualtrics.com/jfe/form/SV_REPLACE_WITH_INT_LINK"
+  US: "https://qualtricsxmj5mtpnh84.qualtrics.com/jfe/form/SV_eJ6Wj1zSpwaLRuC",
+  DE: "https://qualtricsxmj5mtpnh84.qualtrics.com/jfe/form/SV_elzD1aiy9ayWikS",
+  SG: "https://qualtricsxmj5mtpnh84.qualtrics.com/jfe/form/SV_bx9OVQjsuCiTyku",
+  INT: "https://qualtricsxmzpmj6w4xr.qualtrics.com/jfe/form/SV_0GRxbYzRRz4KBZc"
 };
 
 const LOTTERY_COUNTRIES = { "US": "US", "DE": "DE", "SG": "SG" };
@@ -518,8 +563,15 @@ const COUNTRIES = [
   {code:"UY",name:"Uruguay"},{code:"VN",name:"Vietnam"},{code:"OTHER",name:"Other (not listed)"}
 ];
 
-// ========== 初始化 ==========
+// ============================================================
+// DOM 引用
+// ============================================================
 const countrySelect = document.getElementById("countrySelect");
+const profSelect = document.getElementById("profSelect");
+const submitBtn = document.getElementById("submitBtn");
+const otherInput = document.getElementById("otherProfession");
+const otherGroup = document.getElementById("otherInputGroup");
+
 COUNTRIES.forEach(c => {
   const opt = document.createElement("option");
   opt.value = c.code;
@@ -527,34 +579,30 @@ COUNTRIES.forEach(c => {
   countrySelect.appendChild(opt);
 });
 
-const profSelect = document.getElementById("profSelect");
-const submitBtn = document.getElementById("submitBtn");
-
-function checkFormReady() {
-  submitBtn.disabled = !(profSelect.value && countrySelect.value);
-}
-profSelect.addEventListener("change", checkFormReady);
-countrySelect.addEventListener("change", checkFormReady);
-
-// ========== 状态 ==========
+// ============================================================
+// 状态
+// ============================================================
 let selectedProfession = "";
 let selectedCountryCode = "";
 let selectedCountryName = "";
 let lotteryChoice = "";
 let nonLotteryChoice = "";
 
-// ========== 应用语言 ==========
+// ============================================================
+// 语言应用
+// ============================================================
 function applyLanguage(countryCode) {
-  const code = countryCode || "en";
+  const code = countryCode || countrySelect.value || "en";
   const lang = code === "DE" ? "de" : code === "SG" ? "sg" : "en";
   const t = T[lang];
 
-  // 标题
+  const selectedName = countrySelect.options[countrySelect.selectedIndex] 
+    ? countrySelect.options[countrySelect.selectedIndex].text 
+    : "";
+
   document.getElementById("mainTitle").innerHTML = t.title;
-  // 副标题（留空，避免重复）
   document.getElementById("mainSub").innerHTML = "";
 
-  // Step1
   document.getElementById("step1Heading").textContent = t.step1Heading;
   document.getElementById("infoBox").innerHTML = t.subtitle;
   if (t.returnBox && t.returnBox !== "") {
@@ -568,16 +616,17 @@ function applyLanguage(countryCode) {
   document.getElementById("countryLabel").textContent = t.countryLabel;
   document.getElementById("submitBtnText").textContent = t.submitBtn;
 
-  // Panel A
+  otherInput.placeholder = t.otherPlaceholder || "Please specify your professional field";
+
   document.getElementById("congratsHeading").textContent = t.congratsHeading;
   let descHtml = t.congratsDesc;
-  if (selectedCountryName) {
-    descHtml = descHtml.replace(/<strong id='lotteryCountryName'><\/strong>/, "<strong id='lotteryCountryName'>" + selectedCountryName + "</strong>");
+  if (selectedName) {
+    descHtml = descHtml.replace(/<strong id='lotteryCountryName'><\/strong>/, "<strong id='lotteryCountryName'>" + selectedName + "</strong>");
     if (lang === "de") {
-      descHtml = descHtml.replace(/<strong id='lotteryCountryName_de'><\/strong>/, "<strong id='lotteryCountryName_de'>" + selectedCountryName + "</strong>");
+      descHtml = descHtml.replace(/<strong id='lotteryCountryName_de'><\/strong>/, "<strong id='lotteryCountryName_de'>" + selectedName + "</strong>");
     }
     if (lang === "sg") {
-      descHtml = descHtml.replace(/<strong id='lotteryCountryName_cn'><\/strong>/, "<strong id='lotteryCountryName_cn'>" + selectedCountryName + "</strong>");
+      descHtml = descHtml.replace(/<strong id='lotteryCountryName_cn'><\/strong>/, "<strong id='lotteryCountryName_cn'>" + selectedName + "</strong>");
     }
   }
   document.getElementById("congratsDesc").innerHTML = descHtml;
@@ -586,7 +635,6 @@ function applyLanguage(countryCode) {
   document.getElementById("optNoText").innerHTML = t.optNo;
   document.getElementById("optQuitText").innerHTML = t.optQuit;
 
-  // Prize table
   document.getElementById("prizeHeading").textContent = t.prizeHeading;
   document.getElementById("thTier").textContent = t.thTier;
   document.getElementById("thAmount").textContent = t.thAmount;
@@ -615,7 +663,6 @@ function applyLanguage(countryCode) {
 
   document.getElementById("prizeNote").innerHTML = t.prizeNote;
 
-  // Rules
   document.getElementById("rulesHeading").textContent = t.rulesHeading;
   const rulesList = document.getElementById("rulesList");
   rulesList.innerHTML = "";
@@ -628,15 +675,14 @@ function applyLanguage(countryCode) {
   document.getElementById("hintBox").innerHTML = t.hint;
   document.getElementById("proceedBtnAText").textContent = t.proceedBtn;
 
-  // Panel B
   let sorryHtml = t.sorryText;
-  if (selectedCountryName) {
-    sorryHtml = sorryHtml.replace(/<strong id='nonLotteryCountryName'><\/strong>/, "<strong id='nonLotteryCountryName'>" + selectedCountryName + "</strong>");
+  if (selectedName) {
+    sorryHtml = sorryHtml.replace(/<strong id='nonLotteryCountryName'><\/strong>/, "<strong id='nonLotteryCountryName'>" + selectedName + "</strong>");
     if (lang === "de") {
-      sorryHtml = sorryHtml.replace(/<strong id='nonLotteryCountryName_de'><\/strong>/, "<strong id='nonLotteryCountryName_de'>" + selectedCountryName + "</strong>");
+      sorryHtml = sorryHtml.replace(/<strong id='nonLotteryCountryName_de'><\/strong>/, "<strong id='nonLotteryCountryName_de'>" + selectedName + "</strong>");
     }
     if (lang === "sg") {
-      sorryHtml = sorryHtml.replace(/<strong id='nonLotteryCountryName_cn'><\/strong>/, "<strong id='nonLotteryCountryName_cn'>" + selectedCountryName + "</strong>");
+      sorryHtml = sorryHtml.replace(/<strong id='nonLotteryCountryName_cn'><\/strong>/, "<strong id='nonLotteryCountryName_cn'>" + selectedName + "</strong>");
     }
   }
   document.getElementById("sorryText").innerHTML = sorryHtml;
@@ -644,21 +690,85 @@ function applyLanguage(countryCode) {
   document.getElementById("nonQuitText").innerHTML = t.nonQuit;
   document.getElementById("proceedBtnBText").textContent = t.proceedBtn;
 
-  // Quit
   document.getElementById("quitTitle").textContent = t.quitTitle;
   document.getElementById("quitDesc").innerHTML = t.quitDesc;
 }
 
-// ========== 页面加载默认语言 ==========
-document.addEventListener("DOMContentLoaded", function() {
-  applyLanguage("en");
+// ============================================================
+// 事件
+// ============================================================
+function handleProfChange() {
+  const val = profSelect.value;
+  if (val === "12") {
+    otherGroup.classList.add("visible");
+    otherInput.focus();
+  } else {
+    otherGroup.classList.remove("visible");
+    otherInput.value = "";
+    otherInput.classList.remove("error");
+  }
+  checkFormReady();
+}
+profSelect.addEventListener("change", handleProfChange);
+
+function handleCountryChange() {
+  applyLanguage(countrySelect.value);
+  checkFormReady();
+}
+countrySelect.addEventListener("change", handleCountryChange);
+
+function checkFormReady() {
+  const profOk = profSelect.value !== "";
+  const countryOk = countrySelect.value !== "";
+  let otherOk = true;
+  if (profSelect.value === "12") {
+    const val = otherInput.value.trim();
+    otherOk = val !== "";
+    if (!otherOk) {
+      otherInput.classList.add("error");
+    } else {
+      otherInput.classList.remove("error");
+    }
+  }
+  submitBtn.disabled = !(profOk && countryOk && otherOk);
+}
+
+otherInput.addEventListener("input", function() {
+  if (profSelect.value === "12") {
+    const val = this.value.trim();
+    if (val !== "") {
+      this.classList.remove("error");
+    } else {
+      this.classList.add("error");
+    }
+    checkFormReady();
+  }
 });
 
-// ========== 事件处理器 ==========
+document.addEventListener("DOMContentLoaded", function() {
+  applyLanguage("en");
+  otherGroup.classList.remove("visible");
+});
+
+// ============================================================
+// 提交
+// ============================================================
 function handleSubmit() {
   selectedProfession = profSelect.value;
   selectedCountryCode = countrySelect.value;
   selectedCountryName = countrySelect.options[countrySelect.selectedIndex].text;
+
+  if (selectedProfession === "12") {
+    const otherVal = otherInput.value.trim();
+    if (otherVal === "") {
+      const lang = selectedCountryCode === "DE" ? "de" : selectedCountryCode === "SG" ? "sg" : "en";
+      alert(T[lang].otherRequired || "Please specify your professional field.");
+      otherInput.focus();
+      otherInput.classList.add("error");
+      return;
+    }
+    otherInput.classList.remove("error");
+  }
 
   document.getElementById("step1").style.display = "none";
   applyLanguage(selectedCountryCode);
@@ -726,10 +836,16 @@ function proceedToSurvey() {
     surveyKey = selectedCountryCode;
   }
 
+  let professionParam = selectedProfession;
+  if (selectedProfession === "12") {
+    const otherVal = otherInput.value.trim();
+    professionParam = "Other(" + otherVal + ")";
+  }
+
   const lottery = (lotteryChoice === "yes") ? "yes" : "no";
   const baseUrl = SURVEY_URLS[surveyKey];
   const params = new URLSearchParams({
-    profession: selectedProfession,
+    profession: professionParam,
     country: selectedCountryCode,
     lottery: lottery
   });
