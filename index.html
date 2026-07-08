@@ -225,6 +225,56 @@
     font-size: 13px;
   }
   .lottery-detail th { font-weight: 600; color: var(--blue-dark); }
+
+  /* 进度条样式（与 index1 完全一致） */
+  .progress-box {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .progress-label {
+    font-size: 14px;
+    color: var(--gray-600);
+    margin-bottom: 10px;
+  }
+  .progress-bar-bg {
+    height: 28px;
+    background: var(--gray-200);
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, var(--blue));
+    border-radius: 14px;
+    transition: width 0.8s ease;
+    min-width: 0;
+  }
+  .progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gray-700);
+    white-space: nowrap;
+  }
+  .progress-phase {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--gray-700);
+    text-align: center;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px dashed var(--blue);
+  }
+  .progress-phase strong { color: var(--red); font-size: 16px; font-weight: 800; }
+
   .radio-group { margin: 14px 0; }
   .radio-option {
     display: block;
@@ -320,6 +370,20 @@
     </div>
 
     <div id="lotteryDetail" class="lottery-detail">
+      <!-- ===== 进度模块（补回） ===== -->
+      <h3 id="progressHeading" style="font-size:14px; font-weight:700; color:var(--blue-dark); margin-bottom:8px;"></h3>
+      <div class="progress-box">
+        <div id="counterLoading" style="text-align:center; color:var(--gray-500); font-size:13px;">Loading live data...</div>
+        <div id="progressContent" style="display:none;">
+          <div class="progress-label" id="progressLabel"></div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+            <span class="progress-text" id="progressText"></span>
+          </div>
+          <div class="progress-phase" id="progressPhase"></div>
+        </div>
+      </div>
+      <!-- ===== 奖品表格 ===== -->
       <h3 id="prizeHeading"></h3>
       <table id="prizeTable">
         <thead><tr><th id="thTier"></th><th id="thAmount"></th><th id="thWinners"></th></tr></thead>
@@ -367,7 +431,7 @@
 
 <script>
 // ============================================================
-// 语言文本
+// 语言文本（包含进度相关字段）
 // ============================================================
 const T = {
   en: {
@@ -388,6 +452,17 @@ const T = {
     optYes: "🎁 Yes, I want to join the draw",
     optNo: "📝 No, just take the survey",
     optQuit: "I would like to exit",
+    // 进度相关
+    progressHeading: "Live Claimed Spots",
+    progressLabel: function(c, n) {
+      var cname = {US:"United States", DE:"Germany", SG:"Singapore"}[c];
+      return cname + " — " + n + " spots claimed";
+    },
+    phaseText: function(n) {
+      if (n < 150) { return "Only <strong>" + (150 - n) + "</strong> more responses needed to trigger the <b>First Draw</b>!"; }
+      else if (n < 300) { return "First Draw condition met! Only <strong>" + (300 - n) + "</strong> more responses needed to trigger the <b>Second Draw & Grand Prize</b>!"; }
+      else { return "Both draw conditions have been met. You can still participate."; }
+    },
     prizeHeading: "Prize Pool (Amazon eGift Cards)",
     thTier: "Prize Tier",
     thAmount: "Amount",
@@ -435,6 +510,16 @@ const T = {
     optYes: "🎁 Yes, I want to join the draw / Ja, ich möchte teilnehmen",
     optNo: "📝 No, just take the survey / Nein, nur Umfrage ausfüllen",
     optQuit: "I would like to exit / Ich möchte beenden",
+    // 进度相关
+    progressHeading: "Live Claimed Spots / Vergebene Plätze",
+    progressLabel: function(c, n) {
+      return "Germany / Deutschland — " + n + " spots claimed / Plätze vergeben";
+    },
+    phaseText: function(n) {
+      if (n < 150) { return "Only <strong>" + (150 - n) + "</strong> more responses needed to trigger the <b>First Draw</b>! <br> Nur noch <strong>" + (150 - n) + "</strong> Antworten nötig, um die <b>Erste Auslosung</b> zu starten!"; }
+      else if (n < 300) { return "First Draw condition met! Only <strong>" + (300 - n) + "</strong> more responses needed to trigger the <b>Second Draw & Grand Prize</b>! <br> Nur noch <strong>" + (300 - n) + "</strong> Antworten nötig, um die <b>Zweite Auslosung & den Hauptpreis</b> zu starten!"; }
+      else { return "Both draw conditions have been met. You can still participate. / Beide Auslosungsbedingungen sind erfüllt. Sie können weiterhin teilnehmen."; }
+    },
     prizeHeading: "Prize Pool (Amazon eGift Cards) / Preispool (Amazon-Gutscheine)",
     thTier: "Prize Tier / Preiskategorie",
     thAmount: "Amount / Betrag",
@@ -482,6 +567,17 @@ const T = {
     optYes: "🎁 Yes, I want to join the draw / 是的，我要参与抽奖",
     optNo: "📝 No, just take the survey / 不参与，仅填写问卷",
     optQuit: "I would like to exit / 我想退出",
+    // 进度相关
+    progressHeading: "Live Claimed Spots / 实时已领名额",
+    progressLabel: function(c, n) {
+      var cname = {US:"United States / 美国", DE:"Germany / 德国", SG:"Singapore / 新加坡"}[c];
+      return cname + " — " + n + " spots claimed / 已领取 " + n + " 个名额";
+    },
+    phaseText: function(n) {
+      if (n < 150) { return "Only <strong>" + (150 - n) + "</strong> more responses needed to trigger the <b>First Draw</b>! <br> 仅需再提交 <strong>" + (150 - n) + "</strong> 份问卷即可触发<b>首轮开奖</b>！"; }
+      else if (n < 300) { return "First Draw condition met! Only <strong>" + (300 - n) + "</strong> more responses needed to trigger the <b>Second Draw & Grand Prize</b>! <br> 首轮已达标！仅需再提交 <strong>" + (300 - n) + "</strong> 份问卷即可触发<b>次轮及一等奖开奖</b>！"; }
+      else { return "Both draw conditions have been met. You can still participate. / 两个阶段的开奖条件均已达成，您仍可正常提交问卷。"; }
+    },
     prizeHeading: "Prize Pool (Amazon eGift Cards) / 抽奖奖池 (亚马逊礼品卡)",
     thTier: "Prize Tier / 奖项",
     thAmount: "Amount / 奖品",
@@ -516,6 +612,7 @@ const T = {
 // ============================================================
 // 配置
 // ============================================================
+// ✅ 使用 index1 中的真实链接
 const SURVEY_URLS = {
   US: "https://qualtricsxmj5mtpnh84.qualtrics.com/jfe/form/SV_eJ6Wj1zSpwaLRuC",
   DE: "https://qualtricsxmj5mtpnh84.qualtrics.com/jfe/form/SV_elzD1aiy9ayWikS",
@@ -669,6 +766,7 @@ let selectedCountryCode = "";
 let selectedCountryName = "";
 let lotteryChoice = "";
 let nonLotteryChoice = "";
+let counts = { US: 0, DE: 0, SG: 0 };
 
 // ============================================================
 // 语言应用
@@ -718,6 +816,10 @@ function applyLanguage(countryCode) {
   document.getElementById("optNoText").innerHTML = t.optNo;
   document.getElementById("optQuitText").innerHTML = t.optQuit;
 
+  // 进度标题
+  document.getElementById("progressHeading").textContent = t.progressHeading || "Live Claimed Spots";
+
+  // 奖品表格
   document.getElementById("prizeHeading").textContent = t.prizeHeading;
   document.getElementById("thTier").textContent = t.thTier;
   document.getElementById("thAmount").textContent = t.thAmount;
@@ -775,6 +877,51 @@ function applyLanguage(countryCode) {
 
   document.getElementById("quitTitle").textContent = t.quitTitle;
   document.getElementById("quitDesc").innerHTML = t.quitDesc;
+}
+
+// ============================================================
+// 进度模块：加载计数
+// ============================================================
+const API_URL = "https://survey-counter.longhc23gemini.workers.dev";
+
+function loadCounter(code) {
+  document.getElementById("counterLoading").style.display = "block";
+  document.getElementById("progressContent").style.display = "none";
+
+  fetch(API_URL + "?action=read")
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      counts = data.counts || data;
+      renderProgress(code);
+    })
+    .catch(function() {
+      renderProgress(code);
+    });
+}
+
+function renderProgress(code) {
+  var lang = code === "DE" ? "de" : code === "SG" ? "sg" : "en";
+  var t = T[lang];
+  var n = counts[code] || 0;
+  var total = 300;
+  var pct = Math.min(100, Math.round((n / total) * 100));
+
+  document.getElementById("counterLoading").style.display = "none";
+  document.getElementById("progressContent").style.display = "block";
+
+  // 标签
+  document.getElementById("progressLabel").innerHTML = t.progressLabel(code, n);
+
+  // 进度条文字
+  document.getElementById("progressText").innerHTML = n + " / " + total + " (" + pct + "%)";
+
+  // 阶段提示
+  document.getElementById("progressPhase").innerHTML = t.phaseText(n);
+
+  // 进度条动画
+  setTimeout(function() {
+    document.getElementById("progressFill").style.width = pct + "%";
+  }, 100);
 }
 
 // ============================================================
@@ -919,6 +1066,8 @@ function selectLotteryChoice(choice) {
 
   if (choice === "yes") {
     document.getElementById("lotteryDetail").classList.add("visible");
+    // 加载进度数据
+    loadCounter(selectedCountryCode);
   } else {
     document.getElementById("lotteryDetail").classList.remove("visible");
   }
