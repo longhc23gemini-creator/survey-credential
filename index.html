@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Professional Governance &amp; Trust Survey — NCCL Tsinghua University</title>
 <style>
-  /* 样式保持不变，与 index2 原样式一致，无需修改 */
   :root {
     --blue: #1a56db;
     --blue-light: #ebf5ff;
@@ -220,9 +219,10 @@
   }
   .footer a { color: var(--gray-500); }
   .hidden { display: none; }
-  /* 添加规则列表样式 */
   .rules-list { padding-left: 20px; margin: 10px 0; }
   .rules-list li { margin-bottom: 8px; line-height: 1.6; }
+  .return-box { margin-top: 18px; padding: 18px; background: #fff; border-radius: 8px; border-left: 4px solid var(--blue); }
+  #infoBox .return-box { margin-top: 18px; padding: 18px; background: #fff; border-radius: 8px; border-left: 4px solid var(--blue); }
 </style>
 </head>
 <body>
@@ -233,17 +233,16 @@
     <div class="institution-name">Tsinghua University</div>
   </div>
 
-  <!-- Hero (MODIFIED: 使用 id 以便动态填充) -->
+  <!-- Hero (仅保留标题，副标题留空避免重复) -->
   <div class="hero">
     <h1 id="mainTitle"></h1>
-    <p class="sub" id="mainSub"></p>
+    <div class="sub" id="mainSub"></div>
   </div>
 
   <!-- STEP 1: Study Info + Incentive + Form -->
   <div id="step1">
     <h2><span class="icon">&#128218;</span> <span id="step1Heading"></span></h2>
     <div class="info-box" id="infoBox"></div>
-
     <div class="incentive-box" id="incentiveBox"></div>
 
     <h2><span class="icon">&#9997;&#65039;</span> <span id="formHeading"></span></h2>
@@ -278,7 +277,6 @@
   </div>
 
   <!-- STEP 2: Result panels -->
-  <!-- Panel A: Lottery country -->
   <div id="panelA" class="result-panel">
     <div class="congrats-box" id="congratsBox">
       <div class="heading" id="congratsHeading"></div>
@@ -286,7 +284,6 @@
     </div>
 
     <div class="radio-group" id="lotteryChoiceGroup">
-      <!-- MODIFIED: 添加 id 以便动态设置文本 -->
       <label class="radio-option" onclick="selectLotteryChoice('yes')" id="optYesLabel">
         <input type="radio" name="lotteryChoice" value="yes"> <span id="optYesText"></span>
       </label>
@@ -298,7 +295,6 @@
       </label>
     </div>
 
-    <!-- Lottery detail (shown when "yes" selected) -->
     <div id="lotteryDetail" class="lottery-detail">
       <h3 id="prizeHeading"></h3>
       <table id="prizeTable">
@@ -314,7 +310,6 @@
     <button class="btn-primary" id="proceedBtnA" disabled onclick="proceedToSurvey()"><span id="proceedBtnAText"></span></button>
   </div>
 
-  <!-- Panel B: Non-lottery country -->
   <div id="panelB" class="result-panel">
     <div class="sorry-box" id="sorryBox">
       <p id="sorryText"></p>
@@ -332,45 +327,37 @@
     <button class="btn-primary" id="proceedBtnB" disabled onclick="proceedToSurvey()"><span id="proceedBtnBText"></span></button>
   </div>
 
-  <!-- Panel: Quit / Thank you -->
   <div id="panelQuit" class="result-panel">
     <div class="info-box" style="text-align:center;">
       <p style="font-size:16px; font-weight:600; margin-bottom:8px;" id="quitTitle"></p>
       <p id="quitDesc"></p>
-      <p style="margin-top:12px;"><a href="/cdn-cgi/l/email-protection#7e101d1d123e0a0d171019160b1f501b1a0b501d10" style="color:var(--blue);">nccl@tsinghua.edu.cn</a></p>
+      <p style="margin-top:12px;"><a href="mailto:nccl@tsinghua.edu.cn" style="color:var(--blue);">nccl@tsinghua.edu.cn</a></p>
     </div>
   </div>
 
-  <!-- Footer -->
   <div class="footer">
     New Construction Cross-Laboratory (NCCL), Tsinghua University<br>
-    <a href="/cdn-cgi/l/email-protection#761811111e3602051f18111e03174e050415">nccl@tsinghua.edu.cn</a>
+    <a href="mailto:nccl@tsinghua.edu.cn">nccl@tsinghua.edu.cn</a>
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
-// ========== 语言文本（从 index1 完整复制，仅调整字段名以匹配 index2 结构）==========
+// ========== 语言文本 ==========
 const T = {
   en: {
-    // Hero
     title: "Professional Governance & Trust in Construction",
     subtitle: "<b>Dear fellow professional,</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?",
-    // Return box (incentive)
     returnBox: "<b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br>We value your time and expertise. Here is what we offer all participants:<br><br><b>① Research Report</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br><br><b>② Prize Draw (US, Germany & Singapore only)</b><br><span style='color:var(--red); font-weight:bold;'>For participants who reside in, practice in, or hold professional qualifications from the United States, Germany, or Singapore, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</span>",
-    // Form
     step1Heading: "About This Study",
     formHeading: "Your Professional Background",
     profLabel: "1. Which professional field do you most identify with?",
     countryLabel: "2. In this field, which country/region are you most confident to evaluate in terms of its professional governance environment?",
     submitBtn: "Continue",
-    // Panel A
     congratsHeading: "🎉 Congratulations!",
     congratsDesc: "The country you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries eligible for lottery rewards. Would you like to join the prize draw?",
     optYes: "🎁 Yes, I want to join the draw",
     optNo: "📝 No, just take the survey",
     optQuit: "I would like to exit",
-    // Prize table
     prizeHeading: "Prize Pool (Amazon eGift Cards)",
     thTier: "Prize Tier",
     thAmount: "Amount",
@@ -383,8 +370,6 @@ const T = {
     pTotal: "Total",
     pTotalWin: "300 (Guaranteed)",
     prizeNote: "The first 300 eligible participants per country are GUARANTEED to win a prize!",
-    // Rules
-    rulesHeading: "How It Works & Prize Delivery",
     rules: [
       "<b>First draw (when 150 valid responses are reached in a country):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i>",
       "<b>Second draw (when 300 valid responses are reached in a country):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.",
@@ -395,14 +380,11 @@ const T = {
     ],
     hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.",
     proceedBtn: "Start the Survey",
-    // Panel B (non-lottery)
-    sorryText: "<p><strong>Thank you for your selection!</strong></p><p>The country you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.</p><p style='margin-top:10px; color:var(--gray-500); font-size:13px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.</p>",
+    sorryText: "<p><strong>Thank you for your selection!</strong></p><p>The country you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.</p>",
     nonCont: "Yes, I would like to continue the survey",
     nonQuit: "I would like to exit",
-    // Quit
     quitTitle: "Thank you for your time!",
     quitDesc: "We appreciate your interest in this research. If you change your mind, you are welcome to return and participate at any time.",
-    // INT info (used in panel B as additional text)
     intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete.</i>"
   },
   de: {
@@ -441,7 +423,7 @@ const T = {
     ],
     hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.<br>Nach Abschluss der Umfrage erhalten Sie eine Teilnahme-Nr. Bitte machen Sie einen Screenshot.",
     proceedBtn: "Start the Survey / Umfrage starten",
-    sorryText: "<p><strong>Thank you for your selection! / Vielen Dank für Ihre Auswahl!</strong></p><p>The country you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.<br>Das von Ihnen gewählte Land — <strong id='nonLotteryCountryName_de'></strong> — gehört nicht zur Verlosungsstichprobe dieser Studie. Wir laden Sie jedoch herzlich ein, fortzufahren und Ihre wertvolle berufliche Perspektive zu Governance-Fragen zu teilen.</p><p style='margin-top:10px; color:var(--gray-500); font-size:13px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>Ihre Erkenntnisse sind für diese Forschung ebenso wichtig und fließen in unsere internationale Vergleichsanalyse ein.</p>",
+    sorryText: "<p><strong>Thank you for your selection! / Vielen Dank für Ihre Auswahl!</strong></p><p>The country you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.<br>Das von Ihnen gewählte Land — <strong id='nonLotteryCountryName_de'></strong> — gehört nicht zur Verlosungsstichprobe dieser Studie. Wir laden Sie jedoch herzlich ein, fortzufahren und Ihre wertvolle berufliche Perspektive zu Governance-Fragen zu teilen.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>Ihre Erkenntnisse sind für diese Forschung ebenso wichtig und fließen in unsere internationale Vergleichsanalyse ein.</p>",
     nonCont: "Yes, I would like to continue the survey / Ja, ich möchte die Umfrage fortsetzen",
     nonQuit: "I would like to exit / Ich möchte beenden",
     quitTitle: "Thank you for your time! / Vielen Dank für Ihre Zeit!",
@@ -449,11 +431,9 @@ const T = {
     intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br>Diese Umfrage ist unbezahlt – aber Ihre Stimme ist wertvoller: Ihre Beobachtungen werden dazu beitragen, unsere gemeinsame Zukunft zu gestalten.<br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete.</i>"
   },
   sg: {
-    // 新加坡使用中文+英文混合，与 index1 一致
     title: "Professional Governance & Trust in Construction",
-    subtitle: "<b>Dear fellow professional,</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br><br><div class='return-box'><b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br>We value your time and expertise. Here is what we offer all participants:<br><br><b>① Research Report</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br><br><b>② Prize Draw (US, Germany & Singapore only)</b><br><span style='color:var(--red); font-weight:bold;'>For participants who reside in, practice in, or hold professional qualifications from the United States, Germany, or Singapore, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</span></div><hr style='margin:22px 0; border:0; border-top:1px solid #cbd5e0;'><span style='font-size:13.5px; color:#4a5568;'><b>尊敬的专业同仁：</b><br>建筑行业正处于十字路口。您的参与至关重要。<br><br>我们诚挚邀请您加入一项全球学术研究，记录建设市场专业治理与信任的真实状态。通过分享您的观察，您将与面临同样挑战的跨国同行展开对话：在技术颠覆、公众期望转变和项目复杂性增加的时代，成为值得信赖的专业人士意味着什么？在不断变化的世界中，我们的行业如何继续赢得信任？<br><br><b style='color:var(--blue);'>您的参与回报：</b><br>我们十分重视您的时间与专业知识。我们为所有参与者提供以下回报：<br><br><b>① 研究报告</b><br>研究完成后，我们将与所有参与者分享一份国际比较研究报告。您可通过清华大学云盘获取，或者我们也可以直接发送到您提供的电子邮箱。<br><br><b>② 问卷抽奖（仅限美国、德国与新加坡）</b><br><span style='color:var(--red); font-weight:bold;'>对于在美国、德国或新加坡居住、执业或拥有专业资格的参与者，我们提供分两个阶段进行的100%中奖率抽奖活动，最高奖金为500美元！</span></span>",
-    // 注意：subtitle 已经包含了完整内容，所以我们不再额外设置 returnBox，但为了统一，我们仍然定义 returnBox 为空，因为 subtitle 已经包含了。
-    returnBox: "", // 由 subtitle 代替
+    subtitle: "<b>Dear fellow professional,</b><br><br><b>尊敬的专业同仁：</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br>建筑行业正处于十字路口。您的参与至关重要。<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br>我们诚挚邀请您加入一项全球学术研究，记录建设市场专业治理与信任的真实状态。通过分享您的观察，您将与面临同样挑战的跨国同行展开对话：在技术颠覆、公众期望转变和项目复杂性增加的时代，成为值得信赖的专业人士意味着什么？在不断变化的世界中，我们的行业如何继续赢得信任？<br><br><div class='return-box'><b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br><b style='color:var(--blue); font-size:16px;'>您的参与回报：</b><br>We value your time and expertise. Here is what we offer all participants:<br>我们十分重视您的时间与专业知识。我们为所有参与者提供以下回报：<br><br><b>① Research Report</b><br><b>① 研究报告</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br>研究完成后，我们将与所有参与者分享一份国际比较研究报告。您可通过清华大学云盘获取，或者我们也可以直接发送到您提供的电子邮箱。<br><br><b>② Prize Draw (US, Germany & Singapore only)</b><br><b>② 问卷抽奖（仅限美国、德国与新加坡）</b><br><span style='color:var(--red); font-weight:bold;'>For participants who reside in, practice in, or hold professional qualifications from the United States, Germany, or Singapore, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</span><br><span style='color:var(--red); font-weight:bold;'>对于在美国、德国或新加坡居住、执业或拥有专业资格的参与者，我们提供分两个阶段进行的100%中奖率抽奖活动，最高奖金为500美元！</span></div>",
+    returnBox: "",
     step1Heading: "About This Study / 关于本研究",
     formHeading: "Your Professional Background / 您的专业背景",
     profLabel: "1. Which professional field do you most identify with? / 您最认同哪个专业领域？",
@@ -486,7 +466,7 @@ const T = {
     ],
     hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.<br>问卷完成后，您将获得一个唯一的参与编号。建议截图保存作为凭证。",
     proceedBtn: "Start the Survey / 开始填写问卷",
-    sorryText: "<p><strong>Thank you for your selection! / 感谢您的选择！</strong></p><p>The country you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.<br>您选择的国家 — <strong id='nonLotteryCountryName_cn'></strong> — 不属于本次研究的抽奖样本国家。但我们仍然热忱邀请您继续填写问卷，分享您对专业治理问题的宝贵见解。</p><p style='margin-top:10px; color:var(--gray-500); font-size:13px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>您的见解对这项研究同样重要，并将为我们的国际比较分析做出贡献。</p>",
+    sorryText: "<p><strong>Thank you for your selection! / 感谢您的选择！</strong></p><p>The country you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.<br>您选择的国家 — <strong id='nonLotteryCountryName_cn'></strong> — 不属于本次研究的抽奖样本国家。但我们仍然热忱邀请您继续填写问卷，分享您对专业治理问题的宝贵见解。</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>您的见解对这项研究同样重要，并将为我们的国际比较分析做出贡献。</p>",
     nonCont: "Yes, I would like to continue the survey / 是的，我继续填写问卷",
     nonQuit: "I would like to exit / 我想退出",
     quitTitle: "Thank you for your time! / 感谢您的时间！",
@@ -505,7 +485,6 @@ const SURVEY_URLS = {
 
 const LOTTERY_COUNTRIES = { "US": "US", "DE": "DE", "SG": "SG" };
 
-// 国家列表（与 index2 原列表相同）
 const COUNTRIES = [
   {code:"AF",name:"Afghanistan"},{code:"AL",name:"Albania"},{code:"DZ",name:"Algeria"},
   {code:"AR",name:"Argentina"},{code:"AU",name:"Australia"},{code:"AT",name:"Austria"},
@@ -564,72 +543,44 @@ let selectedCountryName = "";
 let lotteryChoice = "";
 let nonLotteryChoice = "";
 
-// ========== 语言应用函数 ==========
+// ========== 应用语言 ==========
 function applyLanguage(countryCode) {
-  const lang = countryCode === "DE" ? "de" : countryCode === "SG" ? "sg" : "en";
+  const code = countryCode || "en";
+  const lang = code === "DE" ? "de" : code === "SG" ? "sg" : "en";
   const t = T[lang];
 
-  // Hero
+  // 标题
   document.getElementById("mainTitle").innerHTML = t.title;
-  document.getElementById("mainSub").innerHTML = t.subtitle;
+  // 副标题（留空，避免重复）
+  document.getElementById("mainSub").innerHTML = "";
 
-  // Step1 headings
+  // Step1
   document.getElementById("step1Heading").textContent = t.step1Heading;
+  document.getElementById("infoBox").innerHTML = t.subtitle;
+  if (t.returnBox && t.returnBox !== "") {
+    document.getElementById("incentiveBox").innerHTML = t.returnBox;
+    document.getElementById("incentiveBox").style.display = "block";
+  } else {
+    document.getElementById("incentiveBox").style.display = "none";
+  }
   document.getElementById("formHeading").textContent = t.formHeading;
   document.getElementById("profLabel").textContent = t.profLabel;
   document.getElementById("countryLabel").textContent = t.countryLabel;
   document.getElementById("submitBtnText").textContent = t.submitBtn;
 
-  // Info box (研究介绍) – 使用 subtitle 的一部分，但为了简洁，我们直接使用 subtitle 内容，因为 subtitle 已包含全部。
-  // 但 infoBox 原本是研究介绍，我们可以重新组织：将 subtitle 中的前两段放入 infoBox，而 returnBox 放入 incentiveBox。
-  // 由于 subtitle 已经包含完整内容，我们这里直接复用 subtitle 内容，但 infoBox 可以显示精简版。
-  // 为了与 index1 保持一致，我们让 infoBox 显示研究背景，incentiveBox 显示回报。
-  // 从 t 中提取，但 t 中没有单独的 info 和 incentive 字段，我们只能组合。
-  // 简单起见：infoBox 显示研究目的，incentiveBox 显示 returnBox。
-  // 但 index1 的 hero 已经包含了所有，这里我们采用 index1 的方式：hero 包含全部，infoBox 可以省略，但为了结构保留，我们放置简短介绍。
-  // 更安全：将 t.subtitle 中的第一段（直到第一个 <br><br>）作为 info，但这样做复杂。
-  // 我们采用直接复用 index1 的完整内容：因为 index1 的 hero 包含了 title 和 subtitle，而 subtitle 已经包含所有文字。
-  // 所以我们将 infoBox 设为空，将 incentiveBox 显示 returnBox（如果存在），否则不显示。
-  // 但是 index1 的 return-box 是包含在 subtitle 中的，所以我们将 subtitle 整体放入 hero，不再额外显示 info/incentive。
-  // 因此，我们不需要 infoBox 和 incentiveBox 了，可以隐藏它们。
-  // 但为了保持布局，我们可以让它们显示空内容，或者直接移除。
-  // 决定：将 infoBox 隐藏，incentiveBox 显示 t.returnBox（如果有），否则隐藏。
-  // 但 index1 的 SG 版本 subtitle 已经包含了 returnBox，所以我们不再重复。
-  // 简便做法：infoBox 显示研究背景摘要（从 t.subtitle 中提取第一段），incentiveBox 显示 t.returnBox（如果非空）。
-  // 由于 t.subtitle 是完整文本，我们可以直接将其放入 infoBox，但这样重复。
-  // 更好的做法：将 hero 的 subtitle 设为完整内容，infoBox 和 incentiveBox 不显示。
-  // 但 index2 原有设计有 infoBox 和 incentiveBox，为了保持一致性，我们修改：infoBox 显示研究背景（第一段），incentiveBox 显示回报。
-  // 但我们有 t.returnBox 字段，所以可以直接使用。
-  // 更新 T 对象，为每个语言添加 infoText 和 returnBox（已有）。
-  // 现在使用 t.returnBox 填充 incentiveBox，infoBox 填充研究目的摘要（从 subtitle 提取第一句话）。
-  // 为了简单，我们直接让 infoBox 显示 t.subtitle 中的前几句（直到 <br><br>），但正则处理复杂。
-  // 我们干脆将 infoBox 隐藏（display:none），只显示 incentiveBox。
-  // 但 index2 原本有 info-box 和 incentive-box，为了快速修正，我们使用如下：
-  // 让 infoBox 显示 t.infoText（新增），incentiveBox 显示 t.returnBox。
-  // 所以我们为每个语言添加 infoText 字段，内容为研究背景摘要。
-  // 但实际上，index1 没有 infoText，它把所有内容放在 subtitle 中，所以我们也可以同样处理。
-  // 为了最小改动，我们不再显示 infoBox 和 incentiveBox，因为 hero 已经包含了所有内容。
-  // 我们可以在 hero 下方添加一个 return-box 样式的内容，但已经包含在 subtitle 中了。
-  // 所以，我们只需将 hero 的 sub 内容设为 t.subtitle，并移除 infoBox 和 incentiveBox 的显示。
-  // 但 index2 的提交按钮在 step1 内，step1 包含表单，所以 hero 之后就是表单。
-  // 所以我们直接在 hero 显示完整内容，然后把 infoBox 和 incentiveBox 隐藏（display:none）。
-  // 为了确保，我们在 CSS 中添加 .hidden，然后设置它们隐藏。
-  document.getElementById("infoBox").style.display = "none";
-  document.getElementById("incentiveBox").style.display = "none";
-  // 但为了保留结构，可以保留但隐藏。
-
-  // 表单标签已经设置
-
   // Panel A
   document.getElementById("congratsHeading").textContent = t.congratsHeading;
-  document.getElementById("congratsDesc").innerHTML = t.congratsDesc.replace(/<strong id='lotteryCountryName'><\/strong>/, "<strong id='lotteryCountryName'>" + selectedCountryName + "</strong>");
-  // 替换德文版的两个 id
-  if (lang === "de") {
-    document.getElementById("congratsDesc").innerHTML = t.congratsDesc.replace(/<strong id='lotteryCountryName_de'><\/strong>/, "<strong id='lotteryCountryName_de'>" + selectedCountryName + "</strong>");
+  let descHtml = t.congratsDesc;
+  if (selectedCountryName) {
+    descHtml = descHtml.replace(/<strong id='lotteryCountryName'><\/strong>/, "<strong id='lotteryCountryName'>" + selectedCountryName + "</strong>");
+    if (lang === "de") {
+      descHtml = descHtml.replace(/<strong id='lotteryCountryName_de'><\/strong>/, "<strong id='lotteryCountryName_de'>" + selectedCountryName + "</strong>");
+    }
+    if (lang === "sg") {
+      descHtml = descHtml.replace(/<strong id='lotteryCountryName_cn'><\/strong>/, "<strong id='lotteryCountryName_cn'>" + selectedCountryName + "</strong>");
+    }
   }
-  if (lang === "sg") {
-    document.getElementById("congratsDesc").innerHTML = t.congratsDesc.replace(/<strong id='lotteryCountryName_cn'><\/strong>/, "<strong id='lotteryCountryName_cn'>" + selectedCountryName + "</strong>");
-  }
+  document.getElementById("congratsDesc").innerHTML = descHtml;
 
   document.getElementById("optYesText").innerHTML = t.optYes;
   document.getElementById("optNoText").innerHTML = t.optNo;
@@ -641,7 +592,6 @@ function applyLanguage(countryCode) {
   document.getElementById("thAmount").textContent = t.thAmount;
   document.getElementById("thWinners").textContent = t.thWinners;
 
-  // 生成表格主体
   const prizes = [
     { name: t.p1, amount: "$500", winners: "1" },
     { name: t.p2, amount: "$100", winners: "2" },
@@ -656,7 +606,6 @@ function applyLanguage(countryCode) {
     tr.innerHTML = `<td>${p.name}</td><td>${p.amount}</td><td>${p.winners}</td>`;
     tbody.appendChild(tr);
   });
-  // 总行
   const totalTr = document.createElement("tr");
   totalTr.className = "total-row";
   totalTr.style.background = "var(--blue-light)";
@@ -680,13 +629,17 @@ function applyLanguage(countryCode) {
   document.getElementById("proceedBtnAText").textContent = t.proceedBtn;
 
   // Panel B
-  document.getElementById("sorryText").innerHTML = t.sorryText.replace(/<strong id='nonLotteryCountryName'><\/strong>/, "<strong id='nonLotteryCountryName'>" + selectedCountryName + "</strong>");
-  if (lang === "de") {
-    document.getElementById("sorryText").innerHTML = t.sorryText.replace(/<strong id='nonLotteryCountryName_de'><\/strong>/, "<strong id='nonLotteryCountryName_de'>" + selectedCountryName + "</strong>");
+  let sorryHtml = t.sorryText;
+  if (selectedCountryName) {
+    sorryHtml = sorryHtml.replace(/<strong id='nonLotteryCountryName'><\/strong>/, "<strong id='nonLotteryCountryName'>" + selectedCountryName + "</strong>");
+    if (lang === "de") {
+      sorryHtml = sorryHtml.replace(/<strong id='nonLotteryCountryName_de'><\/strong>/, "<strong id='nonLotteryCountryName_de'>" + selectedCountryName + "</strong>");
+    }
+    if (lang === "sg") {
+      sorryHtml = sorryHtml.replace(/<strong id='nonLotteryCountryName_cn'><\/strong>/, "<strong id='nonLotteryCountryName_cn'>" + selectedCountryName + "</strong>");
+    }
   }
-  if (lang === "sg") {
-    document.getElementById("sorryText").innerHTML = t.sorryText.replace(/<strong id='nonLotteryCountryName_cn'><\/strong>/, "<strong id='nonLotteryCountryName_cn'>" + selectedCountryName + "</strong>");
-  }
+  document.getElementById("sorryText").innerHTML = sorryHtml;
   document.getElementById("nonContText").innerHTML = t.nonCont;
   document.getElementById("nonQuitText").innerHTML = t.nonQuit;
   document.getElementById("proceedBtnBText").textContent = t.proceedBtn;
@@ -694,9 +647,12 @@ function applyLanguage(countryCode) {
   // Quit
   document.getElementById("quitTitle").textContent = t.quitTitle;
   document.getElementById("quitDesc").innerHTML = t.quitDesc;
-
-  // 额外，如果 panelA 显示，我们可能还需要在 congratsDesc 中显示国家名，已处理。
 }
+
+// ========== 页面加载默认语言 ==========
+document.addEventListener("DOMContentLoaded", function() {
+  applyLanguage("en");
+});
 
 // ========== 事件处理器 ==========
 function handleSubmit() {
@@ -704,30 +660,30 @@ function handleSubmit() {
   selectedCountryCode = countrySelect.value;
   selectedCountryName = countrySelect.options[countrySelect.selectedIndex].text;
 
-  // 隐藏 step1
   document.getElementById("step1").style.display = "none";
-
-  // 应用语言
   applyLanguage(selectedCountryCode);
 
   if (LOTTERY_COUNTRIES[selectedCountryCode]) {
-    // 抽奖国家
     document.getElementById("panelA").classList.add("visible");
-    // 确保 lotteryDetail 初始隐藏
     document.getElementById("lotteryDetail").classList.remove("visible");
     document.getElementById("proceedBtnA").disabled = true;
+    document.querySelectorAll("#lotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
   } else {
-    // 非抽奖国家
     document.getElementById("panelB").classList.add("visible");
     document.getElementById("proceedBtnB").disabled = true;
+    document.querySelectorAll("#nonLotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
   }
 }
 
 function selectLotteryChoice(choice) {
   lotteryChoice = choice;
-  // Highlight selected
   document.querySelectorAll("#lotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
-  if (event && event.currentTarget) event.currentTarget.classList.add("selected");
+  document.querySelectorAll("#lotteryChoiceGroup .radio-option").forEach(el => {
+    const input = el.querySelector('input[type="radio"]');
+    if (input && input.value === choice) {
+      el.classList.add("selected");
+    }
+  });
 
   if (choice === "quit") {
     document.getElementById("panelA").classList.remove("visible");
@@ -748,7 +704,12 @@ function selectLotteryChoice(choice) {
 function selectNonLotteryChoice(choice) {
   nonLotteryChoice = choice;
   document.querySelectorAll("#nonLotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
-  if (event && event.currentTarget) event.currentTarget.classList.add("selected");
+  document.querySelectorAll("#nonLotteryChoiceGroup .radio-option").forEach(el => {
+    const input = el.querySelector('input[type="radio"]');
+    if (input && input.value === choice) {
+      el.classList.add("selected");
+    }
+  });
 
   if (choice === "quit") {
     document.getElementById("panelB").classList.remove("visible");
