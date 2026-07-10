@@ -226,7 +226,6 @@
   }
   .lottery-detail th { font-weight: 600; color: var(--blue-dark); }
 
-  /* 进度条样式（与 index1 完全一致） */
   .progress-box {
     background: var(--gray-50);
     border: 1px solid var(--gray-200);
@@ -325,7 +324,6 @@
 
     <h2><span class="icon">&#9997;&#65039;</span> <span id="formHeading"></span></h2>
 
-    <!-- 专业选择 -->
     <div class="form-group">
       <label for="profSelect" id="profLabel"></label>
       <select id="profSelect">
@@ -336,7 +334,6 @@
       </div>
     </div>
 
-    <!-- 国家选择 -->
     <div class="form-group">
       <label for="countrySelect" id="countryLabel"></label>
       <select id="countrySelect">
@@ -370,7 +367,6 @@
     </div>
 
     <div id="lotteryDetail" class="lottery-detail">
-      <!-- ===== 进度模块（补回） ===== -->
       <h3 id="progressHeading" style="font-size:14px; font-weight:700; color:var(--blue-dark); margin-bottom:8px;"></h3>
       <div class="progress-box">
         <div id="counterLoading" style="text-align:center; color:var(--gray-500); font-size:13px;">Loading live data...</div>
@@ -383,7 +379,6 @@
           <div class="progress-phase" id="progressPhase"></div>
         </div>
       </div>
-      <!-- ===== 奖品表格 ===== -->
       <h3 id="prizeHeading"></h3>
       <table id="prizeTable">
         <thead><tr><th id="thTier"></th><th id="thAmount"></th><th id="thWinners"></th></tr></thead>
@@ -431,7 +426,7 @@
 
 <script>
 // ============================================================
-// 语言文本（包含进度相关字段）
+// 语言文本（修改了 congratsDesc 和 sorryText 中的 "country" → "country/region"）
 // ============================================================
 const T = {
   en: {
@@ -448,11 +443,10 @@ const T = {
     otherCountryPlaceholder: "Please specify your country/region",
     otherCountryRequired: "Please specify your country/region before continuing.",
     congratsHeading: "🎉 Congratulations!",
-    congratsDesc: "The country you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries eligible for lottery rewards. Would you like to join the prize draw?",
+    congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?",
     optYes: "🎁 Yes, I want to join the draw",
     optNo: "📝 No, just take the survey",
     optQuit: "I would like to exit",
-    // 进度相关
     progressHeading: "Live Claimed Spots",
     progressLabel: function(c, n) {
       var cname = {US:"United States", DE:"Germany", SG:"Singapore"}[c];
@@ -485,7 +479,7 @@ const T = {
     ],
     hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.",
     proceedBtn: "Start the Survey",
-    sorryText: "<p><strong>Thank you for your selection!</strong></p><p>The country you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.</p>",
+    sorryText: "<p><strong>Thank you for your selection!</strong></p><p>The country/region you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.</p>",
     nonCont: "Yes, I would like to continue the survey",
     nonQuit: "I would like to exit",
     quitTitle: "Thank you for your time!",
@@ -506,11 +500,10 @@ const T = {
     otherCountryPlaceholder: "Bitte geben Sie Ihr Land / Ihre Region an",
     otherCountryRequired: "Bitte geben Sie Ihr Land / Ihre Region an, bevor Sie fortfahren.",
     congratsHeading: "🎉 Congratulations! / Herzlichen Glückwunsch!",
-    congratsDesc: "The country you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries eligible for lottery rewards. Would you like to join the prize draw?<br>Das von Ihnen gewählte Land — <strong id='lotteryCountryName_de'></strong> — ist eines unserer ausgewählten Länder, das an der Verlosung teilnehmen kann. Möchten Sie am Gewinnspiel teilnehmen?",
+    congratsDesc: "Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='lotteryCountryName'></strong> — ist eines unserer ausgewählten Länder / Regionen, das an der Verlosung teilnehmen kann. Möchten Sie am Gewinnspiel teilnehmen?",
     optYes: "🎁 Yes, I want to join the draw / Ja, ich möchte teilnehmen",
     optNo: "📝 No, just take the survey / Nein, nur Umfrage ausfüllen",
     optQuit: "I would like to exit / Ich möchte beenden",
-    // 进度相关
     progressHeading: "Live Claimed Spots / Vergebene Plätze",
     progressLabel: function(c, n) {
       return "Germany / Deutschland — " + n + " spots claimed / Plätze vergeben";
@@ -542,7 +535,7 @@ const T = {
     ],
     hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.<br>Nach Abschluss der Umfrage erhalten Sie eine Teilnahme-Nr. Bitte machen Sie einen Screenshot.",
     proceedBtn: "Start the Survey / Umfrage starten",
-    sorryText: "<p><strong>Thank you for your selection! / Vielen Dank für Ihre Auswahl!</strong></p><p>The country you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.<br>Das von Ihnen gewählte Land — <strong id='nonLotteryCountryName_de'></strong> — gehört nicht zur Verlosungsstichprobe dieser Studie. Wir laden Sie jedoch herzlich ein, fortzufahren und Ihre wertvolle berufliche Perspektive zu Governance-Fragen zu teilen.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>Ihre Erkenntnisse sind für diese Forschung ebenso wichtig und fließen in unsere internationale Vergleichsanalyse ein.</p>",
+    sorryText: "<p><strong>Thank you for your selection! / Vielen Dank für Ihre Auswahl!</strong></p><p>Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='nonLotteryCountryName'></strong> — gehört nicht zur Verlosungsstichprobe dieser Studie. Wir laden Sie jedoch herzlich ein, fortzufahren und Ihre wertvolle berufliche Perspektive zu Governance-Fragen zu teilen.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>Ihre Erkenntnisse sind für diese Forschung ebenso wichtig und fließen in unsere internationale Vergleichsanalyse ein.</p>",
     nonCont: "Yes, I would like to continue the survey / Ja, ich möchte die Umfrage fortsetzen",
     nonQuit: "I would like to exit / Ich möchte beenden",
     quitTitle: "Thank you for your time! / Vielen Dank für Ihre Zeit!",
@@ -563,11 +556,10 @@ const T = {
     otherCountryPlaceholder: "请填写您的国家/地区",
     otherCountryRequired: "请填写您的国家/地区后再继续。",
     congratsHeading: "🎉 Congratulations! / 恭喜！",
-    congratsDesc: "The country you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries eligible for lottery rewards. Would you like to join the prize draw?<br>您选择的国家 — <strong id='lotteryCountryName_cn'></strong> — 是我们的抽奖国家之一。您希望参与抽奖吗？",
+    congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>您选择的国家/地区 — <strong id='lotteryCountryName_cn'></strong> — 是我们的抽奖国家/地区之一。您希望参与抽奖吗？",
     optYes: "🎁 Yes, I want to join the draw / 是的，我要参与抽奖",
     optNo: "📝 No, just take the survey / 不参与，仅填写问卷",
     optQuit: "I would like to exit / 我想退出",
-    // 进度相关
     progressHeading: "Live Claimed Spots / 实时已领名额",
     progressLabel: function(c, n) {
       var cname = {US:"United States / 美国", DE:"Germany / 德国", SG:"Singapore / 新加坡"}[c];
@@ -600,7 +592,7 @@ const T = {
     ],
     hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.<br>问卷完成后，您将获得一个唯一的参与编号。建议截图保存作为凭证。",
     proceedBtn: "Start the Survey / 开始填写问卷",
-    sorryText: "<p><strong>Thank you for your selection! / 感谢您的选择！</strong></p><p>The country you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.<br>您选择的国家 — <strong id='nonLotteryCountryName_cn'></strong> — 不属于本次研究的抽奖样本国家。但我们仍然热忱邀请您继续填写问卷，分享您对专业治理问题的宝贵见解。</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>您的见解对这项研究同样重要，并将为我们的国际比较分析做出贡献。</p>",
+    sorryText: "<p><strong>Thank you for your selection! / 感谢您的选择！</strong></p><p>The country/region you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.<br>您选择的国家/地区 — <strong id='nonLotteryCountryName_cn'></strong> — 不属于本次研究的抽奖样本国家/地区。但我们仍然热忱邀请您继续填写问卷，分享您对专业治理问题的宝贵见解。</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>您的见解对这项研究同样重要，并将为我们的国际比较分析做出贡献。</p>",
     nonCont: "Yes, I would like to continue the survey / 是的，我继续填写问卷",
     nonQuit: "I would like to exit / 我想退出",
     quitTitle: "Thank you for your time! / 感谢您的时间！",
@@ -612,7 +604,6 @@ const T = {
 // ============================================================
 // 配置
 // ============================================================
-// ✅ 使用 index1 中的真实链接
 const SURVEY_URLS = {
   US: "https://qualtricsxmj5mtpnh84.qualtrics.com/jfe/form/SV_eJ6Wj1zSpwaLRuC",
   DE: "https://qualtricsxmj5mtpnh84.qualtrics.com/jfe/form/SV_elzD1aiy9ayWikS",
@@ -736,7 +727,6 @@ const otherProfGroup = document.getElementById("otherProfGroup");
 const otherCountryInput = document.getElementById("otherCountry");
 const otherCountryGroup = document.getElementById("otherCountryGroup");
 
-// 填充专业列表
 PROFESSIONS.forEach(p => {
   const opt = document.createElement("option");
   opt.value = p.value;
@@ -744,7 +734,6 @@ PROFESSIONS.forEach(p => {
   profSelect.appendChild(opt);
 });
 
-// 填充国家列表
 COUNTRIES.forEach(c => {
   const opt = document.createElement("option");
   opt.value = c.code;
@@ -752,7 +741,6 @@ COUNTRIES.forEach(c => {
   countrySelect.appendChild(opt);
 });
 
-// 专业名称映射（值 → 文本）
 const PROF_NAME_MAP = {};
 PROFESSIONS.forEach(p => {
   PROF_NAME_MAP[p.value] = p.label;
@@ -816,10 +804,8 @@ function applyLanguage(countryCode) {
   document.getElementById("optNoText").innerHTML = t.optNo;
   document.getElementById("optQuitText").innerHTML = t.optQuit;
 
-  // 进度标题
   document.getElementById("progressHeading").textContent = t.progressHeading || "Live Claimed Spots";
 
-  // 奖品表格
   document.getElementById("prizeHeading").textContent = t.prizeHeading;
   document.getElementById("thTier").textContent = t.thTier;
   document.getElementById("thAmount").textContent = t.thAmount;
@@ -909,16 +895,10 @@ function renderProgress(code) {
   document.getElementById("counterLoading").style.display = "none";
   document.getElementById("progressContent").style.display = "block";
 
-  // 标签
   document.getElementById("progressLabel").innerHTML = t.progressLabel(code, n);
-
-  // 进度条文字
   document.getElementById("progressText").innerHTML = n + " / " + total + " (" + pct + "%)";
-
-  // 阶段提示
   document.getElementById("progressPhase").innerHTML = t.phaseText(n);
 
-  // 进度条动画
   setTimeout(function() {
     document.getElementById("progressFill").style.width = pct + "%";
   }, 100);
@@ -1066,7 +1046,6 @@ function selectLotteryChoice(choice) {
 
   if (choice === "yes") {
     document.getElementById("lotteryDetail").classList.add("visible");
-    // 加载进度数据
     loadCounter(selectedCountryCode);
   } else {
     document.getElementById("lotteryDetail").classList.remove("visible");
@@ -1103,7 +1082,6 @@ function proceedToSurvey() {
     surveyKey = selectedCountryCode;
   }
 
-  // 构建 profession 参数
   let professionParam;
   if (selectedProfession === "18") {
     const val = otherProfInput.value.trim();
@@ -1112,7 +1090,6 @@ function proceedToSurvey() {
     professionParam = PROF_NAME_MAP[selectedProfession] || selectedProfession;
   }
 
-  // 构建 country 参数
   let countryParam;
   if (selectedCountryCode === "OTHER") {
     const val = otherCountryInput.value.trim();
