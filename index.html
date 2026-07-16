@@ -426,7 +426,19 @@
 
 <script>
 // ============================================================
-// 语言文本（修改了 congratsDesc 和 sorryText 中的 "country" → "country/region"）
+// 页面加载时检测 retry 参数，自动刷新
+// ============================================================
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('retry') === '1') {
+    params.delete('retry');
+    const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+    window.location.replace(newUrl);
+  }
+})();
+
+// ============================================================
+// 语言文本
 // ============================================================
 const T = {
   en: {
@@ -727,6 +739,7 @@ const otherProfGroup = document.getElementById("otherProfGroup");
 const otherCountryInput = document.getElementById("otherCountry");
 const otherCountryGroup = document.getElementById("otherCountryGroup");
 
+// 填充专业列表
 PROFESSIONS.forEach(p => {
   const opt = document.createElement("option");
   opt.value = p.value;
@@ -734,6 +747,7 @@ PROFESSIONS.forEach(p => {
   profSelect.appendChild(opt);
 });
 
+// 填充国家列表
 COUNTRIES.forEach(c => {
   const opt = document.createElement("option");
   opt.value = c.code;
@@ -741,6 +755,7 @@ COUNTRIES.forEach(c => {
   countrySelect.appendChild(opt);
 });
 
+// 专业名称映射（值 → 文本）
 const PROF_NAME_MAP = {};
 PROFESSIONS.forEach(p => {
   PROF_NAME_MAP[p.value] = p.label;
@@ -804,8 +819,10 @@ function applyLanguage(countryCode) {
   document.getElementById("optNoText").innerHTML = t.optNo;
   document.getElementById("optQuitText").innerHTML = t.optQuit;
 
+  // 进度标题
   document.getElementById("progressHeading").textContent = t.progressHeading || "Live Claimed Spots";
 
+  // 奖品表格
   document.getElementById("prizeHeading").textContent = t.prizeHeading;
   document.getElementById("thTier").textContent = t.thTier;
   document.getElementById("thAmount").textContent = t.thAmount;
@@ -895,10 +912,16 @@ function renderProgress(code) {
   document.getElementById("counterLoading").style.display = "none";
   document.getElementById("progressContent").style.display = "block";
 
+  // 标签
   document.getElementById("progressLabel").innerHTML = t.progressLabel(code, n);
+
+  // 进度条文字
   document.getElementById("progressText").innerHTML = n + " / " + total + " (" + pct + "%)";
+
+  // 阶段提示
   document.getElementById("progressPhase").innerHTML = t.phaseText(n);
 
+  // 进度条动画
   setTimeout(function() {
     document.getElementById("progressFill").style.width = pct + "%";
   }, 100);
@@ -981,7 +1004,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // ============================================================
-// 提交
+// 提交（第一步：显示抽奖面板）
 // ============================================================
 function handleSubmit() {
   selectedProfession = profSelect.value;
@@ -1027,6 +1050,9 @@ function handleSubmit() {
   }
 }
 
+// ============================================================
+// 选择抽奖选项
+// ============================================================
 function selectLotteryChoice(choice) {
   lotteryChoice = choice;
   document.querySelectorAll("#lotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
@@ -1046,6 +1072,7 @@ function selectLotteryChoice(choice) {
 
   if (choice === "yes") {
     document.getElementById("lotteryDetail").classList.add("visible");
+    // 加载进度数据
     loadCounter(selectedCountryCode);
   } else {
     document.getElementById("lotteryDetail").classList.remove("visible");
@@ -1074,14 +1101,16 @@ function selectNonLotteryChoice(choice) {
 }
 
 // ============================================================
-// 跳转
+// 跳转（直接传递参数，使用 draw_code 机制）
 // ============================================================
 function proceedToSurvey() {
+  // 确定问卷链接
   let surveyKey = "INT";
   if (LOTTERY_COUNTRIES[selectedCountryCode]) {
     surveyKey = selectedCountryCode;
   }
 
+  // 构建 profession 参数
   let professionParam;
   if (selectedProfession === "18") {
     const val = otherProfInput.value.trim();
