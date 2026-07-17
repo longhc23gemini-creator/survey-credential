@@ -169,12 +169,11 @@
 
 <script>
 const params = new URLSearchParams(window.location.search);
-// 使用与入口页和 credential.html 一致的语言判断逻辑
 const countryParam = (params.get("country") || "INT").toUpperCase();
 const lang = countryParam === "DE" ? "de" : countryParam === "SG" ? "sg" : "en";
 
-// 多语言文本（三套：en / de / sg）
 const T = {
+  // ===== 英文版（纯英文） =====
   en: {
     title: "Thank you for your interest",
     subtitle: "",
@@ -183,14 +182,16 @@ const T = {
     pwLabel: "Password:",
     back: "Return to Entry Page",
   },
+  // ===== 德文版（德英双语） =====
   de: {
-    title: "Vielen Dank für Ihr Interesse",
+    title: "Vielen Dank für Ihr Interesse / Thank you for your interest",
     subtitle: "",
-    message: '<p>Wir danken Ihnen für Ihre Bereitschaft, an unserer Studie teilzunehmen.</p><p>Nach Prüfung Ihrer Antworten müssen wir Ihnen leider mitteilen, dass Sie die spezifischen Teilnahmevoraussetzungen für diese Forschungsphase nicht erfüllen.</p><p>Wir wissen Ihr Engagement sehr zu schätzen und hoffen, dass Sie an zukünftigen Studien teilnehmen möchten.</p>',
-    reportText: "Obwohl Sie nicht an der Umfrage oder Verlosung teilnehmen können, möchten wir unsere Forschungsergebnisse dennoch mit Ihnen teilen. Der internationale Vergleichsbericht wird voraussichtlich im Dezember 2026 hier verfügbar sein:",
-    pwLabel: "Passwort:",
-    back: "Zurück zur Einstiegsseite",
+    message: '<p>Wir danken Ihnen für Ihre Bereitschaft, an unserer Studie teilzunehmen.</p><p>Nach Prüfung Ihrer Antworten müssen wir Ihnen leider mitteilen, dass Sie die spezifischen Teilnahmevoraussetzungen für diese Forschungsphase nicht erfüllen.</p><p>Wir wissen Ihr Engagement sehr zu schätzen und hoffen, dass Sie an zukünftigen Studien teilnehmen möchten.</p><p>Thank you for taking the time to participate in our study.</p><p>After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.</p><p>We sincerely appreciate your willingness to contribute, and we hope you will consider participating in future studies.</p>',
+    reportText: "Obwohl Sie nicht an der Umfrage oder Verlosung teilnehmen können, möchten wir unsere Forschungsergebnisse dennoch mit Ihnen teilen. Der internationale Vergleichsbericht wird voraussichtlich im Dezember 2026 hier verfügbar sein: / Although you are not eligible to participate in the survey or prize draw, we would still like to share our research findings with you. When the international comparative report is ready (estimated December 2026), it will be available here:",
+    pwLabel: "Passwort / Password:",
+    back: "Zurück zur Einstiegsseite / Return to Entry Page",
   },
+  // ===== 新加坡版（英中双语） =====
   sg: {
     title: "Thank you for your interest / 感谢您的关注",
     subtitle: "",
