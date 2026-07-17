@@ -167,28 +167,38 @@
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const params = new URLSearchParams(window.location.search);
-const country = (params.get("country") || "INT").toUpperCase();
-const lang = country === "DE" ? "de" : "en";
+// 使用与入口页和 credential.html 一致的语言判断逻辑
+const countryParam = (params.get("country") || "INT").toUpperCase();
+const lang = countryParam === "DE" ? "de" : countryParam === "SG" ? "sg" : "en";
 
+// 多语言文本（三套：en / de / sg）
 const T = {
   en: {
-    title: "Thank you for your interest!",
-    subtitle: "We appreciate you taking the time to begin our survey.\n\n感谢您对本研究的关注！",
-    message: '<p>Thank you for your interest. Unfortunately, based on the answers you provided for the professional field you selected, we are unable to include your data in this study. Our research focuses on respondents whose responses are consistent with the practices and expectations of their chosen field.</p><p>This is not a reflection of your expertise or experience -- it simply means our study has specific eligibility criteria that must be met for the research to be valid.</p><p style="margin-top:16px; padding-top:12px; border-top:1px solid #f6e05e;">很遗憾，根据您对筛选问题的回答，我们无法将您的数据纳入本次研究。我们的研究明确要求受访者须持有建筑行业内获认可的专业资格。</p><p>这并不是对您专业能力的否定——只是我们的研究有特定的入选标准，以确保研究结果的有效性。</p>',
-    reportText: "Although you are not eligible to participate in the survey or prize draw, we would still like to share our research findings with you. When the international comparative report is ready (estimated December 2026), it will be available here:\n\n虽然您无法参与问卷或抽奖，但我们仍希望与您分享研究成果。国际比较报告完成后（预计2026年12月），将在此发布：",
-    pwLabel: "Password / 密码:",
-    back: "Return to Entry Page / 返回入口页",
+    title: "Thank you for your interest",
+    subtitle: "",
+    message: '<p>Thank you for taking the time to participate in our study.</p><p>After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.</p><p>We sincerely appreciate your willingness to contribute, and we hope you will consider participating in future studies.</p>',
+    reportText: "Although you are not eligible to participate in the survey or prize draw, we would still like to share our research findings with you. When the international comparative report is ready (estimated December 2026), it will be available here:",
+    pwLabel: "Password:",
+    back: "Return to Entry Page",
   },
   de: {
-    title: "Vielen Dank fur Ihr Interesse!",
-    subtitle: "Wir danken Ihnen, dass Sie sich die Zeit genommen haben.\nThank you for your interest!",
-    message: '<p>Leider konnen wir Ihre Daten aufgrund Ihrer Antworten auf die Screening-Fragen nicht in diese Studie aufnehmen. Unsere Forschung erfordert Befragte mit anerkannten beruflichen Qualifikationen im Bauwesen.</p><p>Dies ist keine Bewertung Ihrer Fachkompetenz -- es bedeutet lediglich, dass unsere Studie bestimmte Zulassungskriterien hat, die fur die Validitat der Forschung erfullt sein mussen.</p><p style="margin-top:16px; padding-top:12px; border-top:1px solid #f6e05e;">Unfortunately, based on your screening responses, we cannot include your data. Our research requires recognized professional qualifications in construction.</p>',
-    reportText: "Obwohl Sie nicht an der Umfrage oder Verlosung teilnehmen konnen, mochten wir unsere Forschungsergebnisse dennoch mit Ihnen teilen. Der internationale Vergleichsbericht wird voraussichtlich im Dezember 2026 hier verfugbar sein:\n\nAlthough you cannot participate, the research report (est. Dec 2026) will be available here:",
-    pwLabel: "Passwort / Password:",
-    back: "Zuruck zur Einstiegsseite / Return",
+    title: "Vielen Dank für Ihr Interesse",
+    subtitle: "",
+    message: '<p>Wir danken Ihnen für Ihre Bereitschaft, an unserer Studie teilzunehmen.</p><p>Nach Prüfung Ihrer Antworten müssen wir Ihnen leider mitteilen, dass Sie die spezifischen Teilnahmevoraussetzungen für diese Forschungsphase nicht erfüllen.</p><p>Wir wissen Ihr Engagement sehr zu schätzen und hoffen, dass Sie an zukünftigen Studien teilnehmen möchten.</p>',
+    reportText: "Obwohl Sie nicht an der Umfrage oder Verlosung teilnehmen können, möchten wir unsere Forschungsergebnisse dennoch mit Ihnen teilen. Der internationale Vergleichsbericht wird voraussichtlich im Dezember 2026 hier verfügbar sein:",
+    pwLabel: "Passwort:",
+    back: "Zurück zur Einstiegsseite",
   },
+  sg: {
+    title: "Thank you for your interest / 感谢您的关注",
+    subtitle: "",
+    message: '<p>Thank you for taking the time to participate in our study.</p><p>After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.</p><p>We sincerely appreciate your willingness to contribute, and we hope you will consider participating in future studies.</p><p>感谢您抽出时间参与我们的研究。</p><p>经过对您回答的审阅，很遗憾您不符合本研究阶段的特定资格要求。</p><p>我们衷心感谢您的参与意愿，并希望您在未来的研究中继续给予关注和支持。</p>',
+    reportText: "Although you are not eligible to participate in the survey or prize draw, we would still like to share our research findings with you. When the international comparative report is ready (estimated December 2026), it will be available here: / 虽然您无法参与问卷或抽奖，但我们仍希望与您分享研究成果。国际比较报告完成后（预计2026年12月），将在此发布：",
+    pwLabel: "Password / 密码：",
+    back: "Return to Entry Page / 返回入口页",
+  }
 };
 
 function render() {
