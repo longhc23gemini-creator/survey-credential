@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redirecting...</title>
+<style>
+  body { font-family: sans-serif; text-align: center; padding: 50px; }
+  .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #1a56db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  .error { color: #c53030; display: none; }
+</style>
+</head>
+<body>
+  <h1>Generating your credential...</h1>
+  <div class="spinner"></div>
+  <div class="error" id="errorMsg">Something went wrong. Please contact support.</div>
+
+  <script>
+    function generateCredential() {
+      var params = new URLSearchParams(window.location.search);
+      var rid = params.get('rid');
+      var country = params.get('country') || '';
+      var lottery = params.get('lottery') || 'no';
+
+      var errorMsg = document.getElementById('errorMsg');
+
+      if (!rid) {
+        errorMsg.style.display = 'block';
+        errorMsg.textContent = 'Missing rid parameter. Please complete the survey first.';
+        return;
+      }
+
+      var API_URL = 'https://survey-counter.longhc23gemini.workers.dev/generate-draw-code';
+
+      fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rid: rid })
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        if (data.error) {
+          errorMsg.style.display = 'block';
+          errorMsg.textContent = data.error;
+          return;
+        }
+        var credentialUrl = 'https://longhc23gemini-creator.github.io/survey-credential/credential.html?code=' + encodeURIComponent(data.draw_code) + '&country=' + encodeURIComponent(country) + '&lottery=' + encodeURIComponent(lottery);
+        window.location.href = credentialUrl;
+      })
+      .catch(function(err) {
+        errorMsg.style.display = 'block';
+        errorMsg.textContent = 'Network error: ' + err.message;
+        console.error(err);
+      });
+    }
+
+    generateCredential();
+  </script>
+</body>
+</html>
