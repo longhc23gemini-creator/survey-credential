@@ -170,7 +170,11 @@
 <script>
 const params = new URLSearchParams(window.location.search);
 const countryParam = (params.get("country") || "INT").toUpperCase();
-const lang = countryParam === "DE" ? "de" : countryParam === "SG" ? "sg" : "en";
+
+// 支持国家代码（DE/SG）和国家名称（Germany/Singapore）
+const lang = (countryParam === "DE" || countryParam === "GERMANY") ? "de"
+           : (countryParam === "SG" || countryParam === "SINGAPORE") ? "sg"
+           : "en";
 
 const T = {
   en: {
@@ -184,7 +188,6 @@ const T = {
   de: {
     title: "Vielen Dank für Ihr Interesse / Thank you for your interest",
     subtitle: "",
-    // 修改为逐段双语，先德文后英文，<br> 分隔，段落间 <br><br>
     message: 'Wir danken Ihnen für Ihre Bereitschaft, an unserer Studie teilzunehmen.<br>Thank you for taking the time to participate in our study.<br><br>Nach Prüfung Ihrer Antworten müssen wir Ihnen leider mitteilen, dass Sie die spezifischen Teilnahmevoraussetzungen für diese Forschungsphase nicht erfüllen.<br>After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.<br><br>Wir wissen Ihr Engagement sehr zu schätzen.<br>We sincerely appreciate your willingness to contribute.',
     reportText: "Obwohl Sie nicht an der Umfrage oder Verlosung teilnehmen können, möchten wir unsere Forschungsergebnisse dennoch mit Ihnen teilen. Der internationale Vergleichsbericht wird voraussichtlich im Dezember 2026 hier verfügbar sein: / Although you are not eligible to participate in the survey or prize draw, we would still like to share our research findings with you. When the international comparative report is ready (estimated December 2026), it will be available here:",
     pwLabel: "Passwort / Password:",
