@@ -388,11 +388,12 @@
         </div>
       </div>
       <h3 id="prizeHeading"></h3>
+      <!-- prizeNote 已移到标题下方，表格上方 -->
+      <p id="prizeNote"></p>
       <table id="prizeTable">
         <thead><tr><th id="thTier"></th><th id="thAmount"></th><th id="thWinners"></th></tr></thead>
         <tbody id="prizeBody"></tbody>
       </table>
-      <p id="prizeNote"></p>
       <!-- lotteryLimit 段落 -->
       <p id="lotteryLimit"></p>
       <h4 id="rulesHeading"></h4>
@@ -548,7 +549,6 @@ const T = {
     pTotal: "Total / Gesamt",
     pTotalWin: "300 (Guaranteed / Garantiert)",
     prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win a prize!<br>Die ersten 300 qualifizierten Teilnehmer pro Land/Region erhalten GARANTIERT einen Preis!</strong>",
-    // 修改：德文在上，英文在下，不用 / 分隔
     lotteryLimit: "Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, bitten wir jeden Teilnehmer, nur eine Umfrage auszufüllen. Jede gültige Umfrageantwort berechtigt zur einmaligen Teilnahme an der Verlosung.<br>To ensure the quality and integrity of our research data, we kindly ask each participant to complete only one survey. Each valid survey response is eligible for one prize draw entry only.",
     rules: [
       "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>Erste Auslosung (bei 150 gültigen Antworten in einem Land / einer Region):</b> Vergabe von 1 zweiten Preis, 5 dritten Preisen, 25 Teilnahmepreisen. <i>Hinweis: Der Hauptpreis wird in dieser Phase nicht verlost.</i>",
@@ -606,7 +606,8 @@ const T = {
     p5: "Guaranteed Prize / 保底参与奖",
     pTotal: "Total / 合计",
     pTotalWin: "300 (Guaranteed / 人人有奖)",
-    prizeNote: "<strong>每个国家/地区前300名符合条件的参与者 100% 获得以下奖项之一！</strong>",
+    // 修改为英中双语，英文在上，中文在下
+    prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win one of the following prizes!<br>每个国家/地区前300名符合条件的参与者 100% 获得以下奖项之一！</strong>",
     lotteryLimit: "To ensure the quality and integrity of our research data, we kindly ask each participant to complete only one survey. Each valid survey response is eligible for one prize draw entry only.<br>为确保调研数据的质量与完整性，请每位参与者仅填写一份问卷。每份有效问卷仅可参与一次抽奖。",
     rules: [
       "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>首轮开奖（该国/地区满150份有效答卷时）：</b>抽取二等奖1名，三等奖5名，参与奖25名。<i>注：本阶段不抽取一等奖。</i>",
@@ -835,6 +836,7 @@ function applyLanguage(countryCode) {
 
   // 奖品表格
   document.getElementById("prizeHeading").textContent = t.prizeHeading;
+  // prizeNote 已在 applyLanguage 中单独设置（见下方）
   document.getElementById("thTier").textContent = t.thTier;
   document.getElementById("thAmount").textContent = t.thAmount;
   document.getElementById("thWinners").textContent = t.thWinners;
@@ -860,6 +862,7 @@ function applyLanguage(countryCode) {
   totalTr.innerHTML = `<td><strong>${t.pTotal}</strong></td><td><strong>$1,387</strong></td><td><strong>${t.pTotalWin}</strong></td>`;
   tbody.appendChild(totalTr);
 
+  // 设置 prizeNote
   document.getElementById("prizeNote").innerHTML = t.prizeNote;
 
   // lotteryLimit
