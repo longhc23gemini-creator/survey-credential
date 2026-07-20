@@ -385,6 +385,8 @@
         <tbody id="prizeBody"></tbody>
       </table>
       <p id="prizeNote"></p>
+      <!-- 新增 lotteryLimit -->
+      <p id="lotteryLimit" style="color:var(--red); font-weight:700; font-size:15px; text-align:center; margin:16px 0 12px;"></p>
       <h4 id="rulesHeading"></h4>
       <ol class="rules-list" id="rulesList"></ol>
       <div class="hint-box" id="hintBox" style="background:var(--blue-light);border-left:4px solid var(--blue);padding:14px 18px;margin-top:16px;border-radius:0 var(--radius) var(--radius) 0;"></div>
@@ -438,7 +440,7 @@
 })();
 
 // ============================================================
-// 语言文本（已修改 returnBox 的抽奖描述和 prizeNote）
+// 语言文本
 // ============================================================
 const T = {
   en: {
@@ -481,6 +483,8 @@ const T = {
     pTotal: "Total",
     pTotalWin: "300 (Guaranteed)",
     prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win a prize!</strong>",
+    // 新增 lotteryLimit
+    lotteryLimit: "To ensure the quality and integrity of our research data, we kindly ask each participant to complete only one survey. Each valid survey response is eligible for one prize draw entry only.",
     rules: [
       "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i>",
       "<b>Second draw (when 300 valid responses are reached in a country/region):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.",
@@ -537,6 +541,8 @@ const T = {
     pTotal: "Total / Gesamt",
     pTotalWin: "300 (Guaranteed / Garantiert)",
     prizeNote: "<strong>Die ersten 300 qualifizierten Teilnehmer pro Land/Region erhalten GARANTIERT einen Preis!</strong>",
+    // 新增 lotteryLimit（德英双语，逐句交替）
+    lotteryLimit: "Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, bitten wir jeden Teilnehmer, nur eine Umfrage auszufüllen. Jede gültige Umfrageantwort berechtigt zur einmaligen Teilnahme an der Verlosung. / To ensure the quality and integrity of our research data, we kindly ask each participant to complete only one survey. Each valid survey response is eligible for one prize draw entry only.",
     rules: [
       "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>Erste Auslosung (bei 150 gültigen Antworten in einem Land / einer Region):</b> Vergabe von 1 zweiten Preis, 5 dritten Preisen, 25 Teilnahmepreisen. <i>Hinweis: Der Hauptpreis wird in dieser Phase nicht verlost.</i>",
       "<b>Second draw (when 300 valid responses are reached in a country/region):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.<br><b>Zweite Auslosung (bei 300 gültigen Antworten in einem Land / einer Region):</b> Unter den Teilnehmern 151–300 werden der verbleibende 1 zweite Preis, 5 dritte Preise und 25 Teilnahmepreise verlost.",
@@ -594,6 +600,8 @@ const T = {
     pTotal: "Total / 合计",
     pTotalWin: "300 (Guaranteed / 人人有奖)",
     prizeNote: "<strong>每个国家/地区前300名符合条件的参与者 100% 获得以下奖项之一！</strong>",
+    // 新增 lotteryLimit（英中双语，逐句交替）
+    lotteryLimit: "To ensure the quality and integrity of our research data, we kindly ask each participant to complete only one survey. Each valid survey response is eligible for one prize draw entry only.<br>为确保调研数据的质量与完整性，请每位参与者仅填写一份问卷。每份有效问卷仅可参与一次抽奖。",
     rules: [
       "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>首轮开奖（该国/地区满150份有效答卷时）：</b>抽取二等奖1名，三等奖5名，参与奖25名。<i>注：本阶段不抽取一等奖。</i>",
       "<b>Second draw (when 300 valid responses are reached in a country/region):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.<br><b>次轮开奖（该国/地区满300份有效答卷时）：</b>在第151至300名参与者中抽取剩余的二等奖1名，三等奖5名和参与奖25名。",
@@ -739,7 +747,6 @@ const otherProfGroup = document.getElementById("otherProfGroup");
 const otherCountryInput = document.getElementById("otherCountry");
 const otherCountryGroup = document.getElementById("otherCountryGroup");
 
-// 填充专业列表
 PROFESSIONS.forEach(p => {
   const opt = document.createElement("option");
   opt.value = p.value;
@@ -747,7 +754,6 @@ PROFESSIONS.forEach(p => {
   profSelect.appendChild(opt);
 });
 
-// 填充国家列表
 COUNTRIES.forEach(c => {
   const opt = document.createElement("option");
   opt.value = c.code;
@@ -755,7 +761,6 @@ COUNTRIES.forEach(c => {
   countrySelect.appendChild(opt);
 });
 
-// 专业名称映射（值 → 文本）
 const PROF_NAME_MAP = {};
 PROFESSIONS.forEach(p => {
   PROF_NAME_MAP[p.value] = p.label;
@@ -851,6 +856,9 @@ function applyLanguage(countryCode) {
 
   document.getElementById("prizeNote").innerHTML = t.prizeNote;
 
+  // 新增 lotteryLimit
+  document.getElementById("lotteryLimit").innerHTML = t.lotteryLimit;
+
   document.getElementById("rulesHeading").textContent = t.rulesHeading;
   const rulesList = document.getElementById("rulesList");
   rulesList.innerHTML = "";
@@ -912,16 +920,10 @@ function renderProgress(code) {
   document.getElementById("counterLoading").style.display = "none";
   document.getElementById("progressContent").style.display = "block";
 
-  // 标签
   document.getElementById("progressLabel").innerHTML = t.progressLabel(code, n);
-
-  // 进度条文字
   document.getElementById("progressText").innerHTML = n + " / " + total + " (" + pct + "%)";
-
-  // 阶段提示
   document.getElementById("progressPhase").innerHTML = t.phaseText(n);
 
-  // 进度条动画
   setTimeout(function() {
     document.getElementById("progressFill").style.width = pct + "%";
   }, 100);
@@ -1050,9 +1052,6 @@ function handleSubmit() {
   }
 }
 
-// ============================================================
-// 选择抽奖选项
-// ============================================================
 function selectLotteryChoice(choice) {
   lotteryChoice = choice;
   document.querySelectorAll("#lotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
@@ -1072,7 +1071,6 @@ function selectLotteryChoice(choice) {
 
   if (choice === "yes") {
     document.getElementById("lotteryDetail").classList.add("visible");
-    // 加载进度数据
     loadCounter(selectedCountryCode);
   } else {
     document.getElementById("lotteryDetail").classList.remove("visible");
@@ -1101,16 +1099,14 @@ function selectNonLotteryChoice(choice) {
 }
 
 // ============================================================
-// 跳转（直接传递参数，使用 draw_code 机制）
+// 跳转
 // ============================================================
 function proceedToSurvey() {
-  // 确定问卷链接
   let surveyKey = "INT";
   if (LOTTERY_COUNTRIES[selectedCountryCode]) {
     surveyKey = selectedCountryCode;
   }
 
-  // 构建 profession 参数
   let professionParam;
   if (selectedProfession === "18") {
     const val = otherProfInput.value.trim();
