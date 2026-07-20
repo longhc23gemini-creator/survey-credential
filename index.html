@@ -303,10 +303,11 @@
   .rules-list li { margin-bottom: 8px; line-height: 1.6; }
   .return-box { margin-top: 18px; padding: 18px; background: #fff; border-radius: 8px; border-left: 4px solid var(--blue); }
   #infoBox .return-box { margin-top: 18px; padding: 18px; background: #fff; border-radius: 8px; border-left: 4px solid var(--blue); }
-  /* 新增样式：lotteryLimit 左对齐、不加粗 */
+  
+  /* lotteryLimit 样式：红色加粗，字号继承，左对齐 */
   #lotteryLimit {
     color: var(--red);
-    font-size: 15px;
+    font-weight: bold;
     text-align: left;
     margin: 16px 0 12px;
   }
@@ -392,7 +393,7 @@
         <tbody id="prizeBody"></tbody>
       </table>
       <p id="prizeNote"></p>
-      <!-- 修改后的 lotteryLimit：左对齐、不加粗 -->
+      <!-- lotteryLimit 段落 -->
       <p id="lotteryLimit"></p>
       <h4 id="rulesHeading"></h4>
       <ol class="rules-list" id="rulesList"></ol>
@@ -511,7 +512,6 @@ const T = {
   de: {
     title: "Professional Governance & Trust in Construction<br>Berufsständische Governance & Vertrauen im Bauwesen",
     subtitle: "<b>Dear fellow professional / Sehr geehrte(r) Kollege(in),</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br>Die Bauindustrie steht an einem Wendepunkt. Ihre Teilnahme ist wichtig.<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br>Wir laden Sie ein, an einer globalen akademischen Studie teilzunehmen, die den tatsächlichen Stand der berufsständischen Governance und der Vertrauensbildung dokumentiert. Durch das Teilen Ihrer Beobachtungen nehmen Sie an einem grenzüberschreitenden Dialog unter Fachkollegen teil.",
-    // 修改 returnBox：德英双语完整
     returnBox: "<b style='color:var(--blue); font-size:16px;'>What You Get in Return / Was Sie als Gegenleistung erhalten:</b><br>We value your time and expertise. Here is what we offer all participants:<br>Wir schätzen Ihre Zeit und Expertise. Hier ist, was wir allen Teilnehmern bieten:<br><br><b>① Research Report / Forschungsbericht</b><br>Upon completion of our study, we will share an international comparative research report with all participants.<br>Nach Abschluss unserer Studie werden wir einen internationalen vergleichenden Forschungsbericht mit allen Teilnehmern teilen.<br><br><b>② Prize Draw / Gewinnspiel</b><br><span style='color:var(--red); font-weight:bold;'>To ensure the representativeness and quality of our research data, we are conducting in-depth analyses for a focused set of countries/regions. For respondents from these sample countries/regions, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!<br>Um die Repräsentativität und Qualität unserer Forschungsdaten zu gewährleisten, führen wir vertiefte Analysen für eine ausgewählte Gruppe von Ländern/Regionen durch. Für Befragte aus diesen Stichprobenländern/-regionen bieten wir ein zweistufiges Gewinnspiel mit einer 100%igen Gewinnchance und einem Hauptpreis von $500!</span>",
     step1Heading: "About This Study / Über diese Studie",
     formHeading: "Your Professional Background / Ihr beruflicher Hintergrund",
@@ -547,10 +547,9 @@ const T = {
     p5: "Guaranteed Prize / Garantierter Preis",
     pTotal: "Total / Gesamt",
     pTotalWin: "300 (Guaranteed / Garantiert)",
-    // 修改 prizeNote：补充英文
     prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win a prize!<br>Die ersten 300 qualifizierten Teilnehmer pro Land/Region erhalten GARANTIERT einen Preis!</strong>",
-    // lotteryLimit 已为双语，且样式由CSS控制（不加粗、左对齐）
-    lotteryLimit: "Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, bitten wir jeden Teilnehmer, nur eine Umfrage auszufüllen. Jede gültige Umfrageantwort berechtigt zur einmaligen Teilnahme an der Verlosung. / To ensure the quality and integrity of our research data, we kindly ask each participant to complete only one survey. Each valid survey response is eligible for one prize draw entry only.",
+    // 修改：德文在上，英文在下，不用 / 分隔
+    lotteryLimit: "Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, bitten wir jeden Teilnehmer, nur eine Umfrage auszufüllen. Jede gültige Umfrageantwort berechtigt zur einmaligen Teilnahme an der Verlosung.<br><br>To ensure the quality and integrity of our research data, we kindly ask each participant to complete only one survey. Each valid survey response is eligible for one prize draw entry only.",
     rules: [
       "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>Erste Auslosung (bei 150 gültigen Antworten in einem Land / einer Region):</b> Vergabe von 1 zweiten Preis, 5 dritten Preisen, 25 Teilnahmepreisen. <i>Hinweis: Der Hauptpreis wird in dieser Phase nicht verlost.</i>",
       "<b>Second draw (when 300 valid responses are reached in a country/region):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.<br><b>Zweite Auslosung (bei 300 gültigen Antworten in einem Land / einer Region):</b> Unter den Teilnehmern 151–300 werden der verbleibende 1 zweite Preis, 5 dritte Preise und 25 Teilnahmepreise verlost.",
