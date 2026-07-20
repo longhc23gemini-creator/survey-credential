@@ -6,7 +6,7 @@
 <title>Survey Counter</title>
 <style>
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
     text-align: center;
     color: #1a56db; 
     background: #ebf5ff; 
@@ -22,64 +22,97 @@
     color: #1a202c; 
     font-size: 15px;
     text-align: left;
-    display: inline-block; /* 让列表居中对齐 */
+    display: inline-block;
   }
   .country-row {
     margin-bottom: 8px;
     font-weight: 500;
   }
   .ticket { 
-    color: #c53030; /* 清华红/警示红 */
+    color: #c53030;
     font-weight: bold; 
     font-family: "SF Mono", "Consolas", monospace; 
     font-size: 16px;
   }
   .ticket-full { 
-    color: #276749; /* 达成目标的绿色 */
+    color: #276749;
     font-weight: bold; 
   }
 </style>
 </head>
 <body>
-    <div id="counter">Loading current spots... / 正在加载名额进度...</div>
+    <div id="counter">Loading current spots...</div>
     <script>
-        // 指向您的 Cloudflare 大脑
-        const API_URL = "https://survey-counter.longhc23gemini.workers.dev/";
-        
-        // 阶梯名额计算逻辑
+        // ── 语言判定 ──
+        var params = new URLSearchParams(window.location.search);
+        var countryParam = params.get('country') || '';
+        var lang = 'en';
+        if (countryParam.toUpperCase() === 'DE') lang = 'de';
+        else if (countryParam.toUpperCase() === 'SG') lang = 'sg';
+
+        var T = {
+          en: {
+            loading: 'Loading current spots...',
+            usLabel: '🇺🇸 <b>US:</b> ',
+            deLabel: '🇩🇪 <b>DE:</b> ',
+            sgLabel: '🇸🇬 <b>SG:</b> ',
+            status1: function(left) { return '1st Draw: <span class="ticket">' + left + '</span> left'; },
+            status2: function(left) { return '2nd Draw: <span class="ticket">' + left + '</span> left'; },
+            statusFull: '<span class="ticket-full">Quota Reached (300+)</span>',
+            error: 'System initializing...'
+          },
+          de: {
+            loading: 'Loading current spots...',
+            usLabel: '🇺🇸 <b>US:</b> ',
+            deLabel: '🇩🇪 <b>DE:</b> ',
+            sgLabel: '🇸🇬 <b>SG:</b> ',
+            status1: function(left) { return '1st Draw: <span class="ticket">' + left + '</span> left / Erste Auslosung: <span class="ticket">' + left + '</span> verbleibend'; },
+            status2: function(left) { return '2nd Draw: <span class="ticket">' + left + '</span> left / Zweite Auslosung: <span class="ticket">' + left + '</span> verbleibend'; },
+            statusFull: '<span class="ticket-full">Quota Reached (300+) / Kontingent erreicht (300+)</span>',
+            error: 'System initializing...'
+          },
+          sg: {
+            loading: 'Loading current spots... / 正在加载名额进度...',
+            usLabel: '🇺🇸 <b>US:</b> ',
+            deLabel: '🇩🇪 <b>DE:</b> ',
+            sgLabel: '🇸🇬 <b>SG:</b> ',
+            status1: function(left) { return '1st Draw: <span class="ticket">' + left + '</span> left / 首轮抽奖还剩 <span class="ticket">' + left + '</span> 个名额'; },
+            status2: function(left) { return '2nd Draw: <span class="ticket">' + left + '</span> left / 次轮抽奖还剩 <span class="ticket">' + left + '</span> 个名额'; },
+            statusFull: '<span class="ticket-full">Quota Reached (300+) / 满额 (已超 300 人)</span>',
+            error: 'System initializing... / 系统初始化中...'
+          }
+        };
+
+        var t = T[lang] || T.en;
+
         function getStatusText(count) {
-            if (count < 150) {
-                // 第一阶段：距离 150 还有多少
-                let left = 150 - count;
-                return "1st Draw: <span class='ticket'>" + left + "</span> left / 首轮抽奖还剩 <span class='ticket'>" + left + "</span> 个名额";
-            } else if (count < 300) {
-                // 第二阶段：距离 300 还有多少
-                let left = 300 - count;
-                return "2nd Draw: <span class='ticket'>" + left + "</span> left / 次轮抽奖还剩 <span class='ticket'>" + left + "</span> 个名额";
-            } else {
-                // 第三阶段：已经达到或超过 300
-                return "<span class='ticket-full'>Quota Reached (300+) / 满额 (已超 300 人)</span>";
-            }
+          if (count < 150) {
+            return t.status1(150 - count);
+          } else if (count < 300) {
+            return t.status2(300 - count);
+          } else {
+            return t.statusFull;
+          }
         }
 
-        fetch(API_URL + "?action=read")
-        .then(res => res.json())
-        .then(data => {
-            const counts = data.counts || {};
-            const usCount = counts.US || 0;
-            const deCount = counts.DE || 0;
-            const sgCount = counts.SG || 0;
+        var API_URL = "https://survey-counter.longhc23gemini.workers.dev/";
+        var headerEl = document.getElementById("counter");
+        headerEl.innerHTML = t.loading;
 
-            document.getElementById("counter").innerHTML =
-                "🏆 <b>Real-Time Prize Draw Spots / 实时抽奖名额进度：</b><br>" +
+        fetch(API_URL + "?action=read")
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            var counts = data.counts || {};
+            headerEl.innerHTML =
+                "🏆 <b>Real-Time Prize Draw Spots</b><br>" +
                 "<div class='count-box'>" +
-                "<div class='country-row'>🇺🇸 <b>US:</b> " + getStatusText(usCount) + "</div>" +
-                "<div class='country-row'>🇩🇪 <b>DE:</b> " + getStatusText(deCount) + "</div>" +
-                "<div class='country-row'>🇸🇬 <b>SG:</b> " + getStatusText(sgCount) + "</div>" +
+                "<div class='country-row'>" + t.usLabel + getStatusText(counts.US || 0) + "</div>" +
+                "<div class='country-row'>" + t.deLabel + getStatusText(counts.DE || 0) + "</div>" +
+                "<div class='country-row'>" + t.sgLabel + getStatusText(counts.SG || 0) + "</div>" +
                 "</div>";
         })
-        .catch(err => {
-            document.getElementById("counter").innerHTML = "System initializing... / 系统初始化中...";
+        .catch(function(err) {
+            headerEl.innerHTML = t.error;
         });
     </script>
 </body>
