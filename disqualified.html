@@ -1,218 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Survey — NCCL Tsinghua University</title>
-<style>
-  :root {
-    --blue: #1a56db;
-    --blue-light: #ebf5ff;
-    --gray-50: #f7fafc;
-    --gray-100: #f0f4f8;
-    --gray-200: #e2e8f0;
-    --gray-400: #a0aec0;
-    --gray-500: #718096;
-    --gray-600: #4a5568;
-    --gray-700: #2d3748;
-    --gray-900: #1a202c;
-    --amber: #b7791f;
-    --amber-bg: #fffbeb;
-    --amber-border: #f6e05e;
-    --radius: 10px;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
-    background: linear-gradient(135deg, #f0f4f8 0%, #e8edf2 100%);
-    color: var(--gray-900);
-    line-height: 1.65;
-    padding: 20px;
-    min-height: 100vh;
-  }
-  .container {
-    max-width: 600px;
-    margin: 40px auto;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-    padding: 44px 40px;
-  }
-  @media (max-width: 640px) {
-    .container { padding: 28px 20px; margin: 20px auto; }
-  }
-  .institution {
-    text-align: center;
-    margin-bottom: 24px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid var(--gray-200);
-  }
-  .institution-name {
-    font-size: 13px;
-    color: var(--gray-500);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .icon-block {
-    text-align: center;
-    font-size: 48px;
-    margin: 20px 0 16px;
-  }
-  h1 {
-    font-size: 20px;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 8px;
-    color: var(--gray-900);
-  }
-  .subtitle {
-    text-align: center;
-    font-size: 14px;
-    color: var(--gray-500);
-    margin-bottom: 24px;
-  }
-  .message-box {
-    background: var(--amber-bg);
-    border: 1px solid var(--amber-border);
-    border-radius: var(--radius);
-    padding: 20px;
-    margin: 20px 0;
-    font-size: 14px;
-    color: var(--gray-700);
-    line-height: 1.7;
-  }
-  .message-box p { margin-bottom: 12px; }
-  .message-box p:last-child { margin-bottom: 0; }
-  .report-box {
-    background: var(--gray-50);
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius);
-    padding: 18px;
-    margin: 20px 0;
-    font-size: 14px;
-    line-height: 1.7;
-  }
-  .report-box a { color: var(--blue); word-break: break-all; }
-  .report-box code {
-    background: var(--gray-100);
-    padding: 2px 7px;
-    border-radius: 4px;
-    font-size: 12px;
-  }
-  .actions {
-    text-align: center;
-    margin-top: 28px;
-  }
-  .actions a {
-    display: inline-block;
-    padding: 12px 28px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background 0.15s;
-  }
-  .btn-primary {
-    background: var(--blue);
-    color: #fff;
-  }
-  .btn-primary:hover { background: #1e429f; }
-  .btn-secondary {
-    background: var(--gray-100);
-    color: var(--gray-600);
-    margin-left: 10px;
-  }
-  .btn-secondary:hover { background: var(--gray-200); }
-  .footer {
-    text-align: center;
-    margin-top: 32px;
-    padding-top: 18px;
-    border-top: 1px solid var(--gray-200);
-    font-size: 12px;
-    color: var(--gray-400);
-    line-height: 1.6;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disqualified</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            line-height: 1.8;
+        }
+        p {
+            margin: 0 0 1.2em 0;
+        }
+        .lang-block {
+            margin-bottom: 1.5em;
+        }
+        .lang-block .de {
+            color: #2c3e50;
+        }
+        .lang-block .en {
+            color: #34495e;
+        }
+        .lang-block .zh {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        .btn-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 28px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .btn-link:hover {
+            background-color: #0056b3;
+        }
+        .note {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #888;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-  <div class="institution">
-    <div class="institution-name">New Construction Cross-Laboratory (NCCL)</div>
-    <div class="institution-name">Tsinghua University</div>
-  </div>
+    <div class="container">
 
-  <div class="icon-block" id="pageIcon">🙏</div>
-  <h1 id="t-title"></h1>
-  <p class="subtitle" id="t-subtitle"></p>
+        <!-- 第一段 -->
+        <div class="lang-block">
+            <p class="de">Wir danken Ihnen für Ihre Bereitschaft, an unserer Studie teilzunehmen.</p>
+            <p class="en">Thank you for taking the time to participate in our study.</p>
+            <p class="zh">感谢您愿意参与我们的研究。</p>
+        </div>
 
-  <div class="message-box" id="t-message"></div>
+        <!-- 第二段 -->
+        <div class="lang-block">
+            <p class="de">Nach Prüfung Ihrer Antworten müssen wir Ihnen leider mitteilen, dass Sie die spezifischen Teilnahmevoraussetzungen für diese Forschungsphase nicht erfüllen.</p>
+            <p class="en">After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.</p>
+            <p class="zh">在审核您的回答后，我们很遗憾地通知您，您不符合本研究阶段的特定参与条件。</p>
+        </div>
 
-  <div class="report-box">
-    <p id="t-report-text"></p>
-    <div style="background:#fff; border:1px solid var(--gray-200); border-radius:6px; padding:10px 14px; font-size:13px; margin-top:10px;">
-      <a href="https://cloud.tsinghua.edu.cn/d/b3368f7b6e8b45929da3/"
-        target="_blank" rel="noopener">https://cloud.tsinghua.edu.cn/d/b3368f7b6e8b45929da3/</a><br>
-      <span id="t-pw-label">Password:</span> <code>NCCLProfession</code>
+        <!-- 第三段 -->
+        <div class="lang-block">
+            <p class="de">Wir wissen Ihr Engagement sehr zu schätzen.</p>
+            <p class="en">We sincerely appreciate your willingness to contribute.</p>
+            <p class="zh">我们非常珍视您的参与意愿。</p>
+        </div>
+
+        <!-- 链接按钮，动态构造 -->
+        <div>
+            <a id="redirectLink" class="btn-link" href="#" target="_blank">
+                👉 Click Here to View Details & Get Report Link 👈
+            </a>
+        </div>
+
+        <div class="note">
+            * 如果按钮无效，请检查浏览器是否拦截新窗口。
+        </div>
+
     </div>
-  </div>
 
-  <div class="actions">
-    <a class="btn-primary" id="backBtn" href="index.html"><span id="t-back"></span></a>
-  </div>
+    <script>
+        (function() {
+            // 获取当前页面 URL 中的查询参数
+            const params = new URLSearchParams(window.location.search);
+            const rid = params.get('rid') || '';
+            const country = params.get('country') || '';
+            const lottery = params.get('lottery') || '';
 
-  <div class="footer">
-    New Construction Cross-Laboratory (NCCL), Tsinghua University<br>
-    <a href="/cdn-cgi/l/email-protection#4e202d2d220e3a3d272029263b2f602b2a3b602d20" style="color:#718096;"><span class="__cf_email__" data-cfemail="503e33333c102423393e373825317e3534257e333e">[email&#160;protected]</span></a>
-  </div>
-</div>
+            // 中转页基础 URL（替换为你实际的中转页地址）
+            const baseUrl = 'https://longhc23gemini-creator.github.io/survey-credential/redirect.html';
 
-<script>
-const params = new URLSearchParams(window.location.search);
-const countryParam = (params.get("country") || "INT").toUpperCase();
-const lang = countryParam === "DE" ? "de" : countryParam === "SG" ? "sg" : "en";
+            // 构造完整链接（忽略空参数，但通常都会存在）
+            let fullUrl = baseUrl + '?';
+            const queryParts = [];
+            if (rid) queryParts.push('rid=' + encodeURIComponent(rid));
+            if (country) queryParts.push('country=' + encodeURIComponent(country));
+            if (lottery) queryParts.push('lottery=' + encodeURIComponent(lottery));
+            fullUrl += queryParts.join('&');
 
-const T = {
-  // ===== 英文版（纯英文） =====
-  en: {
-    title: "Thank you for your interest",
-    subtitle: "",
-    message: '<p>Thank you for taking the time to participate in our study.</p><p>After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.</p><p>We sincerely appreciate your willingness to contribute.</p>',
-    reportText: "Although you are not eligible to participate in the survey or prize draw, we would still like to share our research findings with you. When the international comparative report is ready (estimated December 2026), it will be available here:",
-    pwLabel: "Password:",
-    back: "Return to Entry Page",
-  },
-  // ===== 德文版（德英双语） =====
-  de: {
-    title: "Vielen Dank für Ihr Interesse / Thank you for your interest",
-    subtitle: "",
-    message: '<p>Wir danken Ihnen für Ihre Bereitschaft, an unserer Studie teilzunehmen.</p><p>Nach Prüfung Ihrer Antworten müssen wir Ihnen leider mitteilen, dass Sie die spezifischen Teilnahmevoraussetzungen für diese Forschungsphase nicht erfüllen.</p><p>Wir wissen Ihr Engagement sehr zu schätzen.</p><p>Thank you for taking the time to participate in our study.</p><p>After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.</p><p>We sincerely appreciate your willingness to contribute.</p>',
-    reportText: "Obwohl Sie nicht an der Umfrage oder Verlosung teilnehmen können, möchten wir unsere Forschungsergebnisse dennoch mit Ihnen teilen. Der internationale Vergleichsbericht wird voraussichtlich im Dezember 2026 hier verfügbar sein: / Although you are not eligible to participate in the survey or prize draw, we would still like to share our research findings with you. When the international comparative report is ready (estimated December 2026), it will be available here:",
-    pwLabel: "Passwort / Password:",
-    back: "Zurück zur Einstiegsseite / Return to Entry Page",
-  },
-  // ===== 新加坡版（英中双语） =====
-  sg: {
-    title: "Thank you for your interest / 感谢您的关注",
-    subtitle: "",
-    message: '<p>Thank you for taking the time to participate in our study.</p><p>After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.</p><p>We sincerely appreciate your willingness to contribute.</p><p>感谢您抽出时间参与我们的研究。</p><p>经过对您回答的审阅，很遗憾您不符合本研究阶段的特定资格要求。</p><p>我们衷心感谢您的参与意愿。</p>',
-    reportText: "Although you are not eligible to participate in the survey or prize draw, we would still like to share our research findings with you. When the international comparative report is ready (estimated December 2026), it will be available here: / 虽然您无法参与问卷或抽奖，但我们仍希望与您分享研究成果。国际比较报告完成后（预计2026年12月），将在此发布：",
-    pwLabel: "Password / 密码：",
-    back: "Return to Entry Page / 返回入口页",
-  }
-};
+            // 如果没有任何参数，至少保留一个空参数或直接使用 baseUrl（根据需求）
+            if (queryParts.length === 0) {
+                fullUrl = baseUrl; // 或者保留 '?'，但这里直接去掉了问号
+            }
 
-function render() {
-  var t = T[lang];
-  document.getElementById("t-title").textContent = t.title;
-  document.getElementById("t-subtitle").textContent = t.subtitle;
-  document.getElementById("t-message").innerHTML = t.message;
-  document.getElementById("t-report-text").textContent = t.reportText;
-  document.getElementById("t-pw-label").textContent = t.pwLabel;
-  document.getElementById("t-back").textContent = t.back;
-}
-render();
-</script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+            // 将链接赋给按钮
+            const linkEl = document.getElementById('redirectLink');
+            linkEl.href = fullUrl;
+
+            // 可选：在控制台输出链接，方便调试
+            console.log('Redirect URL:', fullUrl);
+        })();
+    </script>
 </body>
 </html>
