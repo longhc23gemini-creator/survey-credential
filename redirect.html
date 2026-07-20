@@ -50,36 +50,24 @@
             return;
           }
 
-          // ===== 步骤3：预注册 rid =====
-          updateDebug('Step 3: Pre-registering rid...');
-          var authRes = await fetch('https://survey-counter.longhc23gemini.workers.dev/auth', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ rid: rid })
-          });
-          var authData = await authRes.json();
-          if (authData.error) {
-            showError('Pre-registration failed: ' + authData.error);
-            return;
-          }
-          updateDebug('Step 4: Pre-registration ok');
-
-          // ===== 步骤5：生成 draw_code =====
-          updateDebug('Step 5: Generating draw_code...');
+          // ===== 只需调用一个接口：/generate-draw-code（自动预注册） =====
+          updateDebug('Step 3: Generating draw_code...');
           var genRes = await fetch('https://survey-counter.longhc23gemini.workers.dev/generate-draw-code', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ rid: rid })
           });
           var genData = await genRes.json();
+
           if (genData.error) {
             showError('Generate draw_code failed: ' + genData.error);
             return;
           }
-          updateDebug('Step 6: draw_code = ' + genData.draw_code);
 
-          // ===== 步骤7：跳转 =====
-          updateDebug('Step 7: Redirecting to credential.html...');
+          updateDebug('Step 4: draw_code = ' + genData.draw_code);
+
+          // ===== 跳转 =====
+          updateDebug('Step 5: Redirecting to credential.html...');
           var credentialUrl = 'https://longhc23gemini-creator.github.io/survey-credential/credential.html?code=' + encodeURIComponent(genData.draw_code) + '&country=' + encodeURIComponent(country) + '&lottery=' + encodeURIComponent(lottery);
           window.location.href = credentialUrl;
 
@@ -89,7 +77,6 @@
         }
       }
 
-      // 执行
       process();
     })();
   </script>
