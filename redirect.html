@@ -5,53 +5,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Redirecting...</title>
 <style>
-  body { font-family: sans-serif; text-align: center; padding: 50px; }
-  .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #1a56db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+  body { font-family: sans-serif; text-align: center; padding: 50px; background: #f7fafc; }
+  .container { max-width: 400px; margin: 0 auto; }
+  .spinner {
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #1a56db;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    animation: spin 0.8s linear infinite;
+    margin: 30px auto;
+  }
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-  .error { color: #c53030; display: none; }
-  .debug { margin-top: 20px; font-size: 13px; color: #4a5568; }
+  h1 { font-size: 20px; font-weight: 600; color: #2d3748; margin-bottom: 8px; }
+  p { font-size: 14px; color: #718096; margin: 0; }
+  .error { color: #c53030; display: none; margin-top: 20px; }
 </style>
 </head>
 <body>
-  <h1>Generating your credential...</h1>
-  <div class="spinner"></div>
-  <div class="debug" id="debugInfo">Initializing...</div>
-  <div class="error" id="errorMsg">Something went wrong. Please contact support.</div>
+  <div class="container">
+    <h1>Generating your credential...</h1>
+    <p>Please wait while we prepare your participation record.</p>
+    <div class="spinner"></div>
+    <div class="error" id="errorMsg">Something went wrong. Please try again or contact support.</div>
+  </div>
 
   <script>
     (function() {
-      var debugEl = document.getElementById('debugInfo');
       var errorEl = document.getElementById('errorMsg');
 
       function showError(msg) {
         errorEl.style.display = 'block';
         errorEl.textContent = msg;
-        debugEl.textContent = 'ERROR: ' + msg;
-      }
-
-      function updateDebug(msg) {
-        debugEl.textContent = msg;
-        console.log(msg);
       }
 
       async function process() {
         try {
-          updateDebug('Step 1: Reading URL parameters...');
-
           var params = new URLSearchParams(window.location.search);
           var rid = params.get('rid');
           var country = params.get('country') || '';
           var lottery = params.get('lottery') || 'no';
 
-          updateDebug('Step 2: rid = ' + rid);
-
           if (!rid) {
-            showError('Missing rid parameter. Please complete the survey first.');
+            showError('Invalid link. Please complete the survey first.');
             return;
           }
 
-          // ===== 只需调用一个接口：/generate-draw-code（自动预注册） =====
-          updateDebug('Step 3: Generating draw_code...');
           var genRes = await fetch('https://survey-counter.longhc23gemini.workers.dev/generate-draw-code', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -60,19 +59,15 @@
           var genData = await genRes.json();
 
           if (genData.error) {
-            showError('Generate draw_code failed: ' + genData.error);
+            showError(genData.error);
             return;
           }
 
-          updateDebug('Step 4: draw_code = ' + genData.draw_code);
-
-          // ===== 跳转 =====
-          updateDebug('Step 5: Redirecting to credential.html...');
           var credentialUrl = 'https://longhc23gemini-creator.github.io/survey-credential/credential.html?code=' + encodeURIComponent(genData.draw_code) + '&country=' + encodeURIComponent(country) + '&lottery=' + encodeURIComponent(lottery);
           window.location.href = credentialUrl;
 
         } catch (err) {
-          showError('Error: ' + err.message);
+          showError('Network error. Please try again.');
           console.error(err);
         }
       }
