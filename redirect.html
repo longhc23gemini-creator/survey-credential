@@ -20,7 +20,6 @@
 
   <script>
     (function() {
-      // 获取页面元素
       var debugEl = document.getElementById('debugInfo');
       var errorEl = document.getElementById('errorMsg');
 
@@ -35,53 +34,63 @@
         console.log(msg);
       }
 
-      try {
-        updateDebug('Step 1: Reading URL parameters...');
+      async function process() {
+        try {
+          updateDebug('Step 1: Reading URL parameters...');
 
-        var params = new URLSearchParams(window.location.search);
-        var rid = params.get('rid');
-        var country = params.get('country') || '';
-        var lottery = params.get('lottery') || 'no';
+          var params = new URLSearchParams(window.location.search);
+          var rid = params.get('rid');
+          var country = params.get('country') || '';
+          var lottery = params.get('lottery') || 'no';
 
-        updateDebug('Step 2: rid = ' + rid);
+          updateDebug('Step 2: rid = ' + rid);
 
-        if (!rid) {
-          showError('Missing rid parameter. Please complete the survey first.');
-          return;
-        }
-
-        updateDebug('Step 3: Sending request to Worker...');
-
-        var API_URL = 'https://survey-counter.longhc23gemini.workers.dev/generate-draw-code';
-
-        fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ rid: rid })
-        })
-        .then(function(response) {
-          updateDebug('Step 4: Response received (status: ' + response.status + ')');
-          return response.json();
-        })
-        .then(function(data) {
-          updateDebug('Step 5: Data parsed: ' + JSON.stringify(data));
-          if (data.error) {
-            showError(data.error);
+          if (!rid) {
+            showError('Missing rid parameter. Please complete the survey first.');
             return;
           }
-          updateDebug('Step 6: Redirecting to credential.html...');
-          var credentialUrl = 'https://longhc23gemini-creator.github.io/survey-credential/credential.html?code=' + encodeURIComponent(data.draw_code) + '&country=' + encodeURIComponent(country) + '&lottery=' + encodeURIComponent(lottery);
-          window.location.href = credentialUrl;
-        })
-        .catch(function(err) {
-          showError('Network error: ' + err.message);
-          console.error(err);
-        });
 
-      } catch (err) {
-        showError('Script error: ' + err.message);
-        console.error(err);
+          // ===== 步骤3：预注册 rid =====
+          updateDebug('Step 3: Pre-registering rid...');
+          var authRes = await fetch('https://survey-counter.longhc23gemini.workers.dev/auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ rid: rid })
+          });
+          var authData = await authRes.json();
+          if (authData.error) {
+            showError('Pre-registration failed: ' + authData.error);
+            return;
+          }
+          updateDebug('Step 4: Pre-registration ok');
+
+          // ===== 步骤5：生成 draw_code =====
+          updateDebug('Step 5: Generating draw_code...');
+          var genRes = await fetch('https://survey-counter.longhc23gemini.workers.dev/generate-draw-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ rid: rid })
+          });
+          var genData = await genRes.json();
+          if (genData.error) {
+            showError('Generate draw_code failed: ' + genData.error);
+            return;
+          }
+          updateDebug('Step 6: draw_code = ' + genData.draw_code);
+
+          // ===== 步骤7：跳转 =====
+          updateDebug('Step 7: Redirecting to credential.html...');
+          var credentialUrl = 'https://longhc23gemini-creator.github.io/survey-credential/credential.html?code=' + encodeURIComponent(genData.draw_code) + '&country=' + encodeURIComponent(country) + '&lottery=' + encodeURIComponent(lottery);
+          window.location.href = credentialUrl;
+
+        } catch (err) {
+          showError('Error: ' + err.message);
+          console.error(err);
+        }
       }
+
+      // 执行
+      process();
     })();
   </script>
 </body>
