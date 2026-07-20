@@ -9,51 +9,80 @@
   .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #1a56db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   .error { color: #c53030; display: none; }
+  .debug { margin-top: 20px; font-size: 13px; color: #4a5568; }
 </style>
 </head>
 <body>
   <h1>Generating your credential...</h1>
   <div class="spinner"></div>
+  <div class="debug" id="debugInfo">Initializing...</div>
   <div class="error" id="errorMsg">Something went wrong. Please contact support.</div>
 
   <script>
-    function init() {
-      const params = new URLSearchParams(window.location.search);
-      const rid = params.get('rid');
-      const country = params.get('country') || '';
-      const lottery = params.get('lottery') || 'no';
+    (function() {
+      // 获取页面元素
+      var debugEl = document.getElementById('debugInfo');
+      var errorEl = document.getElementById('errorMsg');
 
-      if (!rid) {
-        document.getElementById('errorMsg').style.display = 'block';
-        document.getElementById('errorMsg').textContent = 'Missing rid parameter. Please complete the survey first.';
-        return;
+      function showError(msg) {
+        errorEl.style.display = 'block';
+        errorEl.textContent = msg;
+        debugEl.textContent = 'ERROR: ' + msg;
       }
 
-      const API_URL = 'https://survey-counter.longhc23gemini.workers.dev/generate-draw-code';
+      function updateDebug(msg) {
+        debugEl.textContent = msg;
+        console.log(msg);
+      }
 
-      fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rid: rid })
-      })
-      .then(function(response) { return response.json(); })
-      .then(function(data) {
-        if (data.error) {
-          document.getElementById('errorMsg').style.display = 'block';
-          document.getElementById('errorMsg').textContent = data.error;
+      try {
+        updateDebug('Step 1: Reading URL parameters...');
+
+        var params = new URLSearchParams(window.location.search);
+        var rid = params.get('rid');
+        var country = params.get('country') || '';
+        var lottery = params.get('lottery') || 'no';
+
+        updateDebug('Step 2: rid = ' + rid);
+
+        if (!rid) {
+          showError('Missing rid parameter. Please complete the survey first.');
           return;
         }
-        var credentialUrl = 'https://longhc23gemini-creator.github.io/survey-credential/credential.html?code=' + encodeURIComponent(data.draw_code) + '&country=' + encodeURIComponent(country) + '&lottery=' + encodeURIComponent(lottery);
-        window.location.href = credentialUrl;
-      })
-      .catch(function(err) {
-        document.getElementById('errorMsg').style.display = 'block';
-        document.getElementById('errorMsg').textContent = 'Network error. Please try again.';
-        console.error(err);
-      });
-    }
 
-    init();
+        updateDebug('Step 3: Sending request to Worker...');
+
+        var API_URL = 'https://survey-counter.longhc23gemini.workers.dev/generate-draw-code';
+
+        fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ rid: rid })
+        })
+        .then(function(response) {
+          updateDebug('Step 4: Response received (status: ' + response.status + ')');
+          return response.json();
+        })
+        .then(function(data) {
+          updateDebug('Step 5: Data parsed: ' + JSON.stringify(data));
+          if (data.error) {
+            showError(data.error);
+            return;
+          }
+          updateDebug('Step 6: Redirecting to credential.html...');
+          var credentialUrl = 'https://longhc23gemini-creator.github.io/survey-credential/credential.html?code=' + encodeURIComponent(data.draw_code) + '&country=' + encodeURIComponent(country) + '&lottery=' + encodeURIComponent(lottery);
+          window.location.href = credentialUrl;
+        })
+        .catch(function(err) {
+          showError('Network error: ' + err.message);
+          console.error(err);
+        });
+
+      } catch (err) {
+        showError('Script error: ' + err.message);
+        console.error(err);
+      }
+    })();
   </script>
 </body>
 </html>
