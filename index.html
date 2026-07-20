@@ -303,6 +303,13 @@
   .rules-list li { margin-bottom: 8px; line-height: 1.6; }
   .return-box { margin-top: 18px; padding: 18px; background: #fff; border-radius: 8px; border-left: 4px solid var(--blue); }
   #infoBox .return-box { margin-top: 18px; padding: 18px; background: #fff; border-radius: 8px; border-left: 4px solid var(--blue); }
+  /* 新增样式：lotteryLimit 左对齐、不加粗 */
+  #lotteryLimit {
+    color: var(--red);
+    font-size: 15px;
+    text-align: left;
+    margin: 16px 0 12px;
+  }
 </style>
 </head>
 <body>
@@ -385,8 +392,8 @@
         <tbody id="prizeBody"></tbody>
       </table>
       <p id="prizeNote"></p>
-      <!-- 新增 lotteryLimit -->
-      <p id="lotteryLimit" style="color:var(--red); font-weight:700; font-size:15px; text-align:center; margin:16px 0 12px;"></p>
+      <!-- 修改后的 lotteryLimit：左对齐、不加粗 -->
+      <p id="lotteryLimit"></p>
       <h4 id="rulesHeading"></h4>
       <ol class="rules-list" id="rulesList"></ol>
       <div class="hint-box" id="hintBox" style="background:var(--blue-light);border-left:4px solid var(--blue);padding:14px 18px;margin-top:16px;border-radius:0 var(--radius) var(--radius) 0;"></div>
@@ -483,7 +490,6 @@ const T = {
     pTotal: "Total",
     pTotalWin: "300 (Guaranteed)",
     prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win a prize!</strong>",
-    // 新增 lotteryLimit
     lotteryLimit: "To ensure the quality and integrity of our research data, we kindly ask each participant to complete only one survey. Each valid survey response is eligible for one prize draw entry only.",
     rules: [
       "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i>",
@@ -505,7 +511,8 @@ const T = {
   de: {
     title: "Professional Governance & Trust in Construction<br>Berufsständische Governance & Vertrauen im Bauwesen",
     subtitle: "<b>Dear fellow professional / Sehr geehrte(r) Kollege(in),</b><br><br>The construction industry stands at a crossroads. Your participation matters.<br>Die Bauindustrie steht an einem Wendepunkt. Ihre Teilnahme ist wichtig.<br><br>We invite you to join a global academic study, documenting the real state of professional governance and trust formation. By sharing your observations, you will participate in a cross-border dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br>Wir laden Sie ein, an einer globalen akademischen Studie teilzunehmen, die den tatsächlichen Stand der berufsständischen Governance und der Vertrauensbildung dokumentiert. Durch das Teilen Ihrer Beobachtungen nehmen Sie an einem grenzüberschreitenden Dialog unter Fachkollegen teil.",
-    returnBox: "<b style='color:var(--blue); font-size:16px;'>What You Get in Return / Was Sie als Gegenleistung erhalten:</b><br>We value your time and expertise. Here is what we offer all participants:<br>Wir schätzen Ihre Zeit und Expertise. Hier ist, was wir allen Teilnehmern bieten:<br><br><b>① Research Report / Forschungsbericht</b><br>Upon completion of our study, we will share an international comparative research report with all participants.<br>Nach Abschluss unserer Studie werden wir einen internationalen vergleichenden Forschungsbericht mit allen Teilnehmern teilen.<br><br><b>② Prize Draw / Gewinnspiel</b><br><span style='color:var(--red); font-weight:bold;'>Um die Repräsentativität und Qualität unserer Forschungsdaten zu gewährleisten, führen wir vertiefte Analysen für eine ausgewählte Gruppe von Ländern/Regionen durch. Für Befragte aus diesen Stichprobenländern/-regionen bieten wir ein zweistufiges Gewinnspiel mit einer 100%igen Gewinnchance und einem Hauptpreis von $500!</span>",
+    // 修改 returnBox：德英双语完整
+    returnBox: "<b style='color:var(--blue); font-size:16px;'>What You Get in Return / Was Sie als Gegenleistung erhalten:</b><br>We value your time and expertise. Here is what we offer all participants:<br>Wir schätzen Ihre Zeit und Expertise. Hier ist, was wir allen Teilnehmern bieten:<br><br><b>① Research Report / Forschungsbericht</b><br>Upon completion of our study, we will share an international comparative research report with all participants.<br>Nach Abschluss unserer Studie werden wir einen internationalen vergleichenden Forschungsbericht mit allen Teilnehmern teilen.<br><br><b>② Prize Draw / Gewinnspiel</b><br><span style='color:var(--red); font-weight:bold;'>To ensure the representativeness and quality of our research data, we are conducting in-depth analyses for a focused set of countries/regions. For respondents from these sample countries/regions, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!<br>Um die Repräsentativität und Qualität unserer Forschungsdaten zu gewährleisten, führen wir vertiefte Analysen für eine ausgewählte Gruppe von Ländern/Regionen durch. Für Befragte aus diesen Stichprobenländern/-regionen bieten wir ein zweistufiges Gewinnspiel mit einer 100%igen Gewinnchance und einem Hauptpreis von $500!</span>",
     step1Heading: "About This Study / Über diese Studie",
     formHeading: "Your Professional Background / Ihr beruflicher Hintergrund",
     profLabel: "1. Which professional field do you most identify with? / Mit welchem Berufsfeld identifizieren Sie sich am meisten?",
@@ -516,7 +523,7 @@ const T = {
     otherCountryPlaceholder: "Bitte geben Sie Ihr Land / Ihre Region an",
     otherCountryRequired: "Bitte geben Sie Ihr Land / Ihre Region an, bevor Sie fortfahren.",
     congratsHeading: "🎉 Congratulations! / Herzlichen Glückwunsch!",
-    congratsDesc: "Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='lotteryCountryName'></strong> — ist eines unserer ausgewählten Länder / Regionen, das an der Verlosung teilnehmen kann. Möchten Sie am Gewinnspiel teilnehmen?",
+    congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='lotteryCountryName_de'></strong> — ist eines unserer ausgewählten Länder / Regionen, das an der Verlosung teilnehmen kann. Möchten Sie am Gewinnspiel teilnehmen?",
     optYes: "🎁 Yes, I want to join the draw / Ja, ich möchte teilnehmen",
     optNo: "📝 No, just take the survey / Nein, nur Umfrage ausfüllen",
     optQuit: "I would like to exit / Ich möchte beenden",
@@ -540,8 +547,9 @@ const T = {
     p5: "Guaranteed Prize / Garantierter Preis",
     pTotal: "Total / Gesamt",
     pTotalWin: "300 (Guaranteed / Garantiert)",
-    prizeNote: "<strong>Die ersten 300 qualifizierten Teilnehmer pro Land/Region erhalten GARANTIERT einen Preis!</strong>",
-    // 新增 lotteryLimit（德英双语，逐句交替）
+    // 修改 prizeNote：补充英文
+    prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win a prize!<br>Die ersten 300 qualifizierten Teilnehmer pro Land/Region erhalten GARANTIERT einen Preis!</strong>",
+    // lotteryLimit 已为双语，且样式由CSS控制（不加粗、左对齐）
     lotteryLimit: "Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, bitten wir jeden Teilnehmer, nur eine Umfrage auszufüllen. Jede gültige Umfrageantwort berechtigt zur einmaligen Teilnahme an der Verlosung. / To ensure the quality and integrity of our research data, we kindly ask each participant to complete only one survey. Each valid survey response is eligible for one prize draw entry only.",
     rules: [
       "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>Erste Auslosung (bei 150 gültigen Antworten in einem Land / einer Region):</b> Vergabe von 1 zweiten Preis, 5 dritten Preisen, 25 Teilnahmepreisen. <i>Hinweis: Der Hauptpreis wird in dieser Phase nicht verlost.</i>",
@@ -600,7 +608,6 @@ const T = {
     pTotal: "Total / 合计",
     pTotalWin: "300 (Guaranteed / 人人有奖)",
     prizeNote: "<strong>每个国家/地区前300名符合条件的参与者 100% 获得以下奖项之一！</strong>",
-    // 新增 lotteryLimit（英中双语，逐句交替）
     lotteryLimit: "To ensure the quality and integrity of our research data, we kindly ask each participant to complete only one survey. Each valid survey response is eligible for one prize draw entry only.<br>为确保调研数据的质量与完整性，请每位参与者仅填写一份问卷。每份有效问卷仅可参与一次抽奖。",
     rules: [
       "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>首轮开奖（该国/地区满150份有效答卷时）：</b>抽取二等奖1名，三等奖5名，参与奖25名。<i>注：本阶段不抽取一等奖。</i>",
@@ -856,7 +863,7 @@ function applyLanguage(countryCode) {
 
   document.getElementById("prizeNote").innerHTML = t.prizeNote;
 
-  // 新增 lotteryLimit
+  // lotteryLimit
   document.getElementById("lotteryLimit").innerHTML = t.lotteryLimit;
 
   document.getElementById("rulesHeading").textContent = t.rulesHeading;
