@@ -51,10 +51,15 @@
             return;
           }
 
+          // ⬇️ 将 country 和 lottery 传给 Worker
           var genRes = await fetch('https://survey-counter.longhc23gemini.workers.dev/generate-draw-code', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ rid: rid })
+            body: JSON.stringify({
+              rid: rid,
+              country: country,
+              lottery: lottery
+            })
           });
           var genData = await genRes.json();
 
@@ -63,9 +68,8 @@
             return;
           }
 
-          var credentialUrl = 'https://longhc23gemini-creator.github.io/survey-credential/credential.html?code=' + encodeURIComponent(genData.draw_code) + '&country=' + encodeURIComponent(country) + '&lottery=' + encodeURIComponent(lottery);
-          
-          // ⬇️ 修改点：用 replace 替代 href，隐藏中转页 URL
+          // ⬇️ 凭证页 URL 不再需要携带 country 和 lottery
+          var credentialUrl = 'https://longhc23gemini-creator.github.io/survey-credential/credential.html?code=' + encodeURIComponent(genData.draw_code);
           window.location.replace(credentialUrl);
 
         } catch (err) {
