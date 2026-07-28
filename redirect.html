@@ -64,7 +64,9 @@
           }
 
           var credentialUrl = 'https://longhc23gemini-creator.github.io/survey-credential/credential.html?code=' + encodeURIComponent(genData.draw_code) + '&country=' + encodeURIComponent(country) + '&lottery=' + encodeURIComponent(lottery);
-          window.location.href = credentialUrl;
+          
+          // ⬇️ 修改点：用 replace 替代 href，隐藏中转页 URL
+          window.location.replace(credentialUrl);
 
         } catch (err) {
           showError('Network error. Please try again.');
