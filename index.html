@@ -3,31 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Governance &amp; Trust Survey — NCCL Tsinghua University</title>
+<title>Survey Complete — NCCL Tsinghua University</title>
 <style>
   :root {
     --blue: #1a56db;
     --blue-light: #ebf5ff;
-    --blue-dark: #1e429f;
     --green: #276749;
     --green-bg: #f0fff4;
-    --amber: #b7791f;
-    --amber-bg: #fffbeb;
     --red: #c53030;
     --gray-50: #f7fafc;
     --gray-100: #f0f4f8;
     --gray-200: #e2e8f0;
-    --gray-300: #cbd5e0;
     --gray-400: #a0aec0;
     --gray-500: #718096;
-    --gray-600: #4a5568;
-    --gray-700: #2d3748;
+    --gray-700: #4a5568;
     --gray-900: #1a202c;
     --radius: 10px;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
     background: linear-gradient(135deg, #f0f4f8 0%, #e8edf2 100%);
     color: var(--gray-900);
     line-height: 1.65;
@@ -35,20 +31,20 @@
     min-height: 100vh;
   }
   .container {
-    max-width: 680px;
-    margin: 24px auto;
+    max-width: 620px;
+    margin: 32px auto;
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.07);
     padding: 44px 40px;
   }
-  @media (max-width: 700px) {
-    .container { padding: 28px 20px; margin: 12px auto; }
+  @media (max-width: 640px) {
+    .container { padding: 28px 20px; margin: 16px auto; }
   }
   .institution {
     text-align: center;
-    margin-bottom: 24px;
-    padding-bottom: 18px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
     border-bottom: 1px solid var(--gray-200);
   }
   .institution-name {
@@ -57,1093 +53,586 @@
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
-  .hero { text-align: center; margin-bottom: 28px; }
-  .hero h1 {
-    font-size: 22px;
+  h1 {
+    font-size: 24px;
     font-weight: 700;
     color: var(--gray-900);
-    line-height: 1.35;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
+    line-height: 1.3;
   }
-  .hero .sub {
-    font-size: 14px;
+  .subtitle {
+    font-size: 15px;
     color: var(--gray-500);
-    max-width: 540px;
-    margin: 0 auto;
+    margin-bottom: 28px;
   }
   h2 {
     font-size: 15px;
     font-weight: 700;
     color: var(--gray-700);
-    margin: 28px 0 12px;
+    margin: 32px 0 14px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
   h2 .icon { font-size: 18px; }
-  .info-box {
-    background: var(--gray-50);
-    border: 1px solid var(--gray-200);
+  .credential-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 2px solid var(--blue);
     border-radius: var(--radius);
-    padding: 20px;
-    margin: 16px 0;
-    font-size: 14px;
-    color: var(--gray-700);
-    line-height: 1.7;
+    overflow: hidden;
+    margin: 14px 0 20px;
   }
-  .info-box ul { margin-left: 18px; margin-top: 8px; }
-  .info-box li { margin-bottom: 4px; }
-  .incentive-box {
-    background: var(--amber-bg);
-    border: 1px solid #f6e05e;
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    margin: 16px 0;
+  .credential-table td {
+    padding: 14px 18px;
     font-size: 14px;
-    line-height: 1.7;
+    border-bottom: 1px solid var(--gray-200);
   }
-  .incentive-box strong { color: var(--amber); }
-  .form-group { margin: 20px 0; }
-  .form-group label {
-    display: block;
-    font-size: 14px;
+  .credential-table tr:last-child td { border-bottom: none; }
+  .credential-table td:first-child {
+    background: var(--blue-light);
     font-weight: 600;
+    width: 44%;
     color: var(--gray-700);
-    margin-bottom: 8px;
   }
-  .form-group select {
-    width: 100%;
-    padding: 12px 14px;
-    font-size: 15px;
-    border: 2px solid var(--gray-200);
-    border-radius: 8px;
-    background: #fff;
-    color: var(--gray-900);
-    cursor: pointer;
-    transition: border-color 0.2s;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23718096' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-  }
-  .form-group select:focus {
-    outline: none;
-    border-color: var(--blue);
-    box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
-  }
-
-  .other-input-group {
-    display: none;
-    margin-top: 10px;
-    margin-left: 6px;
-    padding-left: 4px;
-  }
-  .other-input-group.visible {
+  .credential-table .label-sub {
     display: block;
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-top: 2px;
   }
-  .other-input-group input {
-    width: 100%;
-    padding: 12px 14px;
+  .pid {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--blue);
+    letter-spacing: 2px;
+    font-family: "SF Mono", "Consolas", "Monaco", monospace;
+  }
+  .elig-yes { color: var(--green); font-weight: 600; }
+  .elig-no { color: var(--red); font-weight: 600; }
+  .hint-box {
+    background: var(--blue-light);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 14px 18px;
     font-size: 14px;
-    border: 2px solid var(--gray-200);
-    border-radius: 8px;
-    background: #fff;
-    color: var(--gray-900);
-    transition: border-color 0.2s;
-    font-family: inherit;
+    margin: 20px 0;
+    line-height: 1.6;
   }
-  .other-input-group input:focus {
+  .hint-box .icon { margin-right: 6px; }
+  .email-reminder-box {
+    background: #fef2f2;
+    border: 2px solid var(--red);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 16px 0 20px;
+    font-size: 15px;
+    line-height: 1.7;
+    text-align: center;
+    display: none;
+  }
+  .email-reminder-box.visible { display: block; }
+  .email-reminder-box strong { color: var(--red); font-size: 16px; }
+  .email-reminder-box .icon-warning { font-size: 20px; margin-right: 6px; }
+  .email-reminder-box .email-direction {
+    display: block;
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--gray-700);
+    font-weight: 600;
+  }
+  .email-section { margin-top: 28px; }
+  .email-notes {
+    font-size: 13px;
+    color: var(--gray-700);
+    margin: 10px 0 14px;
+    padding-left: 18px;
+  }
+  .email-notes li { margin-bottom: 6px; }
+  .email-notes .cond { display: none; }
+  .email-row {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+  }
+  @media (max-width: 480px) {
+    .email-row { flex-direction: column; }
+  }
+  input[type="email"] {
+    flex: 1;
+    padding: 11px 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  input[type="email"]:focus {
     outline: none;
     border-color: var(--blue);
     box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
   }
-  .other-input-group input.error {
-    border-color: var(--red);
-    box-shadow: 0 0 0 3px rgba(197,48,48,0.15);
+  input[type="email"]:disabled {
+    background: var(--gray-50);
+    color: var(--gray-500);
   }
-
-  .btn-primary {
-    display: block;
-    width: 100%;
-    padding: 14px 24px;
+  button {
     background: var(--blue);
     color: #fff;
     border: none;
+    padding: 11px 22px;
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.15s;
-    margin-top: 24px;
-  }
-  .btn-primary:hover { background: var(--blue-dark); }
-  .btn-primary:disabled {
-    background: var(--gray-300);
-    cursor: not-allowed;
-  }
-  .result-panel {
-    display: none;
-    animation: fadeIn 0.3s ease;
-    margin-top: 24px;
-  }
-  .result-panel.visible { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .congrats-box {
-    background: var(--green-bg);
-    border: 1px solid #9ae6b4;
-    border-radius: var(--radius);
-    padding: 20px;
-    font-size: 14px;
-    line-height: 1.7;
-  }
-  .congrats-box .heading { font-weight: 700; color: var(--green); font-size: 16px; margin-bottom: 8px; }
-  .sorry-box {
-    background: var(--gray-50);
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius);
-    padding: 20px;
-    font-size: 14px;
-    line-height: 1.7;
-  }
-  .lottery-detail {
-    display: none;
-    background: var(--blue-light);
-    border: 1px solid #bee3f8;
-    border-radius: var(--radius);
-    padding: 20px;
-    margin-top: 16px;
-    font-size: 13px;
-    line-height: 1.8;
-  }
-  .lottery-detail.visible { display: block; }
-  .lottery-detail h3 { font-size: 14px; font-weight: 700; color: var(--blue-dark); margin-bottom: 8px; }
-  .lottery-detail table { width: 100%; border-collapse: collapse; margin: 10px 0; }
-  .lottery-detail th, .lottery-detail td {
-    padding: 6px 10px;
-    text-align: left;
-    border-bottom: 1px solid #bee3f8;
-    font-size: 13px;
-  }
-  .lottery-detail th { font-weight: 600; color: var(--blue-dark); }
-
-  .progress-box {
-    background: var(--gray-50);
-    border: 1px solid var(--gray-200);
-    border-radius: var(--radius);
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  .progress-label {
-    font-size: 14px;
-    color: var(--gray-600);
-    margin-bottom: 10px;
-  }
-  .progress-bar-bg {
-    height: 28px;
-    background: var(--gray-200);
-    border-radius: 14px;
-    overflow: hidden;
-    position: relative;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #3b82f6, var(--blue));
-    border-radius: 14px;
-    transition: width 0.8s ease;
-    min-width: 0;
-  }
-  .progress-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--gray-700);
     white-space: nowrap;
+    transition: background 0.15s;
   }
-  .progress-phase {
-    margin-top: 12px;
-    font-size: 14px;
-    color: var(--gray-700);
-    text-align: center;
-    background: #fff;
-    padding: 10px;
+  button:hover { background: #1e429f; }
+  button:disabled { background: var(--gray-400); cursor: not-allowed; }
+  .success-msg {
+    display: none;
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: var(--green-bg);
+    color: var(--green);
     border-radius: 8px;
-    border: 1px dashed var(--blue);
-  }
-  .progress-phase strong { color: var(--red); font-size: 16px; font-weight: 800; }
-
-  .radio-group { margin: 14px 0; }
-  .radio-option {
-    display: block;
-    padding: 12px 16px;
-    margin: 8px 0;
-    border: 2px solid var(--gray-200);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.15s;
     font-size: 14px;
+    font-weight: 600;
   }
-  .radio-option:hover { border-color: var(--blue); background: var(--blue-light); }
-  .radio-option input { margin-right: 10px; }
-  .radio-option.selected { border-color: var(--blue); background: var(--blue-light); }
+  .email-privacy {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-top: 10px;
+  }
+  .report-box {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-top: 24px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .report-box a { color: var(--blue); word-break: break-all; }
+  .report-box code {
+    background: var(--gray-100);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
   .footer {
     text-align: center;
-    margin-top: 32px;
-    padding-top: 18px;
+    margin-top: 36px;
+    padding-top: 20px;
     border-top: 1px solid var(--gray-200);
     font-size: 12px;
     color: var(--gray-400);
     line-height: 1.6;
   }
-  .footer a { color: var(--gray-500); }
-  .hidden { display: none; }
-  .rules-list { padding-left: 20px; margin: 10px 0; }
-  .rules-list li { margin-bottom: 8px; line-height: 1.6; }
-  .return-box { margin-top: 18px; padding: 18px; background: #fff; border-radius: 8px; border-left: 4px solid var(--blue); }
-  #infoBox .return-box { margin-top: 18px; padding: 18px; background: #fff; border-radius: 8px; border-left: 4px solid var(--blue); }
-  
-  /* lotteryLimit 样式：红色加粗，字号继承，左对齐 */
-  #lotteryLimit {
-    color: var(--red);
-    font-weight: bold;
-    text-align: left;
-    margin: 16px 0 12px;
+  .loading {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--gray-500);
+    font-size: 15px;
   }
+  .spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--gray-200);
+    border-top-color: var(--blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error-state {
+    text-align: center;
+    padding: 60px 20px;
+    display: none;
+  }
+  .error-state p { color: var(--red); font-size: 15px; margin-bottom: 8px; }
+  .error-state .contact { color: var(--gray-500); font-size: 13px; }
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="institution">
-    <div class="institution-name">New Construction Cross-Laboratory (NCCL)</div>
-    <div class="institution-name">Tsinghua University</div>
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <span id="t-loading">Loading your credential...</span><br>
+    <span id="t-loading2" style="font-size:13px; color:#a0aec0;"></span>
   </div>
-
-  <div class="hero">
-    <h1 id="mainTitle"></h1>
-    <div class="sub" id="mainSub"></div>
+  <div id="error" class="error-state">
+    <p id="t-error">Invalid credential link</p>
+    <p class="contact" id="t-error-contact"></p>
   </div>
-
-  <div id="step1">
-    <h2><span class="icon">&#128218;</span> <span id="step1Heading"></span></h2>
-    <div class="info-box" id="infoBox"></div>
-    <div class="incentive-box" id="incentiveBox"></div>
-
-    <h2><span class="icon">&#9997;&#65039;</span> <span id="formHeading"></span></h2>
-
-    <div class="form-group">
-      <label for="profSelect" id="profLabel"></label>
-      <select id="profSelect">
-        <option value="">— Please select —</option>
-      </select>
-      <div class="other-input-group" id="otherProfGroup">
-        <input type="text" id="otherProfession" placeholder="" />
+  <div id="content" style="display:none;">
+    <div class="institution">
+      <div class="institution-name">New Construction Cross-Laboratory (NCCL)</div>
+      <div class="institution-name">Tsinghua University</div>
+    </div>
+    <h1 id="t-title">Thank you for completing the survey!</h1>
+    <p class="subtitle" id="t-subtitle"></p>
+    <h2><span class="icon">📋</span> <span id="t-cred-heading">Your Participation Credential</span></h2>
+    <table class="credential-table">
+      <tr>
+        <td><span id="t-pid-label">Unique Participant ID</span><span class="label-sub" id="t-pid-sub"></span></td>
+        <td><span id="pid" class="pid">—</span></td>
+      </tr>
+      <tr>
+        <td><span id="t-draw-label">Prize Draw Round</span><span class="label-sub" id="t-draw-sub"></span></td>
+        <td id="draw">—</td>
+      </tr>
+      <tr>
+        <td><span id="t-elig-label">Lottery Eligibility</span><span class="label-sub" id="t-elig-sub"></span></td>
+        <td id="elig">—</td>
+      </tr>
+    </table>
+    <div class="hint-box"><span class="icon">📸</span><span id="t-screenshot"></span></div>
+    <div class="email-reminder-box" id="emailReminderBox">
+      <span class="icon-warning">⚠️</span>
+      <strong id="t-email-reminder"></strong>
+      <span class="email-direction" id="t-email-direction"></span>
+    </div>
+    <div class="email-section">
+      <h2><span class="icon">📧</span> <span id="t-email-heading"></span></h2>
+      <p style="font-size:14px;" id="t-email-intro"></p>
+      <ul class="email-notes">
+        <li class="cond" id="lottery-note"></li>
+        <li id="report-note"></li>
+      </ul>
+      <div class="email-row">
+        <input type="email" id="email" placeholder="your.email@example.com" />
+        <button id="submitBtn" onclick="submitEmail()"><span id="t-submit-btn">Submit</span></button>
+      </div>
+      <div class="success-msg" id="successMsg"></div>
+      <p class="email-privacy" id="t-email-privacy"></p>
+    </div>
+    <div class="report-box">
+      <p id="t-report-text" style="margin-bottom:10px;"></p>
+      <div style="background:#fff; border:1px solid var(--gray-200); border-radius:6px; padding:10px 14px; font-size:13px;">
+        <a href="https://cloud.tsinghua.edu.cn/d/b3368f7b6e8b45929da3/" target="_blank" rel="noopener">https://cloud.tsinghua.edu.cn/d/b3368f7b6e8b45929da3/</a><br>
+        <span id="t-password-label">Password:</span> <code>NCCLProfession</code>
       </div>
     </div>
-
-    <div class="form-group">
-      <label for="countrySelect" id="countryLabel"></label>
-      <select id="countrySelect">
-        <option value="">— Please select —</option>
-      </select>
-      <div class="other-input-group" id="otherCountryGroup">
-        <input type="text" id="otherCountry" placeholder="" />
-      </div>
+    <div class="footer">
+      New Construction Cross-Laboratory (NCCL), Tsinghua University<br>
+      <a href="mailto:nccl@tsinghua.edu.cn" style="color:#718096;">nccl@tsinghua.edu.cn</a>
     </div>
-
-    <button class="btn-primary" id="submitBtn" disabled onclick="handleSubmit()"><span id="submitBtnText"></span></button>
-  </div>
-
-  <!-- STEP 2: Result panels -->
-  <div id="panelA" class="result-panel">
-    <div class="congrats-box" id="congratsBox">
-      <div class="heading" id="congratsHeading"></div>
-      <p id="congratsDesc"></p>
-    </div>
-
-    <div class="radio-group" id="lotteryChoiceGroup">
-      <label class="radio-option" onclick="selectLotteryChoice('yes')" id="optYesLabel">
-        <input type="radio" name="lotteryChoice" value="yes"> <span id="optYesText"></span>
-      </label>
-      <label class="radio-option" onclick="selectLotteryChoice('no')" id="optNoLabel">
-        <input type="radio" name="lotteryChoice" value="no"> <span id="optNoText"></span>
-      </label>
-      <label class="radio-option" onclick="selectLotteryChoice('quit')" id="optQuitLabel">
-        <input type="radio" name="lotteryChoice" value="quit"> <span id="optQuitText"></span>
-      </label>
-    </div>
-
-    <div id="lotteryDetail" class="lottery-detail">
-      <h3 id="progressHeading" style="font-size:14px; font-weight:700; color:var(--blue-dark); margin-bottom:8px;"></h3>
-      <div class="progress-box">
-        <div id="counterLoading" style="text-align:center; color:var(--gray-500); font-size:13px;">Loading live data...</div>
-        <div id="progressContent" style="display:none;">
-          <div class="progress-label" id="progressLabel"></div>
-          <div class="progress-bar-bg">
-            <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
-            <span class="progress-text" id="progressText"></span>
-          </div>
-          <div class="progress-phase" id="progressPhase"></div>
-        </div>
-      </div>
-      <h3 id="prizeHeading"></h3>
-      <!-- prizeNote 已移到标题下方，表格上方 -->
-      <p id="prizeNote"></p>
-      <table id="prizeTable">
-        <thead><tr><th id="thTier"></th><th id="thAmount"></th><th id="thWinners"></th></tr></thead>
-        <tbody id="prizeBody"></tbody>
-      </table>
-      <!-- lotteryLimit 段落 -->
-      <p id="lotteryLimit"></p>
-      <h4 id="rulesHeading"></h4>
-      <ol class="rules-list" id="rulesList"></ol>
-      <div class="hint-box" id="hintBox" style="background:var(--blue-light);border-left:4px solid var(--blue);padding:14px 18px;margin-top:16px;border-radius:0 var(--radius) var(--radius) 0;"></div>
-    </div>
-
-    <button class="btn-primary" id="proceedBtnA" disabled onclick="proceedToSurvey()"><span id="proceedBtnAText"></span></button>
-  </div>
-
-  <div id="panelB" class="result-panel">
-    <div class="sorry-box" id="sorryBox">
-      <p id="sorryText"></p>
-    </div>
-
-    <div class="radio-group" id="nonLotteryChoiceGroup">
-      <label class="radio-option" onclick="selectNonLotteryChoice('continue')" id="nonContLabel">
-        <input type="radio" name="nonLotteryChoice" value="continue"> <span id="nonContText"></span>
-      </label>
-      <label class="radio-option" onclick="selectNonLotteryChoice('quit')" id="nonQuitLabel">
-        <input type="radio" name="nonLotteryChoice" value="quit"> <span id="nonQuitText"></span>
-      </label>
-    </div>
-
-    <button class="btn-primary" id="proceedBtnB" disabled onclick="proceedToSurvey()"><span id="proceedBtnBText"></span></button>
-  </div>
-
-  <div id="panelQuit" class="result-panel">
-    <div class="info-box" style="text-align:center;">
-      <p style="font-size:16px; font-weight:600; margin-bottom:8px;" id="quitTitle"></p>
-      <p id="quitDesc"></p>
-      <p style="margin-top:12px;"><a href="mailto:nccl@tsinghua.edu.cn" style="color:var(--blue);">nccl@tsinghua.edu.cn</a></p>
-    </div>
-  </div>
-
-  <div class="footer">
-    New Construction Cross-Laboratory (NCCL), Tsinghua University<br>
-    <a href="mailto:nccl@tsinghua.edu.cn">nccl@tsinghua.edu.cn</a>
   </div>
 </div>
 
 <script>
 // ============================================================
-// 页面加载时检测 retry 参数，自动刷新
-// ============================================================
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('retry') === '1') {
-    params.delete('retry');
-    const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
-    window.location.replace(newUrl);
-  }
-})();
-
-// ============================================================
-// 语言文本
+// 语言包
 // ============================================================
 const T = {
   en: {
-    title: "Professional Governance & Trust in Construction",
-    subtitle: "Dear Professional,<br><br>The construction industry stands at a crossroads. Your participation matters.<br><br>We invite you to join a global academic study capturing the real state of professional governance and trust formation. By sharing your observations, you contribute to an international dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?",
-    returnBox: "<b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br>We value your time and expertise. Here is what we offer all participants:<br><br><b>① Research Report</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br><br><b>② Prize Draw</b><br><span style='color:var(--red); font-weight:bold;'>To ensure the representativeness and quality of our research data, we are conducting in-depth analyses for a focused set of countries/regions. For respondents from these sample countries/regions, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!</span>",
-    step1Heading: "About This Study",
-    formHeading: "Your Professional Background",
-    profLabel: "1. Which professional field do you most identify with?",
-    countryLabel: "2. In this field, which country/region are you most confident to evaluate in terms of its professional governance environment?",
-    submitBtn: "Continue",
-    otherProfPlaceholder: "Please specify your professional field",
-    otherProfRequired: "Please specify your professional field before continuing.",
-    otherCountryPlaceholder: "Please specify your country/region",
-    otherCountryRequired: "Please specify your country/region before continuing.",
-    congratsHeading: "🎉 Congratulations!",
-    congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?",
-    optYes: "🎁 Yes, I want to join the draw",
-    optNo: "📝 No, just take the survey",
-    optQuit: "I would like to exit",
-    progressHeading: "Live Claimed Spots",
-    progressLabel: function(c, n) {
-      var cname = {US:"United States", DE:"Germany", SG:"Singapore"}[c];
-      return cname + " — " + n + " spots claimed";
-    },
-    phaseText: function(n) {
-      if (n < 150) { return "Only <strong>" + (150 - n) + "</strong> more responses needed to trigger the <b>First Draw</b>!"; }
-      else if (n < 300) { return "First Draw condition met! Only <strong>" + (300 - n) + "</strong> more responses needed to trigger the <b>Second Draw & Grand Prize</b>!"; }
-      else { return "Both draw conditions have been met. You can still participate."; }
-    },
-    prizeHeading: "Prize Pool (Amazon eGift Cards)",
-    thTier: "Prize Tier",
-    thAmount: "Amount",
-    thWinners: "Winners",
-    p1: "First Prize",
-    p2: "Second Prize",
-    p3: "Third Prize",
-    p4: "Participation Prize",
-    p5: "Guaranteed Prize",
-    pTotal: "Total",
-    pTotalWin: "300 (Guaranteed)",
-    prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win a prize!</strong>",
-    lotteryLimit: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.",
-    rules: [
-      "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i>",
-      "<b>Second draw (when 300 valid responses are reached in a country/region):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.",
-      "<b>First Prize ($500):</b> Drawn once among ALL 300 participants regardless of phase, as long as you have not won a prize before.",
-      "<b>Draw Results Notification:</b> <span style='color:#1a56db; font-weight:600;'>All participants who have provided an email address</span> will receive the draw results by email.",
-      "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.",
-      "<b>Prize Delivery:</b> <span style='color:#c53030; font-weight:600;'>Leaving your email is the ONLY way we can deliver your prize.</span> Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win."
-    ],
-    hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.",
-    proceedBtn: "Start the Survey",
-    sorryText: "<p><strong>Thank you for your selection!</strong></p><p>The country/region you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.</p>",
-    nonCont: "Yes, I would like to continue the survey",
-    nonQuit: "I would like to exit",
-    quitTitle: "Thank you for your time!",
-    quitDesc: "We appreciate your interest in this research. If you change your mind, you are welcome to return and participate at any time.",
-    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete.</i>"
+    loading: "Just a moment — generating your participation credential...",
+    loading2: "",
+    error: "Invalid credential link",
+    errorContact: 'The link you used is not valid. This may be because:<br>- You have already used this link<br>- The link has expired<br>- You manually modified the link<br><br>Please return to the entry page and start over:<br><a href="https://longhc23gemini-creator.github.io/survey-credential/index.html?retry=1" style="color:#1a56db; font-weight:600;">https://longhc23gemini-creator.github.io/survey-credential/index.html?retry=1</a><br><br>If you continue to experience issues, please contact us at <a href="mailto:nccl@tsinghua.edu.cn">nccl@tsinghua.edu.cn</a>.',
+    title: "Thank you for your time and expertise!",
+    subtitle: "",
+    credHeading: "Your Participation Credential",
+    pidLabel: "Your Participant ID",
+    pidSub: "",
+    drawLabel: "Prize Draw Round",
+    drawSub: "",
+    eligLabel: "Lottery Eligibility",
+    eligSub: "",
+    screenshot_no_prize: "We recommend taking a screenshot of this page as your participation record.",
+    screenshot_with_prize: "We recommend taking a screenshot of this page as your participation record — you may need it to verify a prize draw result.",
+    screenshot_limit_yes: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.",
+    screenshot_limit_no: "To ensure the quality and integrity of our research data, each participant may complete only one survey.",
+    emailReminder: "⚠️ Leaving your email is the ONLY way we can deliver your prize. If you do not leave an email, you will forfeit any prize you may win.",
+    emailDirection: "👇 Please fill in your email in the section below.",
+    emailHeading: "Stay Connected",
+    emailIntro_prize: 'If you\'d like to receive the research report or be notified of prize draw results, you may leave your email address below.<br><br>🔒 Your email will be stored <strong>completely separately</strong> from your survey answers — we cannot link your email to your responses.<br><br>• <strong>For everyone:</strong> Once our study is complete, we will send the international comparative research report directly to your inbox.<br>• <strong>For prize participants:</strong> If you win, this is how we will contact you.',
+    emailIntro_noPrize: 'If you\'d like to receive the research report, you may leave your email address below.<br><br>🔒 Your email will be stored <strong>completely separately</strong> from your survey answers — we cannot link your email to your responses.<br><br>• <strong>For everyone:</strong> Once our study is complete, we will send the international comparative research report directly to your inbox.',
+    lotteryNote: "",
+    reportNote: "",
+    submitBtn: "Submit Email",
+    successMsg: "✅ Got it — your email has been saved. Thank you!",
+    emailPrivacy: "",
+    reportText: "If you choose not to leave your email, it will be considered as forfeiting the prize, but you can still access the research report and check the prize draw results on the Tsinghua University Cloud. When our research report is ready (estimated December 2026), it will be published here. You can bookmark the link below and check back later:",
+    reportText_noPrize: "If you choose not to leave your email, you can still access the research report on the Tsinghua University Cloud. When our research report is ready (estimated December 2026), it will be published here. You can bookmark the link below and check back later:",
+    passwordLabel: "Password:",
   },
   de: {
-    title: "Professional Governance & Trust in Construction<br>Berufsständische Governance & Vertrauen im Bauwesen",
-    // 修改为英文在前，德文在后，逐段交替
-    subtitle: "Dear Professional,<br>Sehr geehrte Damen und Herren,<br><br>The construction industry stands at a crossroads. Your participation matters.<br>Die Bauindustrie befindet sich an einem Scheideweg. Ihre Teilnahme ist von entscheidender Bedeutung.<br><br>We invite you to join a global academic study capturing the real state of professional governance and trust formation. By sharing your observations, you contribute to an international dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br>Wir laden Sie herzlich ein, an einer globalen wissenschaftlichen Studie teilzunehmen, die den tatsächlichen Stand der berufsständischen Regulierung und Vertrauensbildung erfasst. Indem Sie Ihre Beobachtungen teilen, leisten Sie einen Beitrag zum internationalen Dialog unter Fachkollegen aus verschiedenen Ländern, die vor denselben Herausforderungen stehen: Was bedeutet es, in Zeiten technologischer Umbrüche, veränderter öffentlicher Erwartungen und zunehmender Projektkomplexität ein vertrauenswürdiger Fachmann zu sein? Wie kann unser Berufsstand in einer sich wandelnden Welt weiterhin Vertrauen gewinnen?",
-    returnBox: "<b style='color:var(--blue); font-size:16px;'>What You Get in Return / Was Sie als Gegenleistung erhalten:</b><br>We value your time and expertise. Here is what we offer all participants:<br>Wir schätzen Ihre Zeit und Expertise. Hier ist, was wir allen Teilnehmern bieten:<br><br><b>① Research Report / Forschungsbericht</b><br>Upon completion of our study, we will share an international comparative research report with all participants.<br>Nach Abschluss unserer Studie werden wir einen internationalen vergleichenden Forschungsbericht mit allen Teilnehmern teilen.<br><br><b>② Prize Draw / Gewinnspiel</b><br><span style='color:var(--red); font-weight:bold;'>To ensure the representativeness and quality of our research data, we are conducting in-depth analyses for a focused set of countries/regions. For respondents from these sample countries/regions, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!<br>Um die Repräsentativität und Qualität unserer Forschungsdaten zu gewährleisten, führen wir vertiefte Analysen für eine ausgewählte Gruppe von Ländern/Regionen durch. Für Befragte aus diesen Stichprobenländern/-regionen bieten wir ein zweistufiges Gewinnspiel mit einer 100%igen Gewinnchance und einem Hauptpreis von $500!</span>",
-    step1Heading: "About This Study / Über diese Studie",
-    formHeading: "Your Professional Background / Ihr beruflicher Hintergrund",
-    profLabel: "1. Which professional field do you most identify with? / Mit welchem Berufsfeld identifizieren Sie sich am meisten?",
-    countryLabel: "2. In this field, which country/region are you most confident to evaluate in terms of its professional governance environment? / In diesem Berufsfeld, in welchem Land / welcher Region können Sie die berufsständische Governance am besten beurteilen?",
-    submitBtn: "Continue / Weiter",
-    otherProfPlaceholder: "Bitte geben Sie Ihr Berufsfeld an",
-    otherProfRequired: "Bitte geben Sie Ihr Berufsfeld an, bevor Sie fortfahren.",
-    otherCountryPlaceholder: "Bitte geben Sie Ihr Land / Ihre Region an",
-    otherCountryRequired: "Bitte geben Sie Ihr Land / Ihre Region an, bevor Sie fortfahren.",
-    congratsHeading: "🎉 Congratulations! / Herzlichen Glückwunsch!",
-    congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='lotteryCountryName_de'></strong> — ist eines unserer ausgewählten Länder / Regionen, das an der Verlosung teilnehmen kann. Möchten Sie am Gewinnspiel teilnehmen?",
-    optYes: "🎁 Yes, I want to join the draw / Ja, ich möchte teilnehmen",
-    optNo: "📝 No, just take the survey / Nein, nur Umfrage ausfüllen",
-    optQuit: "I would like to exit / Ich möchte beenden",
-    progressHeading: "Live Claimed Spots / Vergebene Plätze",
-    progressLabel: function(c, n) {
-      return "Germany / Deutschland — " + n + " spots claimed / Plätze vergeben";
-    },
-    phaseText: function(n) {
-      if (n < 150) { return "Only <strong>" + (150 - n) + "</strong> more responses needed to trigger the <b>First Draw</b>! <br> Nur noch <strong>" + (150 - n) + "</strong> Antworten nötig, um die <b>Erste Auslosung</b> zu starten!"; }
-      else if (n < 300) { return "First Draw condition met! Only <strong>" + (300 - n) + "</strong> more responses needed to trigger the <b>Second Draw & Grand Prize</b>! <br> Nur noch <strong>" + (300 - n) + "</strong> Antworten nötig, um die <b>Zweite Auslosung & den Hauptpreis</b> zu starten!"; }
-      else { return "Both draw conditions have been met. You can still participate. / Beide Auslosungsbedingungen sind erfüllt. Sie können weiterhin teilnehmen."; }
-    },
-    prizeHeading: "Prize Pool (Amazon eGift Cards) / Preispool (Amazon-Gutscheine)",
-    thTier: "Prize Tier / Preiskategorie",
-    thAmount: "Amount / Betrag",
-    thWinners: "Winners / Gewinner",
-    p1: "First Prize / Hauptpreis",
-    p2: "Second Prize / Zweiter Preis",
-    p3: "Third Prize / Dritter Preis",
-    p4: "Participation Prize / Teilnahmepreis",
-    p5: "Guaranteed Prize / Garantierter Preis",
-    pTotal: "Total / Gesamt",
-    pTotalWin: "300 (Guaranteed / Garantiert)",
-    prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win a prize!<br>Die ersten 300 qualifizierten Teilnehmer pro Land/Region erhalten GARANTIERT einen Preis!</strong>",
-    lotteryLimit: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.<br>Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, kann jeder Teilnehmer nur eine Umfrage ausfüllen. Nur gültige Umfrageantworten berechtigen zur Teilnahme an der Verlosung.",
-    rules: [
-      "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>Erste Auslosung (bei 150 gültigen Antworten in einem Land / einer Region):</b> Vergabe von 1 zweiten Preis, 5 dritten Preisen, 25 Teilnahmepreisen. <i>Hinweis: Der Hauptpreis wird in dieser Phase nicht verlost.</i>",
-      "<b>Second draw (when 300 valid responses are reached in a country/region):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.<br><b>Zweite Auslosung (bei 300 gültigen Antworten in einem Land / einer Region):</b> Unter den Teilnehmern 151–300 werden der verbleibende 1 zweite Preis, 5 dritte Preise und 25 Teilnahmepreise verlost.",
-      "<b>First Prize ($500):</b> Drawn once among ALL 300 participants regardless of phase, as long as you have not won a prize before.<br><b>Hauptpreis ($500):</b> Wird einmalig unter ALLEN 300 Teilnehmern unabhängig von der Phase verlost (ausgenommen bereits Gewonnene).",
-      "<b>Draw Results Notification:</b> <span style='color:#1a56db; font-weight:600;'>All participants who have provided an email address</span> will receive the draw results by email.<br><b>Benachrichtigung über die Ergebnisse:</b> <span style='color:#1a56db; font-weight:600;'>Alle Teilnehmer, die eine E-Mail-Adresse angegeben haben,</span> erhalten die Auslosungsergebnisse per E-Mail.",
-      "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.<br><b>Tsinghua Cloud Drive:</b> Die Auslosungsergebnisse werden auch auf dem Tsinghua Cloud Drive veröffentlicht; der Link wird nach der Umfrage angezeigt.",
-      "<b>Prize Delivery:</b> <span style='color:#c53030; font-weight:600;'>Leaving your email is the ONLY way we can deliver your prize.</span> Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win.<br><b>Preisübergabe:</b> <span style='color:#c53030; font-weight:600;'>Die Angabe Ihrer E-Mail-Adresse ist der EINZIGE Weg, um Ihnen einen Gewinn zuzustellen.</span> Gewinner erhalten ihre Amazon-Gutscheine per E-Mail. Wenn Sie keine E-Mail hinterlassen, verfällt ein eventueller Preis."
-    ],
-    hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.<br>Nach Abschluss der Umfrage erhalten Sie eine Teilnahme-Nr. Bitte machen Sie einen Screenshot.",
-    proceedBtn: "Start the Survey / Umfrage starten",
-    sorryText: "<p><strong>Thank you for your selection! / Vielen Dank für Ihre Auswahl!</strong></p><p>Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='nonLotteryCountryName'></strong> — gehört nicht zur Verlosungsstichprobe dieser Studie. Wir laden Sie jedoch herzlich ein, fortzufahren und Ihre wertvolle berufliche Perspektive zu Governance-Fragen zu teilen.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>Ihre Erkenntnisse sind für diese Forschung ebenso wichtig und fließen in unsere internationale Vergleichsanalyse ein.</p>",
-    nonCont: "Yes, I would like to continue the survey / Ja, ich möchte die Umfrage fortsetzen",
-    nonQuit: "I would like to exit / Ich möchte beenden",
-    quitTitle: "Thank you for your time! / Vielen Dank für Ihre Zeit!",
-    quitDesc: "We appreciate your interest in this research. If you change your mind, you are welcome to return and participate at any time.<br>Wir danken für Ihr Interesse an dieser Forschung. Wenn Sie es sich anders überlegen, können Sie jederzeit zurückkehren und teilnehmen.",
-    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br>Diese Umfrage ist unbezahlt – aber Ihre Stimme ist wertvoller: Ihre Beobachtungen werden dazu beitragen, unsere gemeinsame Zukunft zu gestalten.<br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete.</i>"
+    loading: "Einen Moment — Ihre Teilnahmebestätigung wird erstellt... / Just a moment — generating your participation credential...",
+    loading2: "",
+    error: "Ungültiger Credential-Link / Invalid credential link",
+    errorContact: 'Der von Ihnen verwendete Link ist ungültig. Dies kann folgende Gründe haben: / The link you used is not valid. This may be because:<br>- Dieser Link wurde bereits verwendet. / - You have already used this link.<br>- Der Link ist abgelaufen. / - The link has expired.<br>- Sie haben den Link manuell verändert. / - You manually modified the link.<br><br>Bitte kehren Sie zur Einstiegsseite zurück und beginnen Sie von neuem: / Please return to the entry page and start over:<br><a href="https://longhc23gemini-creator.github.io/survey-credential/index.html?retry=1" style="color:#1a56db; font-weight:600;">https://longhc23gemini-creator.github.io/survey-credential/index.html?retry=1</a><br><br>Bei weiteren Problemen kontaktieren Sie uns bitte unter / If you continue to experience issues, please contact us at <a href="mailto:nccl@tsinghua.edu.cn">nccl@tsinghua.edu.cn</a>.',
+    title: "Vielen Dank für Ihre Zeit und Expertise! / Thank you for your time and expertise!",
+    subtitle: "",
+    credHeading: "Ihre Teilnahmebestätigung / Your Participation Credential",
+    pidLabel: "Ihre Teilnahme-Nr. / Your Participant ID",
+    pidSub: "",
+    drawLabel: "Ziehungsrunde / Prize Draw Round",
+    drawSub: "",
+    eligLabel: "Verlosungsberechtigung / Lottery Eligibility",
+    eligSub: "",
+    screenshot_no_prize: "Wir empfehlen, einen Screenshot dieser Seite als Teilnahmenachweis zu erstellen. / We recommend taking a screenshot of this page as your participation record.",
+    screenshot_with_prize: "Wir empfehlen, einen Screenshot dieser Seite als Teilnahmenachweis zu erstellen — Sie könnten ihn zur Überprüfung eines Verlosungsergebnisses benötigen. / We recommend taking a screenshot of this page as your participation record — you may need it to verify a prize draw result.",
+    screenshot_limit_yes: "Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, kann jeder Teilnehmer nur eine Umfrage ausfüllen. Nur gültige Umfrageantworten berechtigen zur Teilnahme an der Verlosung. / To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.",
+    screenshot_limit_no: "Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, kann jeder Teilnehmer nur eine Umfrage ausfüllen. / To ensure the quality and integrity of our research data, each participant may complete only one survey.",
+    emailReminder: "⚠️ Ihre E-Mail-Adresse ist der EINZIGE Weg, um Ihnen einen Gewinn zuzustellen. Ohne E-Mail verfällt ein eventueller Preis. / ⚠️ Leaving your email is the ONLY way we can deliver your prize. If you do not leave an email, you will forfeit any prize you may win.",
+    emailDirection: "👇 Bitte geben Sie Ihre E-Mail im unteren Bereich ein. / 👇 Please fill in your email in the section below.",
+    emailHeading: "In Kontakt bleiben / Stay Connected",
+    emailIntro_prize: 'Wenn Sie den Forschungsbericht erhalten oder über Verlosungsergebnisse informiert werden möchten, können Sie unten Ihre E-Mail-Adresse hinterlassen. / If you\'d like to receive the research report or be notified of prize draw results, you may leave your email address below.<br><br>🔒 Ihre E-Mail wird <strong>vollständig getrennt</strong> von Ihren Umfrageantworten gespeichert — wir können Ihre E-Mail nicht mit Ihren Antworten verknüpfen. / 🔒 Your email will be stored <strong>completely separately</strong> from your survey answers — we cannot link your email to your responses.<br><br>• <strong>Für alle Teilnehmer:</strong> Nach Abschluss unserer Studie senden wir Ihnen den internationalen Vergleichsbericht direkt per E-Mail zu. / • <strong>For everyone:</strong> Once our study is complete, we will send the international comparative research report directly to your inbox.<br>• <strong>Für Verlosungsteilnehmer:</strong> Im Gewinnfall kontaktieren wir Sie über diese E-Mail. / • <strong>For prize participants:</strong> If you win, this is how we will contact you.',
+    emailIntro_noPrize: 'Wenn Sie den Forschungsbericht erhalten möchten, können Sie unten Ihre E-Mail-Adresse hinterlassen. / If you\'d like to receive the research report, you may leave your email address below.<br><br>🔒 Ihre E-Mail wird <strong>vollständig getrennt</strong> von Ihren Umfrageantworten gespeichert — wir können Ihre E-Mail nicht mit Ihren Antworten verknüpfen. / 🔒 Your email will be stored <strong>completely separately</strong> from your survey answers — we cannot link your email to your responses.<br><br>• <strong>Für alle Teilnehmer:</strong> Nach Abschluss unserer Studie senden wir Ihnen den internationalen Vergleichsbericht direkt per E-Mail zu. / • <strong>For everyone:</strong> Once our study is complete, we will send the international comparative research report directly to your inbox.',
+    lotteryNote: "",
+    reportNote: "",
+    submitBtn: "E-Mail absenden / Submit Email",
+    successMsg: "✅ Vielen Dank — Ihre E-Mail wurde gespeichert! / ✅ Got it — your email has been saved. Thank you!",
+    emailPrivacy: "",
+    reportText: "Falls Sie sich entscheiden, keine E-Mail-Adresse zu hinterlassen, gilt dies als Verzicht auf den Gewinn, aber Sie können den Forschungsbericht dennoch auf der Tsinghua University Cloud abrufen und die Verlosungsergebnisse einsehen. Sobald unser Forschungsbericht fertig ist (voraussichtlich Dezember 2026), wird er hier veröffentlicht. Sie können den folgenden Link als Lesezeichen speichern: / If you choose not to leave your email, it will be considered as forfeiting the prize, but you can still access the research report and check the prize draw results on the Tsinghua University Cloud. When our research report is ready (estimated December 2026), it will be published here. You can bookmark the link below and check back later:",
+    reportText_noPrize: "Wenn Sie sich entscheiden, keine E-Mail-Adresse zu hinterlassen, können Sie den Forschungsbericht dennoch auf der Tsinghua University Cloud abrufen. Sobald unser Forschungsbericht fertig ist (voraussichtlich Dezember 2026), wird er hier veröffentlicht. Sie können den folgenden Link als Lesezeichen speichern: / If you choose not to leave your email, you can still access the research report on the Tsinghua University Cloud. When our research report is ready (estimated December 2026), it will be published here. You can bookmark the link below and check back later:",
+    passwordLabel: "Passwort / Password:",
   },
   sg: {
-    title: "Professional Governance & Trust in Construction",
-    // 修改为逐段交替：先英文后中文，每段用<br>分隔，段落间用<br><br>
-    subtitle: "Dear Professional,<br>尊敬的专业人士：<br><br>The construction industry stands at a crossroads. Your participation matters.<br>建筑行业正站在十字路口。您的参与至关重要。<br><br>We invite you to join a global academic study capturing the real state of professional governance and trust formation. By sharing your observations, you contribute to an international dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br>我们诚邀您参加一项全球性学术研究，旨在了解专业治理和信任建立的真实状况。通过分享您的观察，您将为面临同样挑战的各国同行之间的国际对话做出贡献：在技术颠覆、公众期望变化和项目复杂性增加的时代，成为一名值得信赖的专业人士意味着什么？我们的行业如何在变化的世界中继续赢得信任？",
-    returnBox: "<div class='return-box'><b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br><b style='color:var(--blue); font-size:16px;'>您的参与回报：</b><br>We value your time and expertise. Here is what we offer all participants:<br>我们十分重视您的时间与专业知识。我们为所有参与者提供以下回报：<br><br><b>① Research Report</b><br><b>① 研究报告</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br>研究完成后，我们将与所有参与者分享一份国际比较研究报告。您可通过清华大学云盘获取，或者我们也可以直接发送到您提供的电子邮箱。<br><br><b>② Prize Draw</b><br><b>② 问卷抽奖</b><br><span style='color:var(--red); font-weight:bold;'>为确保研究数据的代表性和质量，我们正对特定抽样国家/地区进行深度分析。来自这些抽样国家/地区的受访者，将有机会参与分两个阶段进行的100%中奖率抽奖活动，最高奖金为500美元！</span></div>",
-    returnBox: "",
-    step1Heading: "About This Study / 关于本研究",
-    formHeading: "Your Professional Background / 您的专业背景",
-    profLabel: "1. Which professional field do you most identify with? / 您最认可自己属于哪个专业领域？",
-    countryLabel: "2. In this field, which country/region are you most confident to evaluate in terms of its professional governance environment? / 在该领域，您最有信心评价其专业治理环境的国家/地区是？",
-    submitBtn: "Continue / 继续",
-    otherProfPlaceholder: "请填写您的具体专业领域",
-    otherProfRequired: "请填写您的具体专业领域后再继续。",
-    otherCountryPlaceholder: "请填写您的国家/地区",
-    otherCountryRequired: "请填写您的国家/地区后再继续。",
-    congratsHeading: "🎉 Congratulations! / 恭喜！",
-    congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>您选择的国家/地区 — <strong id='lotteryCountryName_cn'></strong> — 是我们的抽奖国家/地区之一。您希望参与抽奖吗？",
-    optYes: "🎁 Yes, I want to join the draw / 是的，我要参与抽奖",
-    optNo: "📝 No, just take the survey / 不参与，仅填写问卷",
-    optQuit: "I would like to exit / 我想退出",
-    progressHeading: "Live Claimed Spots / 实时已领名额",
-    progressLabel: function(c, n) {
-      var cname = {US:"United States / 美国", DE:"Germany / 德国", SG:"Singapore / 新加坡"}[c];
-      return cname + " — " + n + " spots claimed / 已领取 " + n + " 个名额";
-    },
-    phaseText: function(n) {
-      if (n < 150) { return "Only <strong>" + (150 - n) + "</strong> more responses needed to trigger the <b>First Draw</b>! <br> 仅需再提交 <strong>" + (150 - n) + "</strong> 份问卷即可触发<b>首轮开奖</b>！"; }
-      else if (n < 300) { return "First Draw condition met! Only <strong>" + (300 - n) + "</strong> more responses needed to trigger the <b>Second Draw & Grand Prize</b>! <br> 首轮已达标！仅需再提交 <strong>" + (300 - n) + "</strong> 份问卷即可触发<b>次轮及一等奖开奖</b>！"; }
-      else { return "Both draw conditions have been met. You can still participate. / 两个阶段的开奖条件均已达成，您仍可正常提交问卷。"; }
-    },
-    prizeHeading: "Prize Pool (Amazon eGift Cards) / 抽奖奖池 (亚马逊礼品卡)",
-    thTier: "Prize Tier / 奖项",
-    thAmount: "Amount / 奖品",
-    thWinners: "Winners / 人数",
-    p1: "First Prize / 一等奖",
-    p2: "Second Prize / 二等奖",
-    p3: "Third Prize / 三等奖",
-    p4: "Participation Prize / 参与奖",
-    p5: "Guaranteed Prize / 保底参与奖",
-    pTotal: "Total / 合计",
-    pTotalWin: "300 (Guaranteed / 人人有奖)",
-    prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win one of the following prizes!<br>每个国家/地区前300名符合条件的参与者 100% 获得以下奖项之一！</strong>",
-    lotteryLimit: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.<br>为确保调研数据的质量与完整性，每位参与者仅可填写一份问卷，仅有效问卷可参与抽奖。",
-    rules: [
-      "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>首轮开奖（该国/地区满150份有效答卷时）：</b>抽取二等奖1名，三等奖5名，参与奖25名。<i>注：本阶段不抽取一等奖。</i>",
-      "<b>Second draw (when 300 valid responses are reached in a country/region):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.<br><b>次轮开奖（该国/地区满300份有效答卷时）：</b>在第151至300名参与者中抽取剩余的二等奖1名，三等奖5名和参与奖25名。",
-      "<b>First Prize ($500):</b> Drawn once among ALL 300 participants regardless of phase, as long as you have not won a prize before.<br><b>一等奖 ($500)：</b>在全部300名参与者中统一抽取一次（排除已中奖者）。",
-      "<b>Draw Results Notification:</b> <span style='color:#1a56db; font-weight:600;'>All participants who have provided an email address</span> will receive the draw results by email.<br><b>开奖通知：</b><span style='color:#1a56db; font-weight:600;'>所有提供了邮箱的参与者</span>都将收到开奖结果通知。",
-      "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.<br><b>云盘公示：</b>抽奖结果同时将在清华大学云盘公示，问卷提交后将显示下载链接。",
-      "<b>Prize Delivery:</b> <span style='color:#c53030; font-weight:600;'>Leaving your email is the ONLY way we can deliver your prize.</span> Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win.<br><b>奖品发放：</b><span style='color:#c53030; font-weight:600;'>留下邮箱是我们发送奖品的唯一方式。</span>中奖者将通过邮件收到亚马逊礼品卡。不提供邮箱将视为放弃奖品领取。"
-    ],
-    hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.<br>问卷完成后，您将获得一个唯一的参与编号。建议截图保存作为凭证。",
-    proceedBtn: "Start the Survey / 开始填写问卷",
-    sorryText: "<p><strong>Thank you for your selection! / 感谢您的选择！</strong></p><p>The country/region you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.<br>您选择的国家/地区 — <strong id='nonLotteryCountryName_cn'></strong> — 不属于本次研究的抽奖样本国家/地区。但我们仍然热忱邀请您继续填写问卷，分享您对专业治理问题的宝贵见解。</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>您的见解对这项研究同样重要，并将为我们的国际比较分析做出贡献。</p>",
-    nonCont: "Yes, I would like to continue the survey / 是的，我继续填写问卷",
-    nonQuit: "I would like to exit / 我想退出",
-    quitTitle: "Thank you for your time! / 感谢您的时间！",
-    quitDesc: "We appreciate your interest in this research. If you change your mind, you are welcome to return and participate at any time.<br>感谢您对本研究的兴趣。如果您改变主意，欢迎随时回来参与。",
-    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br><br>本国际问卷无现金报酬，但您的声音比金钱更有价值：您的见解将与来自不同国家和背景的专业人士汇聚在一起，共同塑造行业的未来。<br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete. (研究完成后，您将收到我们的国际比较研究报告。)</i>"
+    loading: "Just a moment — generating your participation credential... / 正在生成您的参与凭证，请稍候...",
+    loading2: "",
+    error: "Invalid credential link / 无效凭证链接",
+    errorContact: 'The link you used is not valid. This may be because: / 您使用的链接无效。这可能是由于：<br>- You have already used this link. / - 该链接已被使用过。<br>- The link has expired. / - 该链接已过期。<br>- You manually modified the link. / - 您手动修改了链接。<br><br>Please return to the entry page and start over: / 请返回入口页重新开始：<br><a href="https://longhc23gemini-creator.github.io/survey-credential/index.html?retry=1" style="color:#1a56db; font-weight:600;">https://longhc23gemini-creator.github.io/survey-credential/index.html?retry=1</a><br><br>If you continue to experience issues, please contact us at / 如仍有问题，请联系 <a href="mailto:nccl@tsinghua.edu.cn">nccl@tsinghua.edu.cn</a>。',
+    title: "Thank you for your time and expertise! / 感谢您的时间与专业贡献！",
+    subtitle: "",
+    credHeading: "Your Participation Credential / 您的参与凭证",
+    pidLabel: "Your Participant ID / 您的参与编号",
+    pidSub: "",
+    drawLabel: "Prize Draw Round / 抽奖轮次",
+    drawSub: "",
+    eligLabel: "Lottery Eligibility / 抽奖资格",
+    eligSub: "",
+    screenshot_no_prize: "We recommend taking a screenshot of this page as your participation record. / 建议您截图保存本页面作为参与记录。",
+    screenshot_with_prize: "We recommend taking a screenshot of this page as your participation record — you may need it to verify a prize draw result. / 建议您截图保存本页面作为参与记录——您可能需要它来核对抽奖结果。",
+    screenshot_limit_yes: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw. / 为确保调研数据的质量与完整性，每位参与者仅可填写一份问卷，仅有效问卷可参与抽奖。",
+    screenshot_limit_no: "To ensure the quality and integrity of our research data, each participant may complete only one survey. / 为确保调研数据的质量与完整性，每位参与者仅可填写一份问卷。",
+    emailReminder: "⚠️ Leaving your email is the ONLY way we can deliver your prize. If you do not leave an email, you will forfeit any prize you may win. / ⚠️ 留下邮箱是我们发送奖品的唯一方式。不留邮箱将视为放弃奖品领取。",
+    emailDirection: "👇 Please fill in your email in the section below. / 👇 请在下方的邮箱区域填写您的邮箱。",
+    emailHeading: "Stay Connected / 保持联系",
+    emailIntro_prize: 'If you\'d like to receive the research report or be notified of prize draw results, you may leave your email address below. / 如果您希望收到研究报告或获得抽奖通知，可以在下方留下您的邮箱。<br><br>🔒 Your email will be stored <strong>completely separately</strong> from your survey answers — we cannot link your email to your responses. / 🔒 邮箱将与您的问卷回答<strong>完全分开存储</strong>——我们无法将您的邮箱与回答关联。<br><br>• <strong>For everyone:</strong> Once our study is complete, we will send the international comparative research report directly to your inbox. / • <strong>对所有人：</strong>研究完成后，我们会将国际比较研究报告直接发送到您的邮箱。<br>• <strong>For prize participants:</strong> If you win, this is how we will contact you. / • <strong>对参与抽奖者：</strong>如果您中奖，我们将通过此邮箱与您联系。',
+    emailIntro_noPrize: 'If you\'d like to receive the research report, you may leave your email address below. / 如果您希望收到研究报告，可以在下方留下您的邮箱。<br><br>🔒 Your email will be stored <strong>completely separately</strong> from your survey answers — we cannot link your email to your responses. / 🔒 邮箱将与您的问卷回答<strong>完全分开存储</strong>——我们无法将您的邮箱与回答关联。<br><br>• <strong>For everyone:</strong> Once our study is complete, we will send the international comparative research report directly to your inbox. / • <strong>对所有人：</strong>研究完成后，我们会将国际比较研究报告直接发送到您的邮箱。',
+    lotteryNote: "",
+    reportNote: "",
+    submitBtn: "Submit Email / 提交邮箱",
+    successMsg: "✅ Got it — your email has been saved. Thank you! / ✅ 收到——您的邮箱已保存，谢谢！",
+    emailPrivacy: "",
+    reportText: "If you choose not to leave your email, it will be considered as forfeiting the prize, but you can still access the research report and check the prize draw results on the Tsinghua University Cloud. When our research report is ready (estimated December 2026), it will be published here. You can bookmark the link below and check back later: / 如果您选择不留下邮箱，则将被视为放弃领奖，不过您仍然可以在清华大学云盘里获取报告、查看抽奖结果公告。研究报告预计于2026年12月完成后，将在此发布。您可以收藏以下链接，届时查阅：",
+    reportText_noPrize: "If you choose not to leave your email, you can still access the research report on the Tsinghua University Cloud. When our research report is ready (estimated December 2026), it will be published here. You can bookmark the link below and check back later: / 如果您选择不留下邮箱，您仍然可以在清华大学云盘里获取报告。研究报告预计于2026年12月完成后，将在此发布。您可以收藏以下链接，届时查阅：",
+    passwordLabel: "Password / 密码：",
   }
 };
 
 // ============================================================
 // 配置
 // ============================================================
-const SURVEY_URLS = {
-  US: "https://qualtricsxmf535mg85z.qualtrics.com/jfe/form/SV_0HA4UmNoq0cFYvY",
-  DE: "https://qualtricsxmzpmj6w4xr.qualtrics.com/jfe/form/SV_6YAC2BOaEfu3KFo",
-  SG: "https://qualtricsxmj5mtpnh84.qualtrics.com/jfe/form/SV_2mCyHxcqOhfXSKO",
-  INT: "https://qualtricsxm9w64qn9tz.qualtrics.com/jfe/form/SV_6mRg9ZiDobFS7zg"
-};
+const API_URL = "https://survey-counter.longhc23gemini.workers.dev/";
 
-const LOTTERY_COUNTRIES = { "US": "US", "DE": "DE", "SG": "SG" };
+const params = new URLSearchParams(window.location.search);
+const drawCode = params.get("code") || "";
+const country = (params.get("country") || "INT").toUpperCase();
+const lottery = params.get("lottery") || "no";
 
-// ============================================================
-// 专业列表（17 个）
-// ============================================================
-const PROFESSIONS = [
-  { value: "1", label: "Architectural Design" },
-  { value: "2", label: "Structural Engineering" },
-  { value: "3", label: "MEP (Mechanical, Electrical, Plumbing) Engineering" },
-  { value: "4", label: "Construction Supervision" },
-  { value: "5", label: "Construction Management" },
-  { value: "6", label: "Cost Management / Quantity Surveying (QS)" },
-  { value: "7", label: "Geotechnical / Site Investigation" },
-  { value: "8", label: "Feasibility Study / Front-end Planning" },
-  { value: "9", label: "Integrated Project Delivery / Program Management" },
-  { value: "10", label: "Project Management" },
-  { value: "11", label: "Safety Engineering" },
-  { value: "12", label: "BIM Management" },
-  { value: "13", label: "Information Technology" },
-  { value: "14", label: "Green Building / Sustainability Consulting" },
-  { value: "15", label: "Carbon Asset Management" },
-  { value: "16", label: "Fixed Asset Valuation" },
-  { value: "17", label: "Urban Planner" },
-  { value: "18", label: "Other" }
-];
+let participantData = {};
 
 // ============================================================
-// 国家列表（按首字母排序，Other 放最后）
+// 应用静态语言
 // ============================================================
-const COUNTRIES = [
-  { code: "DZ", name: "Algeria" },
-  { code: "AR", name: "Argentina" },
-  { code: "AU", name: "Australia" },
-  { code: "BH", name: "Bahrain" },
-  { code: "BD", name: "Bangladesh" },
-  { code: "BY", name: "Belarus" },
-  { code: "BE", name: "Belgium" },
-  { code: "BR", name: "Brazil" },
-  { code: "CA", name: "Canada" },
-  { code: "CL", name: "Chile" },
-  { code: "CN", name: "China (Mainland)" },
-  { code: "CO", name: "Colombia" },
-  { code: "CZ", name: "Czech Republic" },
-  { code: "DK", name: "Denmark" },
-  { code: "EG", name: "Egypt" },
-  { code: "ET", name: "Ethiopia" },
-  { code: "FI", name: "Finland" },
-  { code: "FR", name: "France" },
-  { code: "DE", name: "Germany" },
-  { code: "GH", name: "Ghana" },
-  { code: "GR", name: "Greece" },
-  { code: "HK", name: "Hong Kong SAR" },
-  { code: "IN", name: "India" },
-  { code: "ID", name: "Indonesia" },
-  { code: "IR", name: "Iran" },
-  { code: "IQ", name: "Iraq" },
-  { code: "IE", name: "Ireland" },
-  { code: "IL", name: "Israel" },
-  { code: "IT", name: "Italy" },
-  { code: "JP", name: "Japan" },
-  { code: "JO", name: "Jordan" },
-  { code: "KZ", name: "Kazakhstan" },
-  { code: "KE", name: "Kenya" },
-  { code: "KW", name: "Kuwait" },
-  { code: "LB", name: "Lebanon" },
-  { code: "MO", name: "Macao SAR" },
-  { code: "MY", name: "Malaysia" },
-  { code: "MX", name: "Mexico" },
-  { code: "MA", name: "Morocco" },
-  { code: "NL", name: "Netherlands" },
-  { code: "NZ", name: "New Zealand" },
-  { code: "NG", name: "Nigeria" },
-  { code: "NO", name: "Norway" },
-  { code: "OM", name: "Oman" },
-  { code: "PK", name: "Pakistan" },
-  { code: "PE", name: "Peru" },
-  { code: "PH", name: "Philippines" },
-  { code: "PL", name: "Poland" },
-  { code: "PT", name: "Portugal" },
-  { code: "QA", name: "Qatar" },
-  { code: "RU", name: "Russia" },
-  { code: "RW", name: "Rwanda" },
-  { code: "SA", name: "Saudi Arabia" },
-  { code: "SG", name: "Singapore" },
-  { code: "ZA", name: "South Africa" },
-  { code: "KR", name: "South Korea" },
-  { code: "ES", name: "Spain" },
-  { code: "LK", name: "Sri Lanka" },
-  { code: "SE", name: "Sweden" },
-  { code: "CH", name: "Switzerland" },
-  { code: "TW", name: "Taiwan" },
-  { code: "TZ", name: "Tanzania" },
-  { code: "TH", name: "Thailand" },
-  { code: "TN", name: "Tunisia" },
-  { code: "TR", name: "Turkey" },
-  { code: "AE", name: "UAE" },
-  { code: "UA", name: "Ukraine" },
-  { code: "GB", name: "United Kingdom" },
-  { code: "US", name: "United States" },
-  { code: "UY", name: "Uruguay" },
-  { code: "UZ", name: "Uzbekistan" },
-  { code: "VN", name: "Vietnam" },
-  { code: "OTHER", name: "Other (not listed)" }
-];
-
-// ============================================================
-// DOM 初始化
-// ============================================================
-const countrySelect = document.getElementById("countrySelect");
-const profSelect = document.getElementById("profSelect");
-const submitBtn = document.getElementById("submitBtn");
-const otherProfInput = document.getElementById("otherProfession");
-const otherProfGroup = document.getElementById("otherProfGroup");
-const otherCountryInput = document.getElementById("otherCountry");
-const otherCountryGroup = document.getElementById("otherCountryGroup");
-
-PROFESSIONS.forEach(p => {
-  const opt = document.createElement("option");
-  opt.value = p.value;
-  opt.textContent = p.label;
-  profSelect.appendChild(opt);
-});
-
-COUNTRIES.forEach(c => {
-  const opt = document.createElement("option");
-  opt.value = c.code;
-  opt.textContent = c.name;
-  countrySelect.appendChild(opt);
-});
-
-const PROF_NAME_MAP = {};
-PROFESSIONS.forEach(p => {
-  PROF_NAME_MAP[p.value] = p.label;
-});
-
-// ============================================================
-// 状态
-// ============================================================
-let selectedProfession = "";
-let selectedCountryCode = "";
-let selectedCountryName = "";
-let lotteryChoice = "";
-let nonLotteryChoice = "";
-let counts = { US: 0, DE: 0, SG: 0 };
-
-// ============================================================
-// 语言应用
-// ============================================================
-function applyLanguage(countryCode) {
-  const code = countryCode || countrySelect.value || "en";
-  const lang = code === "DE" ? "de" : code === "SG" ? "sg" : "en";
-  const t = T[lang];
-
-  const selectedName = countrySelect.options[countrySelect.selectedIndex]
-    ? countrySelect.options[countrySelect.selectedIndex].text
-    : "";
-
-  document.getElementById("mainTitle").innerHTML = t.title;
-  document.getElementById("mainSub").innerHTML = "";
-
-  document.getElementById("step1Heading").textContent = t.step1Heading;
-  document.getElementById("infoBox").innerHTML = t.subtitle;
-  if (t.returnBox && t.returnBox !== "") {
-    document.getElementById("incentiveBox").innerHTML = t.returnBox;
-    document.getElementById("incentiveBox").style.display = "block";
-  } else {
-    document.getElementById("incentiveBox").style.display = "none";
-  }
-  document.getElementById("formHeading").textContent = t.formHeading;
-  document.getElementById("profLabel").textContent = t.profLabel;
-  document.getElementById("countryLabel").textContent = t.countryLabel;
-  document.getElementById("submitBtnText").textContent = t.submitBtn;
-
-  otherProfInput.placeholder = t.otherProfPlaceholder || "Please specify your professional field";
-  otherCountryInput.placeholder = t.otherCountryPlaceholder || "Please specify your country/region";
-
-  document.getElementById("congratsHeading").textContent = t.congratsHeading;
-  let descHtml = t.congratsDesc;
-  if (selectedName) {
-    descHtml = descHtml.replace(/<strong id='lotteryCountryName'><\/strong>/, "<strong id='lotteryCountryName'>" + selectedName + "</strong>");
-    if (lang === "de") {
-      descHtml = descHtml.replace(/<strong id='lotteryCountryName_de'><\/strong>/, "<strong id='lotteryCountryName_de'>" + selectedName + "</strong>");
-    }
-    if (lang === "sg") {
-      descHtml = descHtml.replace(/<strong id='lotteryCountryName_cn'><\/strong>/, "<strong id='lotteryCountryName_cn'>" + selectedName + "</strong>");
-    }
-  }
-  document.getElementById("congratsDesc").innerHTML = descHtml;
-
-  document.getElementById("optYesText").innerHTML = t.optYes;
-  document.getElementById("optNoText").innerHTML = t.optNo;
-  document.getElementById("optQuitText").innerHTML = t.optQuit;
-
-  // 进度标题
-  document.getElementById("progressHeading").textContent = t.progressHeading || "Live Claimed Spots";
-
-  // 奖品表格
-  document.getElementById("prizeHeading").textContent = t.prizeHeading;
-  // prizeNote 已在 applyLanguage 中单独设置（见下方）
-  document.getElementById("thTier").textContent = t.thTier;
-  document.getElementById("thAmount").textContent = t.thAmount;
-  document.getElementById("thWinners").textContent = t.thWinners;
-
-  const prizes = [
-    { name: t.p1, amount: "$500", winners: "1" },
-    { name: t.p2, amount: "$100", winners: "2" },
-    { name: t.p3, amount: "$20", winners: "10" },
-    { name: t.p4, amount: "$5", winners: "50" },
-    { name: t.p5, amount: "$1", winners: "237" }
-  ];
-  const tbody = document.getElementById("prizeBody");
-  tbody.innerHTML = "";
-  prizes.forEach(p => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${p.name}</td><td>${p.amount}</td><td>${p.winners}</td>`;
-    tbody.appendChild(tr);
-  });
-  const totalTr = document.createElement("tr");
-  totalTr.className = "total-row";
-  totalTr.style.background = "var(--blue-light)";
-  totalTr.style.borderTop = "2px solid var(--blue)";
-  totalTr.innerHTML = `<td><strong>${t.pTotal}</strong></td><td><strong>$1,387</strong></td><td><strong>${t.pTotalWin}</strong></td>`;
-  tbody.appendChild(totalTr);
-
-  // 设置 prizeNote
-  document.getElementById("prizeNote").innerHTML = t.prizeNote;
-
-  // lotteryLimit
-  document.getElementById("lotteryLimit").innerHTML = t.lotteryLimit;
-
-  document.getElementById("rulesHeading").textContent = t.rulesHeading;
-  const rulesList = document.getElementById("rulesList");
-  rulesList.innerHTML = "";
-  t.rules.forEach(r => {
-    const li = document.createElement("li");
-    li.innerHTML = r;
-    rulesList.appendChild(li);
-  });
-
-  document.getElementById("hintBox").innerHTML = t.hint;
-  document.getElementById("proceedBtnAText").textContent = t.proceedBtn;
-
-  let sorryHtml = t.sorryText;
-  if (selectedName) {
-    sorryHtml = sorryHtml.replace(/<strong id='nonLotteryCountryName'><\/strong>/, "<strong id='nonLotteryCountryName'>" + selectedName + "</strong>");
-    if (lang === "de") {
-      sorryHtml = sorryHtml.replace(/<strong id='nonLotteryCountryName_de'><\/strong>/, "<strong id='nonLotteryCountryName_de'>" + selectedName + "</strong>");
-    }
-    if (lang === "sg") {
-      sorryHtml = sorryHtml.replace(/<strong id='nonLotteryCountryName_cn'><\/strong>/, "<strong id='nonLotteryCountryName_cn'>" + selectedName + "</strong>");
-    }
-  }
-  document.getElementById("sorryText").innerHTML = sorryHtml;
-  document.getElementById("nonContText").innerHTML = t.nonCont;
-  document.getElementById("nonQuitText").innerHTML = t.nonQuit;
-  document.getElementById("proceedBtnBText").textContent = t.proceedBtn;
-
-  document.getElementById("quitTitle").textContent = t.quitTitle;
-  document.getElementById("quitDesc").innerHTML = t.quitDesc;
+function applyLanguage(lang) {
+  const t = T[lang] || T.en;
+  document.getElementById("t-loading").textContent = t.loading;
+  document.getElementById("t-loading2").textContent = t.loading2;
+  document.getElementById("t-error").innerHTML = t.error;
+  document.getElementById("t-error-contact").innerHTML = t.errorContact;
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-subtitle").textContent = t.subtitle;
+  document.getElementById("t-cred-heading").textContent = t.credHeading;
+  document.getElementById("t-pid-label").textContent = t.pidLabel;
+  document.getElementById("t-pid-sub").textContent = t.pidSub;
+  document.getElementById("t-draw-label").textContent = t.drawLabel;
+  document.getElementById("t-draw-sub").textContent = t.drawSub;
+  document.getElementById("t-elig-label").textContent = t.eligLabel;
+  document.getElementById("t-elig-sub").textContent = t.eligSub;
+  document.getElementById("t-email-reminder").textContent = t.emailReminder;
+  document.getElementById("t-email-direction").textContent = t.emailDirection;
+  document.getElementById("t-email-heading").textContent = t.emailHeading;
+  document.getElementById("t-submit-btn").textContent = t.submitBtn;
+  document.getElementById("successMsg").textContent = t.successMsg;
+  document.getElementById("t-password-label").textContent = t.passwordLabel;
+  document.getElementById("lottery-note").style.display = 'none';
+  document.getElementById("report-note").style.display = 'none';
+  document.getElementById("t-email-privacy").style.display = 'none';
 }
 
 // ============================================================
-// 进度模块：加载计数
+// 渲染凭证
 // ============================================================
-const API_URL = "https://survey-counter.longhc23gemini.workers.dev";
+function renderCredential(data) {
+  const currentLang = data.lang || "en";
+  const t = T[currentLang] || T.en;
 
-function loadCounter(code) {
-  document.getElementById("counterLoading").style.display = "block";
-  document.getElementById("progressContent").style.display = "none";
+  applyLanguage(currentLang);
 
-  fetch(API_URL + "?action=read")
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      counts = data.counts || data;
-      renderProgress(code);
+  const showLottery = (lottery === 'yes' && data.eligible === true);
+
+  // 设置截图提示 + 限制文字
+  const hintEl = document.getElementById("t-screenshot");
+  let hintText = '';
+  if (showLottery) {
+    hintText = '📸 ' + t.screenshot_with_prize;
+  } else {
+    hintText = '📸 ' + t.screenshot_no_prize;
+  }
+  hintText += '<br><br>⚠️ ' + (showLottery ? t.screenshot_limit_yes : t.screenshot_limit_no);
+  hintEl.innerHTML = hintText;
+
+  const emailIntroEl = document.getElementById("t-email-intro");
+  if (showLottery) {
+    emailIntroEl.innerHTML = t.emailIntro_prize;
+  } else {
+    emailIntroEl.innerHTML = t.emailIntro_noPrize;
+  }
+
+  // 根据是否有抽奖资格，选择对应的 reportText
+  const reportTextEl = document.getElementById("t-report-text");
+  if (showLottery) {
+    reportTextEl.innerHTML = t.reportText;
+  } else {
+    reportTextEl.innerHTML = t.reportText_noPrize;
+  }
+
+  let drawText, eligText;
+  if (currentLang === "sg") {
+    drawText = (data.draw_display || "") + " / " + (data.draw_display_zh || "");
+    eligText = (data.elig_display || "") + " / " + (data.elig_display_zh || "");
+  } else if (currentLang === "de") {
+    drawText = (data.draw_display_de || "") + " / " + (data.draw_display || "");
+    eligText = (data.elig_display_de || "") + " / " + (data.elig_display || "");
+  } else {
+    drawText = data.draw_display;
+    eligText = data.elig_display;
+  }
+
+  document.getElementById("pid").textContent = data.participant_id;
+  document.getElementById("draw").textContent = drawText;
+  const eligEl = document.getElementById("elig");
+  eligEl.textContent = (data.eligible ? "✔ " : "✘ ") + eligText;
+  eligEl.className = data.eligible ? "elig-yes" : "elig-no";
+
+  if (data.eligible && lottery === 'yes') {
+    document.getElementById('emailReminderBox').classList.add('visible');
+  } else {
+    document.getElementById('emailReminderBox').classList.remove('visible');
+  }
+
+  participantData = data;
+
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("content").style.display = "block";
+}
+
+// ============================================================
+// 初始化
+// ============================================================
+function init() {
+  const langFromUrl = country === "DE" ? "de" : country === "SG" ? "sg" : "en";
+  applyLanguage(langFromUrl);
+
+  const storedData = sessionStorage.getItem('credentialData');
+  if (storedData) {
+    try {
+      const data = JSON.parse(storedData);
+      participantData = data;
+      renderCredential(data);
+      return;
+    } catch (e) { /* 忽略 */ }
+  }
+
+  if (!drawCode) {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("error").style.display = "block";
+    return;
+  }
+
+  const url = API_URL + "?code=" + encodeURIComponent(drawCode) + "&country=" + encodeURIComponent(country) + "&lottery=" + encodeURIComponent(lottery);
+  
+  fetch(url)
+    .then(r => r.json())
+    .then(data => {
+      if (data.error) {
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("error").style.display = "block";
+        return;
+      }
+      participantData = data;
+      sessionStorage.setItem('credentialData', JSON.stringify(data));
+      renderCredential(data);
     })
-    .catch(function() {
-      renderProgress(code);
+    .catch(err => {
+      console.error(err);
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("error").style.display = "block";
     });
 }
 
-function renderProgress(code) {
-  var lang = code === "DE" ? "de" : code === "SG" ? "sg" : "en";
-  var t = T[lang];
-  var n = counts[code] || 0;
-  var total = 300;
-  var pct = Math.min(100, Math.round((n / total) * 100));
-
-  document.getElementById("counterLoading").style.display = "none";
-  document.getElementById("progressContent").style.display = "block";
-
-  document.getElementById("progressLabel").innerHTML = t.progressLabel(code, n);
-  document.getElementById("progressText").innerHTML = n + " / " + total + " (" + pct + "%)";
-  document.getElementById("progressPhase").innerHTML = t.phaseText(n);
-
-  setTimeout(function() {
-    document.getElementById("progressFill").style.width = pct + "%";
-  }, 100);
-}
-
 // ============================================================
-// 事件
+// 提交邮箱（包含 rid 和 draw_code）
 // ============================================================
-function handleProfChange() {
-  const val = profSelect.value;
-  if (val === "18") {
-    otherProfGroup.classList.add("visible");
-    otherProfInput.focus();
-  } else {
-    otherProfGroup.classList.remove("visible");
-    otherProfInput.value = "";
-    otherProfInput.classList.remove("error");
-  }
-  checkFormReady();
-}
-profSelect.addEventListener("change", handleProfChange);
-
-function handleCountryChange() {
-  const val = countrySelect.value;
-  if (val === "OTHER") {
-    otherCountryGroup.classList.add("visible");
-    otherCountryInput.focus();
-  } else {
-    otherCountryGroup.classList.remove("visible");
-    otherCountryInput.value = "";
-    otherCountryInput.classList.remove("error");
-  }
-  applyLanguage(val);
-  checkFormReady();
-}
-countrySelect.addEventListener("change", handleCountryChange);
-
-function checkFormReady() {
-  const profOk = profSelect.value !== "";
-  const countryOk = countrySelect.value !== "";
-  let otherProfOk = true;
-  if (profSelect.value === "18") {
-    const val = otherProfInput.value.trim();
-    otherProfOk = val !== "";
-    if (!otherProfOk) otherProfInput.classList.add("error");
-    else otherProfInput.classList.remove("error");
-  }
-  let otherCountryOk = true;
-  if (countrySelect.value === "OTHER") {
-    const val = otherCountryInput.value.trim();
-    otherCountryOk = val !== "";
-    if (!otherCountryOk) otherCountryInput.classList.add("error");
-    else otherCountryInput.classList.remove("error");
-  }
-  submitBtn.disabled = !(profOk && countryOk && otherProfOk && otherCountryOk);
-}
-
-otherProfInput.addEventListener("input", function() {
-  if (profSelect.value === "18") {
-    const val = this.value.trim();
-    if (val !== "") this.classList.remove("error");
-    else this.classList.add("error");
-    checkFormReady();
-  }
-});
-
-otherCountryInput.addEventListener("input", function() {
-  if (countrySelect.value === "OTHER") {
-    const val = this.value.trim();
-    if (val !== "") this.classList.remove("error");
-    else this.classList.add("error");
-    checkFormReady();
-  }
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-  applyLanguage("en");
-  otherProfGroup.classList.remove("visible");
-  otherCountryGroup.classList.remove("visible");
-});
-
-// ============================================================
-// 提交（第一步：显示抽奖面板）
-// ============================================================
-function handleSubmit() {
-  selectedProfession = profSelect.value;
-  selectedCountryCode = countrySelect.value;
-  selectedCountryName = countrySelect.options[countrySelect.selectedIndex].text;
-
-  if (selectedProfession === "18") {
-    const val = otherProfInput.value.trim();
-    if (val === "") {
-      const lang = selectedCountryCode === "DE" ? "de" : selectedCountryCode === "SG" ? "sg" : "en";
-      alert(T[lang].otherProfRequired || "Please specify your professional field.");
-      otherProfInput.focus();
-      otherProfInput.classList.add("error");
-      return;
-    }
-    otherProfInput.classList.remove("error");
-  }
-
-  if (selectedCountryCode === "OTHER") {
-    const val = otherCountryInput.value.trim();
-    if (val === "") {
-      const lang = selectedCountryCode === "DE" ? "de" : selectedCountryCode === "SG" ? "sg" : "en";
-      alert(T[lang].otherCountryRequired || "Please specify your country/region.");
-      otherCountryInput.focus();
-      otherCountryInput.classList.add("error");
-      return;
-    }
-    otherCountryInput.classList.remove("error");
-  }
-
-  document.getElementById("step1").style.display = "none";
-  applyLanguage(selectedCountryCode);
-
-  if (LOTTERY_COUNTRIES[selectedCountryCode]) {
-    document.getElementById("panelA").classList.add("visible");
-    document.getElementById("lotteryDetail").classList.remove("visible");
-    document.getElementById("proceedBtnA").disabled = true;
-    document.querySelectorAll("#lotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
-  } else {
-    document.getElementById("panelB").classList.add("visible");
-    document.getElementById("proceedBtnB").disabled = true;
-    document.querySelectorAll("#nonLotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
-  }
-}
-
-function selectLotteryChoice(choice) {
-  lotteryChoice = choice;
-  document.querySelectorAll("#lotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
-  document.querySelectorAll("#lotteryChoiceGroup .radio-option").forEach(el => {
-    const input = el.querySelector('input[type="radio"]');
-    if (input && input.value === choice) {
-      el.classList.add("selected");
-    }
-  });
-
-  if (choice === "quit") {
-    document.getElementById("panelA").classList.remove("visible");
-    document.getElementById("lotteryDetail").classList.remove("visible");
-    document.getElementById("panelQuit").classList.add("visible");
+function submitEmail() {
+  const emailInput = document.getElementById("email");
+  const email = emailInput.value.trim();
+  if (!email || !email.includes("@") || !email.includes(".")) {
+    const msg = (participantData.lang === "sg") ? "Please enter a valid email address. / 请输入有效邮箱。" :
+                (participantData.lang === "de") ? "Bitte geben Sie eine gültige E-Mail-Adresse ein. / Please enter a valid email address." :
+                "Please enter a valid email address.";
+    alert(msg);
     return;
   }
 
-  if (choice === "yes") {
-    document.getElementById("lotteryDetail").classList.add("visible");
-    loadCounter(selectedCountryCode);
-  } else {
-    document.getElementById("lotteryDetail").classList.remove("visible");
-  }
+  const btn = document.getElementById("submitBtn");
+  btn.disabled = true;
+  btn.querySelector("span").textContent = (participantData.lang === "sg") ? "Submitting... / 提交中..." :
+                                          (participantData.lang === "de") ? "Wird gesendet... / Submitting..." :
+                                          "Submitting...";
 
-  document.getElementById("proceedBtnA").disabled = false;
+  const rid = participantData.rid || "";
+  const drawCodeVal = participantData.draw_code || drawCode || "";
+
+  fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      participant_id: participantData.participant_id || "",
+      email: email,
+      country: country,
+      lottery: lottery,
+      rid: rid,
+      draw_code: drawCodeVal,
+    }),
+  })
+    .then(r => r.json())
+    .then(() => {
+      btn.style.display = "none";
+      emailInput.disabled = true;
+      document.getElementById("successMsg").style.display = "block";
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.querySelector("span").textContent = (participantData.lang === "sg") ? "Retry / 重试" :
+                                              (participantData.lang === "de") ? "Erneut versuchen / Retry" :
+                                              "Retry";
+      const msg = (participantData.lang === "sg") ? "Submission failed. Please try again. / 提交失败，请重试。" :
+                  (participantData.lang === "de") ? "Übermittlung fehlgeschlagen. Bitte erneut versuchen. / Submission failed. Please try again." :
+                  "Submission failed. Please try again.";
+      alert(msg);
+    });
 }
 
-function selectNonLotteryChoice(choice) {
-  nonLotteryChoice = choice;
-  document.querySelectorAll("#nonLotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
-  document.querySelectorAll("#nonLotteryChoiceGroup .radio-option").forEach(el => {
-    const input = el.querySelector('input[type="radio"]');
-    if (input && input.value === choice) {
-      el.classList.add("selected");
-    }
-  });
-
-  if (choice === "quit") {
-    document.getElementById("panelB").classList.remove("visible");
-    document.getElementById("panelQuit").classList.add("visible");
-    return;
-  }
-
-  document.getElementById("proceedBtnB").disabled = false;
-}
-
-// ============================================================
-// 跳转
-// ============================================================
-function proceedToSurvey() {
-  let surveyKey = "INT";
-  if (LOTTERY_COUNTRIES[selectedCountryCode]) {
-    surveyKey = selectedCountryCode;
-  }
-
-  let professionParam;
-  if (selectedProfession === "18") {
-    const val = otherProfInput.value.trim();
-    professionParam = "Other(" + val + ")";
-  } else {
-    professionParam = PROF_NAME_MAP[selectedProfession] || selectedProfession;
-  }
-
-  let countryParam;
-  if (selectedCountryCode === "OTHER") {
-    const val = otherCountryInput.value.trim();
-    countryParam = "Other(" + val + ")";
-  } else {
-    countryParam = selectedCountryName;
-  }
-
-  const lottery = (lotteryChoice === "yes") ? "yes" : "no";
-  const baseUrl = SURVEY_URLS[surveyKey];
-  const params = new URLSearchParams({
-    profession: professionParam,
-    country: countryParam,
-    lottery: lottery
-  });
-
-  window.location.href = baseUrl + "?" + params.toString();
-}
+init();
 </script>
 </body>
 </html>
