@@ -171,9 +171,14 @@
 const params = new URLSearchParams(window.location.search);
 const countryParam = (params.get("country") || "INT").toUpperCase();
 
-// 支持国家代码（DE/SG）和国家名称（Germany/Singapore）
+// 德国：支持 DE 或 GERMANY
+// 英中双语：新加坡（SG/SINGAPORE）+ 中国大陆（CN/CHINA (MAINLAND)）+ 香港（HK/HONG KONG SAR）+ 澳门（MO/MACAO SAR）+ 台湾（TW/TAIWAN）
 const lang = (countryParam === "DE" || countryParam === "GERMANY") ? "de"
-           : (countryParam === "SG" || countryParam === "SINGAPORE") ? "sg"
+           : (countryParam === "SG" || countryParam === "SINGAPORE" 
+              || countryParam === "CN" || countryParam === "CHINA (MAINLAND)"
+              || countryParam === "HK" || countryParam === "HONG KONG SAR"
+              || countryParam === "MO" || countryParam === "MACAO SAR"
+              || countryParam === "TW" || countryParam === "TAIWAN") ? "sg"
            : "en";
 
 const T = {
