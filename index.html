@@ -290,7 +290,7 @@
         <td id="elig">—</td>
       </tr>
     </table>
-    <div class="hint-box"><span class="icon">📸</span><span id="t-screenshot"></span></div>
+    <div class="hint-box"><span id="t-screenshot"></span></div>
     <div class="email-reminder-box" id="emailReminderBox">
       <span class="icon-warning">⚠️</span>
       <strong id="t-email-reminder"></strong>
@@ -345,8 +345,8 @@ const T = {
     eligSub: "",
     screenshot_no_prize: "We recommend taking a screenshot of this page as your participation record.",
     screenshot_with_prize: "We recommend taking a screenshot of this page as your participation record — you may need it to verify a prize draw result.",
-    screenshot_limit_yes: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.",
-    screenshot_limit_no: "To ensure the quality and integrity of our research data, each participant may complete only one survey.",
+    screenshot_limit_yes: "⚠️ To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.",
+    screenshot_limit_no: "⚠️ To ensure the quality and integrity of our research data, each participant may complete only one survey.",
     emailReminder: "⚠️ Leaving your email is the ONLY way we can deliver your prize. If you do not leave an email, you will forfeit any prize you may win.",
     emailDirection: "👇 Please fill in your email in the section below.",
     emailHeading: "Stay Connected",
@@ -377,8 +377,8 @@ const T = {
     eligSub: "",
     screenshot_no_prize: "Wir empfehlen, einen Screenshot dieser Seite als Teilnahmenachweis zu erstellen. / We recommend taking a screenshot of this page as your participation record.",
     screenshot_with_prize: "Wir empfehlen, einen Screenshot dieser Seite als Teilnahmenachweis zu erstellen — Sie könnten ihn zur Überprüfung eines Verlosungsergebnisses benötigen. / We recommend taking a screenshot of this page as your participation record — you may need it to verify a prize draw result.",
-    screenshot_limit_yes: "Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, kann jeder Teilnehmer nur eine Umfrage ausfüllen. Nur gültige Umfrageantworten berechtigen zur Teilnahme an der Verlosung. / To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.",
-    screenshot_limit_no: "Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, kann jeder Teilnehmer nur eine Umfrage ausfüllen. / To ensure the quality and integrity of our research data, each participant may complete only one survey.",
+    screenshot_limit_yes: "⚠️ Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, kann jeder Teilnehmer nur eine Umfrage ausfüllen. Nur gültige Umfrageantworten berechtigen zur Teilnahme an der Verlosung. / ⚠️ To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.",
+    screenshot_limit_no: "⚠️ Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, kann jeder Teilnehmer nur eine Umfrage ausfüllen. / ⚠️ To ensure the quality and integrity of our research data, each participant may complete only one survey.",
     emailReminder: "⚠️ Ihre E-Mail-Adresse ist der EINZIGE Weg, um Ihnen einen Gewinn zuzustellen. Ohne E-Mail verfällt ein eventueller Preis. / ⚠️ Leaving your email is the ONLY way we can deliver your prize. If you do not leave an email, you will forfeit any prize you may win.",
     emailDirection: "👇 Bitte geben Sie Ihre E-Mail im unteren Bereich ein. / 👇 Please fill in your email in the section below.",
     emailHeading: "In Kontakt bleiben / Stay Connected",
@@ -409,8 +409,8 @@ const T = {
     eligSub: "",
     screenshot_no_prize: "We recommend taking a screenshot of this page as your participation record. / 建议您截图保存本页面作为参与记录。",
     screenshot_with_prize: "We recommend taking a screenshot of this page as your participation record — you may need it to verify a prize draw result. / 建议您截图保存本页面作为参与记录——您可能需要它来核对抽奖结果。",
-    screenshot_limit_yes: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw. / 为确保调研数据的质量与完整性，每位参与者仅可填写一份问卷，仅有效问卷可参与抽奖。",
-    screenshot_limit_no: "To ensure the quality and integrity of our research data, each participant may complete only one survey. / 为确保调研数据的质量与完整性，每位参与者仅可填写一份问卷。",
+    screenshot_limit_yes: "⚠️ To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw. / ⚠️ 为确保调研数据的质量与完整性，每位参与者仅可填写一份问卷，仅有效问卷可参与抽奖。",
+    screenshot_limit_no: "⚠️ To ensure the quality and integrity of our research data, each participant may complete only one survey. / ⚠️ 为确保调研数据的质量与完整性，每位参与者仅可填写一份问卷。",
     emailReminder: "⚠️ Leaving your email is the ONLY way we can deliver your prize. If you do not leave an email, you will forfeit any prize you may win. / ⚠️ 留下邮箱是我们发送奖品的唯一方式。不留邮箱将视为放弃奖品领取。",
     emailDirection: "👇 Please fill in your email in the section below. / 👇 请在下方的邮箱区域填写您的邮箱。",
     emailHeading: "Stay Connected / 保持联系",
@@ -479,16 +479,17 @@ function renderCredential(data) {
 
   const showLottery = (lottery === 'yes' && data.eligible === true);
 
-  // 设置截图提示 + 限制文字
-  const hintEl = document.getElementById("t-screenshot");
-  let hintText = '';
+  // 设置截图提示框（包含限制文字）
+  const screenshotEl = document.getElementById("t-screenshot");
+  let hintHtml = '';
   if (showLottery) {
-    hintText = '📸 ' + t.screenshot_with_prize;
+    hintHtml = '📸 ' + t.screenshot_with_prize;
   } else {
-    hintText = '📸 ' + t.screenshot_no_prize;
+    hintHtml = '📸 ' + t.screenshot_no_prize;
   }
-  hintText += '<br><br>⚠️ ' + (showLottery ? t.screenshot_limit_yes : t.screenshot_limit_no);
-  hintEl.innerHTML = hintText;
+  // 另起一段，添加限制文字
+  hintHtml += '<br><br>' + (showLottery ? t.screenshot_limit_yes : t.screenshot_limit_no);
+  screenshotEl.innerHTML = hintHtml;
 
   const emailIntroEl = document.getElementById("t-email-intro");
   if (showLottery) {
