@@ -46,12 +46,12 @@
           var country = params.get('country') || '';
           var lottery = params.get('lottery') || 'no';
 
+          // ── 缺少 rid 直接跳转到凭证页（不带 code） ──
           if (!rid) {
             window.location.replace('https://longhc23gemini-creator.github.io/survey-credential/credential.html');
             return;
           }
 
-          // ⬇️ 将 country 和 lottery 传给 Worker
           var genRes = await fetch('https://survey-counter.longhc23gemini.workers.dev/generate-draw-code', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -68,7 +68,6 @@
             return;
           }
 
-          // ⬇️ 凭证页 URL 不再需要携带 country 和 lottery
           var credentialUrl = 'https://longhc23gemini-creator.github.io/survey-credential/credential.html?code=' + encodeURIComponent(genData.draw_code);
           window.location.replace(credentialUrl);
 
