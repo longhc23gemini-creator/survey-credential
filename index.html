@@ -437,18 +437,6 @@
 
 <script>
 // ============================================================
-// 页面加载时检测 retry 参数，自动刷新
-// ============================================================
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('retry') === '1') {
-    params.delete('retry');
-    const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
-    window.location.replace(newUrl);
-  }
-})();
-
-// ============================================================
 // 语言文本
 // ============================================================
 const T = {
