@@ -84,30 +84,6 @@
   }
   .message-box p { margin-bottom: 12px; }
   .message-box p:last-child { margin-bottom: 0; }
-  .actions {
-    text-align: center;
-    margin-top: 28px;
-  }
-  .actions a {
-    display: inline-block;
-    padding: 12px 28px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background 0.15s;
-  }
-  .btn-primary {
-    background: var(--blue);
-    color: #fff;
-  }
-  .btn-primary:hover { background: #1e429f; }
-  .btn-secondary {
-    background: var(--gray-100);
-    color: var(--gray-600);
-    margin-left: 10px;
-  }
-  .btn-secondary:hover { background: var(--gray-200); }
   .footer {
     text-align: center;
     margin-top: 32px;
@@ -131,12 +107,6 @@
   <p class="subtitle" id="t-subtitle"></p>
 
   <div class="message-box" id="t-message"></div>
-
-  <!-- 取消获取报告的框：report-box 已移除 -->
-
-  <div class="actions">
-    <a class="btn-primary" id="backBtn" href="index.html"><span id="t-back"></span></a>
-  </div>
 
   <div class="footer">
     New Construction Cross-Laboratory (NCCL), Tsinghua University<br>
@@ -162,20 +132,17 @@ const T = {
   en: {
     title: "Thank you for your interest",
     subtitle: "",
-    message: '<p>Thank you for taking the time to participate in our study.</p><p>After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.</p><p>We sincerely appreciate your willingness to contribute.</p>',
-    back: "Return to Entry Page",
+    message: '<p>Thank you for taking the time to participate in our study.</p><p>After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.</p><p>We sincerely appreciate your willingness to contribute.</p>'
   },
   de: {
     title: "Vielen Dank für Ihr Interesse / Thank you for your interest",
     subtitle: "",
-    message: 'Wir danken Ihnen für Ihre Bereitschaft, an unserer Studie teilzunehmen.<br>Thank you for taking the time to participate in our study.<br><br>Nach Prüfung Ihrer Antworten müssen wir Ihnen leider mitteilen, dass Sie die spezifischen Teilnahmevoraussetzungen für diese Forschungsphase nicht erfüllen.<br>After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.<br><br>Wir wissen Ihr Engagement sehr zu schätzen.<br>We sincerely appreciate your willingness to contribute.',
-    back: "Zurück zur Einstiegsseite / Return to Entry Page",
+    message: 'Wir danken Ihnen für Ihre Bereitschaft, an unserer Studie teilzunehmen.<br>Thank you for taking the time to participate in our study.<br><br>Nach Prüfung Ihrer Antworten müssen wir Ihnen leider mitteilen, dass Sie die spezifischen Teilnahmevoraussetzungen für diese Forschungsphase nicht erfüllen.<br>After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.<br><br>Wir wissen Ihr Engagement sehr zu schätzen.<br>We sincerely appreciate your willingness to contribute.'
   },
   sg: {
     title: "Thank you for your interest / 感谢您的关注",
     subtitle: "",
-    message: '<p>Thank you for taking the time to participate in our study.</p><p>感谢您抽出时间参与我们的研究。</p><p>After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.</p><p>经过对您回答的审阅，很遗憾您不符合本研究阶段的特定资格要求。</p><p>We sincerely appreciate your willingness to contribute.</p><p>我们衷心感谢您的参与意愿。</p>',
-    back: "Return to Entry Page / 返回入口页",
+    message: '<p>Thank you for taking the time to participate in our study.</p><p>感谢您抽出时间参与我们的研究。</p><p>After reviewing your responses, we regret to inform you that you do not meet the specific eligibility criteria for this phase of the research.</p><p>经过对您回答的审阅，很遗憾您不符合本研究阶段的特定资格要求。</p><p>We sincerely appreciate your willingness to contribute.</p><p>我们衷心感谢您的参与意愿。</p>'
   }
 };
 
@@ -184,7 +151,6 @@ function render() {
   document.getElementById("t-title").textContent = t.title;
   document.getElementById("t-subtitle").textContent = t.subtitle;
   document.getElementById("t-message").innerHTML = t.message;
-  document.getElementById("t-back").textContent = t.back;
 }
 render();
 </script>
