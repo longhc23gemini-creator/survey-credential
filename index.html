@@ -373,6 +373,16 @@
     background: var(--gray-300);
     cursor: not-allowed;
   }
+
+  /* token 过期提示样式：深红色，加粗 */
+  .token-expiry-hint {
+    font-size: 13px;
+    color: var(--red);
+    font-weight: 600;
+    text-align: center;
+    margin: 10px 0 0;
+    line-height: 1.6;
+  }
 </style>
 </head>
 <body>
@@ -473,6 +483,8 @@
       <div class="hint-box" id="hintBox" style="background:var(--blue-light);border-left:4px solid var(--blue);padding:14px 18px;margin-top:16px;border-radius:0 var(--radius) var(--radius) 0;"></div>
     </div>
 
+    <!-- 24小时提醒（位于 Start the Survey 按钮上方） -->
+    <p class="token-expiry-hint" id="t-token-expiry-hint"></p>
     <button class="btn-primary" id="proceedBtnA" disabled onclick="proceedToSurvey()"><span id="proceedBtnAText"></span></button>
   </div>
 
@@ -490,6 +502,8 @@
       </label>
     </div>
 
+    <!-- 24小时提醒（位于 Start the Survey 按钮上方） -->
+    <p class="token-expiry-hint" id="t-token-expiry-hint"></p>
     <button class="btn-primary" id="proceedBtnB" disabled onclick="proceedToSurvey()"><span id="proceedBtnBText"></span></button>
   </div>
 
@@ -541,6 +555,8 @@ const T = {
     quizHeading: "Please answer the following question:",
     quizSubmitText: "Submit",
     quizError: "Please select an answer.",
+    // 24小时提醒（新增）
+    tokenExpiryHint: "Once you proceed, please complete the survey and obtain your credential within 24 hours. The credential generation link will expire after that time.",
     congratsHeading: "🎉 Congratulations!",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?",
     optYes: "🎁 Yes, I want to join the draw",
@@ -603,6 +619,8 @@ const T = {
     quizHeading: "Bitte beantworten Sie die folgende Frage: / Please answer the following question:",
     quizSubmitText: "Einreichen / Submit",
     quizError: "Bitte wählen Sie eine Antwort. / Please select an answer.",
+    // 24小时提醒（新增）
+    tokenExpiryHint: "Bitte schließen Sie die Umfrage ab und erhalten Sie Ihre Teilnahmebestätigung innerhalb von 24 Stunden. Der Link zur Bestätigung verfällt danach. / Once you proceed, please complete the survey and obtain your credential within 24 hours. The credential generation link will expire after that time.",
     congratsHeading: "🎉 Congratulations! / Herzlichen Glückwunsch!",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='lotteryCountryName_de'></strong> — ist eines unserer ausgewählten Länder / Regionen, das an der Verlosung teilnehmen kann. Möchten Sie am Gewinnspiel teilnehmen?",
     optYes: "🎁 Yes, I want to join the draw / Ja, ich möchte teilnehmen",
@@ -664,6 +682,8 @@ const T = {
     quizHeading: "Please answer the following question: / 请回答以下问题：",
     quizSubmitText: "Submit / 提交",
     quizError: "Please select an answer. / 请选择一个答案。",
+    // 24小时提醒（新增）
+    tokenExpiryHint: "Once you proceed, please complete the survey and obtain your credential within 24 hours. The credential generation link will expire after that time. / 点击进入问卷后，请在24小时内完成问卷并获取参与凭证，过期将无法生成凭证。",
     congratsHeading: "🎉 Congratulations! / 恭喜！",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>您选择的国家/地区 — <strong id='lotteryCountryName_cn'></strong> — 是我们的抽奖国家/地区之一。您希望参与抽奖吗？",
     optYes: "🎁 Yes, I want to join the draw / 是的，我要参与抽奖",
@@ -1144,7 +1164,7 @@ const PROFESSIONS = [
   { value: "18", label: "Other" }
 ];
 
-// 国家列表（与之前相同，省略长列表）
+// 国家列表
 const COUNTRIES = [
   { code: "DZ", name: "Algeria" },
   { code: "AR", name: "Argentina" },
@@ -1260,7 +1280,12 @@ let selectedCountryName = "";
 let lotteryChoice = "";
 let nonLotteryChoice = "";
 let counts = { US: 0, DE: 0, SG: 0 };
-let selectedQuizOption = null; // 选中的选项索引
+let selectedQuizOption = null;
+
+// ============================================================
+// Worker API 地址
+// ============================================================
+const API_URL = "https://survey-counter.longhc23gemini.workers.dev";
 
 // ============================================================
 // 语言应用
@@ -1295,6 +1320,10 @@ function applyLanguage(countryCode) {
   otherProfInput.placeholder = t.otherProfPlaceholder || "Please specify your professional field";
   otherCountryInput.placeholder = t.otherCountryPlaceholder || "Please specify your country/region";
 
+  // 24小时提醒
+  const hintEl = document.getElementById("t-token-expiry-hint");
+  if (hintEl) hintEl.textContent = t.tokenExpiryHint;
+
   // 抽奖面板文字（原样保留）
   document.getElementById("congratsHeading").textContent = t.congratsHeading;
   let descHtml = t.congratsDesc;
@@ -1313,10 +1342,8 @@ function applyLanguage(countryCode) {
   document.getElementById("optNoText").innerHTML = t.optNo;
   document.getElementById("optQuitText").innerHTML = t.optQuit;
 
-  // 进度标题
   document.getElementById("progressHeading").textContent = t.progressHeading || "Live Claimed Spots";
 
-  // 奖品表格
   document.getElementById("prizeHeading").textContent = t.prizeHeading;
   document.getElementById("thTier").textContent = t.thTier;
   document.getElementById("thAmount").textContent = t.thAmount;
@@ -1357,6 +1384,7 @@ function applyLanguage(countryCode) {
 
   document.getElementById("hintBox").innerHTML = t.hint;
   document.getElementById("proceedBtnAText").textContent = t.proceedBtn;
+  document.getElementById("proceedBtnBText").textContent = t.proceedBtn;
 
   let sorryHtml = t.sorryText;
   if (selectedName) {
@@ -1371,17 +1399,15 @@ function applyLanguage(countryCode) {
   document.getElementById("sorryText").innerHTML = sorryHtml;
   document.getElementById("nonContText").innerHTML = t.nonCont;
   document.getElementById("nonQuitText").innerHTML = t.nonQuit;
-  document.getElementById("proceedBtnBText").textContent = t.proceedBtn;
 
   document.getElementById("quitTitle").textContent = t.quitTitle;
   document.getElementById("quitDesc").innerHTML = t.quitDesc;
 
-  // 常识题文字（语言相关）
+  // 常识题文字
   document.getElementById("quizHeading").textContent = t.quizHeading;
   document.getElementById("quizSubmitText").textContent = t.quizSubmitText;
   document.getElementById("quizError").textContent = t.quizError;
 
-  // 语言相关也存储当前语言代码供后续使用
   window.currentLang = lang;
 }
 
@@ -1392,7 +1418,6 @@ function showQuiz() {
   const profCode = selectedProfession;
   const quizId = QUIZ_MAP[profCode];
   if (!quizId) {
-    // 若没有对应题目（理论上不会），直接跳转到抽奖面板
     showLotteryPanel();
     return;
   }
@@ -1400,7 +1425,6 @@ function showQuiz() {
   const lang = window.currentLang || "en";
   const quizData = QUIZ_DATA[lang];
   if (!quizData || !quizData[quizId]) {
-    // 降级到英文
     const fallback = QUIZ_DATA.en[quizId];
     if (fallback) {
       displayQuiz(quizId, fallback);
@@ -1431,21 +1455,19 @@ function displayQuiz(quizId, data) {
     radio.name = "quiz";
     radio.value = index;
     radio.onclick = function() {
-      // 清除其他选中样式
       document.querySelectorAll(".quiz-option").forEach(el => el.classList.remove("selected"));
       label.classList.add("selected");
       selectedQuizOption = index;
       document.getElementById("quizError").classList.remove("visible");
-      document.getElementById("quizSubmitBtn").disabled = false;  // ← 选中时启用
+      document.getElementById("quizSubmitBtn").disabled = false;
     };
     label.appendChild(radio);
     label.appendChild(document.createTextNode(" " + text));
     optionsContainer.appendChild(label);
   });
 
-  // 重置错误提示和按钮状态
   document.getElementById("quizError").classList.remove("visible");
-  document.getElementById("quizSubmitBtn").disabled = true;  // ← 改为禁用
+  document.getElementById("quizSubmitBtn").disabled = true;
   selectedQuizOption = null;
 }
 
@@ -1459,7 +1481,6 @@ function submitQuizAnswer() {
   const quizData = QUIZ_DATA[lang] || QUIZ_DATA.en;
   const data = quizData[quizId];
   if (!data) {
-    // 无数据则跳过
     showLotteryPanel();
     return;
   }
@@ -1471,12 +1492,9 @@ function submitQuizAnswer() {
 
   const isCorrect = (selectedQuizOption === data.correctIndex);
   if (isCorrect) {
-    // 答对，进入抽奖面板
     showLotteryPanel();
   } else {
-    // 答错，设置失败标记，跳转不合格页
     sessionStorage.setItem('quiz_failed', 'true');
-    // 清空可能的选择状态
     sessionStorage.removeItem('selected_profession');
     sessionStorage.removeItem('selected_country');
     const country = selectedCountryCode || 'INT';
@@ -1590,7 +1608,6 @@ function goToQuiz() {
   selectedCountryCode = countrySelect.value;
   selectedCountryName = countrySelect.options[countrySelect.selectedIndex].text;
 
-  // 验证专业和国家（与其他逻辑一致）
   if (selectedProfession === "18") {
     const val = otherProfInput.value.trim();
     if (val === "") {
@@ -1619,7 +1636,6 @@ function goToQuiz() {
     otherCountryInput.classList.remove("error");
   }
 
-  // 进入常识题
   showQuiz();
 }
 
@@ -1675,8 +1691,6 @@ function selectNonLotteryChoice(choice) {
 // ============================================================
 // 进度模块
 // ============================================================
-const API_URL = "https://survey-counter.longhc23gemini.workers.dev";
-
 function loadCounter(code) {
   document.getElementById("counterLoading").style.display = "block";
   document.getElementById("progressContent").style.display = "none";
@@ -1714,7 +1728,7 @@ function renderProgress(code) {
 }
 
 // ============================================================
-// 跳转 Qualtrics
+// 跳转 Qualtrics（生成 token 并预注册）
 // ============================================================
 function proceedToSurvey() {
   let surveyKey = "INT";
@@ -1724,31 +1738,45 @@ function proceedToSurvey() {
     surveyKey = selectedCountryCode;
   }
 
-  let professionParam;
-  if (selectedProfession === "18") {
-    const val = otherProfInput.value.trim();
-    professionParam = "Other(" + val + ")";
-  } else {
-    professionParam = PROF_NAME_MAP[selectedProfession] || selectedProfession;
-  }
+  let professionParam = (selectedProfession === "18") 
+    ? "Other(" + otherProfInput.value.trim() + ")" 
+    : PROF_NAME_MAP[selectedProfession] || selectedProfession;
 
-  let countryParam;
-  if (selectedCountryCode === "OTHER") {
-    const val = otherCountryInput.value.trim();
-    countryParam = "Other(" + val + ")";
-  } else {
-    countryParam = selectedCountryName;
-  }
+  let countryParam = (selectedCountryCode === "OTHER") 
+    ? "Other(" + otherCountryInput.value.trim() + ")" 
+    : selectedCountryName;
 
   const lottery = (lotteryChoice === "yes") ? "yes" : "no";
-  const baseUrl = SURVEY_URLS[surveyKey];
-  const params = new URLSearchParams({
-    profession: professionParam,
-    country: countryParam,
-    lottery: lottery
-  });
 
-  window.location.href = baseUrl + "?" + params.toString();
+  // 生成 token 并预注册
+  fetch(API_URL + "/generate-token", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      profession: professionParam,
+      country: countryParam,
+      lottery: lottery
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.error) {
+      alert("Unable to start survey. Please try again.");
+      return;
+    }
+    var token = data.token;
+    var baseUrl = SURVEY_URLS[surveyKey];
+    var params = new URLSearchParams({
+      profession: professionParam,
+      country: countryParam,
+      lottery: lottery,
+      token: token
+    });
+    window.location.href = baseUrl + "?" + params.toString();
+  })
+  .catch(function() {
+    alert("Unable to start survey. Please try again.");
+  });
 }
 </script>
 </body>
