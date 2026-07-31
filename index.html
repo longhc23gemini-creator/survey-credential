@@ -311,6 +311,68 @@
     text-align: left;
     margin: 16px 0 12px;
   }
+
+  /* 常识题样式 */
+  .quiz-container {
+    margin: 20px 0;
+  }
+  .quiz-container .quiz-question {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  .quiz-container .quiz-option {
+    display: block;
+    padding: 10px 14px;
+    margin: 6px 0;
+    border: 2px solid var(--gray-200);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 14px;
+    background: #fff;
+  }
+  .quiz-container .quiz-option:hover {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+  .quiz-container .quiz-option.selected {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+  .quiz-container .quiz-option input {
+    margin-right: 10px;
+  }
+  .quiz-container .quiz-error {
+    color: var(--red);
+    font-size: 14px;
+    margin-top: 8px;
+    display: none;
+  }
+  .quiz-container .quiz-error.visible {
+    display: block;
+  }
+  .quiz-container .btn-submit-quiz {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-top: 16px;
+  }
+  .quiz-container .btn-submit-quiz:hover {
+    background: var(--blue-dark);
+  }
+  .quiz-container .btn-submit-quiz:disabled {
+    background: var(--gray-300);
+    cursor: not-allowed;
+  }
 </style>
 </head>
 <body>
@@ -325,6 +387,7 @@
     <div class="sub" id="mainSub"></div>
   </div>
 
+  <!-- Step 1: 选择专业和国家 -->
   <div id="step1">
     <h2><span class="icon">&#128218;</span> <span id="step1Heading"></span></h2>
     <div class="info-box" id="infoBox"></div>
@@ -352,10 +415,21 @@
       </div>
     </div>
 
-    <button class="btn-primary" id="submitBtn" disabled onclick="handleSubmit()"><span id="submitBtnText"></span></button>
+    <button class="btn-primary" id="submitBtn" disabled onclick="goToQuiz()"><span id="submitBtnText"></span></button>
   </div>
 
-  <!-- STEP 2: Result panels -->
+  <!-- Step 2: 常识题 -->
+  <div id="step2" style="display:none;">
+    <h2><span class="icon">&#128218;</span> <span id="quizHeading"></span></h2>
+    <div class="quiz-container" id="quizContainer">
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div id="quizOptions"></div>
+      <div class="quiz-error" id="quizError"></div>
+      <button class="btn-submit-quiz" id="quizSubmitBtn" onclick="submitQuizAnswer()"><span id="quizSubmitText"></span></button>
+    </div>
+  </div>
+
+  <!-- Step 3: 抽奖面板（原 panelA / panelB） -->
   <div id="panelA" class="result-panel">
     <div class="congrats-box" id="congratsBox">
       <div class="heading" id="congratsHeading"></div>
@@ -388,13 +462,11 @@
         </div>
       </div>
       <h3 id="prizeHeading"></h3>
-      <!-- prizeNote 已移到标题下方，表格上方 -->
       <p id="prizeNote"></p>
       <table id="prizeTable">
         <thead><tr><th id="thTier"></th><th id="thAmount"></th><th id="thWinners"></th></tr></thead>
         <tbody id="prizeBody"></tbody>
       </table>
-      <!-- lotteryLimit 段落 -->
       <p id="lotteryLimit"></p>
       <h4 id="rulesHeading"></h4>
       <ol class="rules-list" id="rulesList"></ol>
@@ -437,6 +509,18 @@
 
 <script>
 // ============================================================
+// 防返回标记检查（必须放在最前面）
+// ============================================================
+(function() {
+  if (sessionStorage.getItem('quiz_failed') === 'true') {
+    var params = new URLSearchParams(window.location.search);
+    var country = params.get('country') || 'INT';
+    window.location.replace('disqualified.html?country=' + encodeURIComponent(country));
+    throw new Error('Redirecting to disqualification page');
+  }
+})();
+
+// ============================================================
 // 语言文本
 // ============================================================
 const T = {
@@ -453,6 +537,10 @@ const T = {
     otherProfRequired: "Please specify your professional field before continuing.",
     otherCountryPlaceholder: "Please specify your country/region",
     otherCountryRequired: "Please specify your country/region before continuing.",
+    // 常识题
+    quizHeading: "Please answer the following question:",
+    quizSubmitText: "Submit",
+    quizError: "Please select an answer.",
     congratsHeading: "🎉 Congratulations!",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?",
     optYes: "🎁 Yes, I want to join the draw",
@@ -500,7 +588,6 @@ const T = {
   },
   de: {
     title: "Professional Governance & Trust in Construction<br>Berufsständische Governance & Vertrauen im Bauwesen",
-    // 修改为英文在前，德文在后，逐段交替
     subtitle: "Dear Professional,<br>Sehr geehrte Damen und Herren,<br><br>The construction industry stands at a crossroads. Your participation matters.<br>Die Bauindustrie befindet sich an einem Scheideweg. Ihre Teilnahme ist von entscheidender Bedeutung.<br><br>We invite you to join a global academic study capturing the real state of professional governance and trust formation. By sharing your observations, you contribute to an international dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br>Wir laden Sie herzlich ein, an einer globalen wissenschaftlichen Studie teilzunehmen, die den tatsächlichen Stand der berufsständischen Regulierung und Vertrauensbildung erfasst. Indem Sie Ihre Beobachtungen teilen, leisten Sie einen Beitrag zum internationalen Dialog unter Fachkollegen aus verschiedenen Ländern, die vor denselben Herausforderungen stehen: Was bedeutet es, in Zeiten technologischer Umbrüche, veränderter öffentlicher Erwartungen und zunehmender Projektkomplexität ein vertrauenswürdiger Fachmann zu sein? Wie kann unser Berufsstand in einer sich wandelnden Welt weiterhin Vertrauen gewinnen?",
     returnBox: "<b style='color:var(--blue); font-size:16px;'>What You Get in Return / Was Sie als Gegenleistung erhalten:</b><br>We value your time and expertise. Here is what we offer all participants:<br>Wir schätzen Ihre Zeit und Expertise. Hier ist, was wir allen Teilnehmern bieten:<br><br><b>① Research Report / Forschungsbericht</b><br>Upon completion of our study, we will share an international comparative research report with all participants.<br>Nach Abschluss unserer Studie werden wir einen internationalen vergleichenden Forschungsbericht mit allen Teilnehmern teilen.<br><br><b>② Prize Draw / Gewinnspiel</b><br><span style='color:var(--red); font-weight:bold;'>To ensure the representativeness and quality of our research data, we are conducting in-depth analyses for a focused set of countries/regions. For respondents from these sample countries/regions, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!<br>Um die Repräsentativität und Qualität unserer Forschungsdaten zu gewährleisten, führen wir vertiefte Analysen für eine ausgewählte Gruppe von Ländern/Regionen durch. Für Befragte aus diesen Stichprobenländern/-regionen bieten wir ein zweistufiges Gewinnspiel mit einer 100%igen Gewinnchance und einem Hauptpreis von $500!</span>",
     step1Heading: "About This Study / Über diese Studie",
@@ -512,6 +599,10 @@ const T = {
     otherProfRequired: "Bitte geben Sie Ihr Berufsfeld an, bevor Sie fortfahren.",
     otherCountryPlaceholder: "Bitte geben Sie Ihr Land / Ihre Region an",
     otherCountryRequired: "Bitte geben Sie Ihr Land / Ihre Region an, bevor Sie fortfahren.",
+    // 常识题
+    quizHeading: "Bitte beantworten Sie die folgende Frage: / Please answer the following question:",
+    quizSubmitText: "Einreichen / Submit",
+    quizError: "Bitte wählen Sie eine Antwort. / Please select an answer.",
     congratsHeading: "🎉 Congratulations! / Herzlichen Glückwunsch!",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='lotteryCountryName_de'></strong> — ist eines unserer ausgewählten Länder / Regionen, das an der Verlosung teilnehmen kann. Möchten Sie am Gewinnspiel teilnehmen?",
     optYes: "🎁 Yes, I want to join the draw / Ja, ich möchte teilnehmen",
@@ -558,9 +649,7 @@ const T = {
   },
   sg: {
     title: "Professional Governance & Trust in Construction",
-    // 修改为逐段交替：先英文后中文，每段用<br>分隔，段落间用<br><br>
-    subtitle: "Dear Professional,<br>尊敬的专业人士：<br><br>The construction industry stands at a crossroads. Your participation matters.<br>建筑行业正站在十字路口。您的参与至关重要。<br><br>We invite you to join a global academic study capturing the real state of professional governance and trust formation. By sharing your observations, you contribute to an international dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br>我们诚邀您参加一项全球性学术研究，旨在了解专业治理和信任建立的真实状况。通过分享您的观察，您将为面临同样挑战的各国同行之间的国际对话做出贡献：在技术颠覆、公众期望变化和项目复杂性增加的时代，成为一名值得信赖的专业人士意味着什么？我们的行业如何在变化的世界中继续赢得信任？",
-    returnBox: "<div class='return-box'><b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br><b style='color:var(--blue); font-size:16px;'>您的参与回报：</b><br>We value your time and expertise. Here is what we offer all participants:<br>我们十分重视您的时间与专业知识。我们为所有参与者提供以下回报：<br><br><b>① Research Report</b><br><b>① 研究报告</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br>研究完成后，我们将与所有参与者分享一份国际比较研究报告。您可通过清华大学云盘获取，或者我们也可以直接发送到您提供的电子邮箱。<br><br><b>② Prize Draw</b><br><b>② 问卷抽奖</b><br><span style='color:var(--red); font-weight:bold;'>为确保研究数据的代表性和质量，我们正对特定抽样国家/地区进行深度分析。来自这些抽样国家/地区的受访者，将有机会参与分两个阶段进行的100%中奖率抽奖活动，最高奖金为500美元！</span></div>",
+    subtitle: "Dear Professional,<br>尊敬的专业人士：<br><br>The construction industry stands at a crossroads. Your participation matters.<br>建筑行业正站在十字路口。您的参与至关重要。<br><br>We invite you to join a global academic study capturing the real state of professional governance and trust formation. By sharing your observations, you contribute to an international dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br>我们诚邀您参加一项全球性学术研究，旨在了解专业治理和信任建立的真实状况。通过分享您的观察，您将与面临同样挑战的跨国同行展开对话：在技术颠覆、公众期望转变和项目复杂性增加的时代，成为值得信赖的专业人士意味着什么？在不断变化的世界中，我们的行业如何继续赢得信任？<br><br><div class='return-box'><b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br><b style='color:var(--blue); font-size:16px;'>您的参与回报：</b><br>We value your time and expertise. Here is what we offer all participants:<br>我们十分重视您的时间与专业知识。我们为所有参与者提供以下回报：<br><br><b>① Research Report</b><br><b>① 研究报告</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br>研究完成后，我们将与所有参与者分享一份国际比较研究报告。您可通过清华大学云盘获取，或者我们也可以直接发送到您提供的电子邮箱。<br><br><b>② Prize Draw</b><br><b>② 问卷抽奖</b><br><span style='color:var(--red); font-weight:bold;'>为确保研究数据的代表性和质量，我们正对特定抽样国家/地区进行深度分析。来自这些抽样国家/地区的受访者，将有机会参与分两个阶段进行的100%中奖率抽奖活动，最高奖金为500美元！</span></div>",
     returnBox: "",
     step1Heading: "About This Study / 关于本研究",
     formHeading: "Your Professional Background / 您的专业背景",
@@ -571,6 +660,10 @@ const T = {
     otherProfRequired: "请填写您的具体专业领域后再继续。",
     otherCountryPlaceholder: "请填写您的国家/地区",
     otherCountryRequired: "请填写您的国家/地区后再继续。",
+    // 常识题
+    quizHeading: "Please answer the following question: / 请回答以下问题：",
+    quizSubmitText: "Submit / 提交",
+    quizError: "Please select an answer. / 请选择一个答案。",
     congratsHeading: "🎉 Congratulations! / 恭喜！",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>您选择的国家/地区 — <strong id='lotteryCountryName_cn'></strong> — 是我们的抽奖国家/地区之一。您希望参与抽奖吗？",
     optYes: "🎁 Yes, I want to join the draw / 是的，我要参与抽奖",
@@ -619,6 +712,400 @@ const T = {
 };
 
 // ============================================================
+// 常识题数据（按专业映射题目ID）
+// ============================================================
+const QUIZ_MAP = {
+  "1": "Q10",  // Architectural Design
+  "2": "Q12",  // Structural Engineering
+  "3": "Q13",  // MEP
+  "4": "Q14",  // Construction Supervision
+  "5": "Q14",  // Construction Management
+  "6": "Q15",  // Cost Management / QS
+  "7": "Q12",  // Geotechnical
+  "8": "Q14",  // Feasibility Study
+  "9": "Q14",  // Integrated Project Delivery
+  "10": "Q14", // Project Management
+  "11": "Q17", // Safety Engineering
+  "12": "Q16", // BIM Management
+  "13": "Q20", // Information Technology
+  "14": "Q19", // Green Building
+  "15": "Q19", // Carbon Asset Management
+  "16": "Q18", // Fixed Asset Valuation
+  "17": "Q22", // Urban Planner
+  "18": "Q21", // Other
+};
+
+// 各语言题目内容（en: 纯英文, de: 德文, sg: 英中双语）
+const QUIZ_DATA = {
+  en: {
+    Q10: {
+      question: "In building construction, what does 'flashing' refer to?",
+      options: [
+        "A. Water overflow into a building during heavy rain",
+        "B. The waterproofing detail at the junction of a roof and a vertical wall",
+        "C. An overflow device in indoor plumbing systems",
+        "D. Rainwater wash marks on exterior wall surfaces"
+      ],
+      correctIndex: 1
+    },
+    Q12: {
+      question: "In structural/geotechnical engineering, what does 'SPT' stand for?",
+      options: [
+        "A. Site Planning Template",
+        "B. Structural Performance Threshold",
+        "C. Standard Penetration Test",
+        "D. Soil Plasticity Type"
+      ],
+      correctIndex: 2
+    },
+    Q13: {
+      question: "In MEP engineering, what does 'FCU' stand for?",
+      options: [
+        "A. Fire Control Unit",
+        "B. Fan Coil Unit",
+        "C. Fluid Circulation Unit",
+        "D. Floor Cooling Utility"
+      ],
+      correctIndex: 1
+    },
+    Q14: {
+      question: "What is FIDIC best known for in the construction industry?",
+      options: [
+        "A. A digital platform for international project bidding",
+        "B. A financial insurance scheme for construction defects",
+        "C. Standard forms of international construction and engineering contracts",
+        "D. An international building safety certification system"
+      ],
+      correctIndex: 2
+    },
+    Q15: {
+      question: "In the construction industry, what does 'RICS' stand for?",
+      options: [
+        "A. Regional Infrastructure Construction Standards",
+        "B. Royal Institution of Chartered Surveyors",
+        "C. Risk and Insurance for Construction Services",
+        "D. Registered International Construction Specialists"
+      ],
+      correctIndex: 1
+    },
+    Q16: {
+      question: "In BIM, what does 'IFC' stand for?",
+      options: [
+        "A. Integrated Facility Control",
+        "B. Information Flow Chart",
+        "C. Industry Foundation Classes",
+        "D. International Finance Corporation"
+      ],
+      correctIndex: 2
+    },
+    Q17: {
+      question: "What does 'LOTO' stand for in construction safety?",
+      options: [
+        "A. Level of Tolerance for Operations",
+        "B. Logistics and Onsite Transportation Order",
+        "C. Low-Temperature Operating Threshold",
+        "D. Lockout / Tagout"
+      ],
+      correctIndex: 3
+    },
+    Q18: {
+      question: "What does 'NPV' stand for in investment/valuation analysis?",
+      options: [
+        "A. Net Present Value",
+        "B. Nominal Property Valuation",
+        "C. Net Profit Variance",
+        "D. National Price Verification"
+      ],
+      correctIndex: 0
+    },
+    Q19: {
+      question: "In green building, what does 'LEED' stand for?",
+      options: [
+        "A. Low Energy Emission Development",
+        "B. Leadership in Energy and Environmental Design",
+        "C. Licensed Environmental Engineering Design",
+        "D. Land Efficiency and Ecological Development"
+      ],
+      correctIndex: 1
+    },
+    Q20: {
+      question: "In construction technology, what is 'clash detection'?",
+      options: [
+        "A. Checking safe distances between construction machinery",
+        "B. Simulating collision responses between adjacent buildings during earthquakes",
+        "C. Identifying spatial conflicts between different building systems in a 3D model",
+        "D. Detecting collision damage to building materials during transportation"
+      ],
+      correctIndex: 2
+    },
+    Q21: {
+      question: "In the construction industry, what does 'EPC' stand for?",
+      options: [
+        "A. Environmental Protection Certificate",
+        "B. Engineering, Procurement, and Construction",
+        "C. Estimated Project Cost",
+        "D. Equipment Performance Check"
+      ],
+      correctIndex: 1
+    },
+    Q22: {
+      question: "In urban planning, what does 'TOD' stand for?",
+      options: [
+        "A. Total Occupancy Density",
+        "B. Transit-Oriented Development",
+        "C. Territorial Operations Directive",
+        "D. Topographic Overlay Design"
+      ],
+      correctIndex: 1
+    }
+  },
+  de: {
+    Q10: {
+      question: "Was versteht man im Bauwesen unter „Flashing“ (Anschlussblech/Abdeckung)?",
+      options: [
+        "A. Eindringen von Wasser in ein Gebäude bei Starkregen",
+        "B. Das Abdichtungsdetail am Übergang zwischen Dach und vertikaler Wand",
+        "C. Eine Überlaufvorrichtung in der Hausinstallation",
+        "D. Regenwasser-Ablaufspuren an Außenwandflächen"
+      ],
+      correctIndex: 1
+    },
+    Q12: {
+      question: "Wofür steht „SPT“ im Bauingenieurwesen bzw. in der Geotechnik?",
+      options: [
+        "A. Site Planning Template (Vorlage für die Standortplanung)",
+        "B. Structural Performance Threshold (Grenzwert für das Tragverhalten)",
+        "C. Standard Penetration Test (Standard-Penetrationsversuch)",
+        "D. Soil Plasticity Type (Art der Bodenplastizität)"
+      ],
+      correctIndex: 2
+    },
+    Q13: {
+      question: "Wofür steht „FCU“ in der TGA-Planung (Technikgebäudeausrüstung)?",
+      options: [
+        "A. Fire Control Unit (Feuerleiteinheit)",
+        "B. Fan Coil Unit (Gebläsekonvektor)",
+        "C. Fluid Circulation Unit (Flüssigkeitsumlaufeinheit)",
+        "D. Floor Cooling Utility (Dienstprogramm zur Bodenkühlung)"
+      ],
+      correctIndex: 1
+    },
+    Q14: {
+      question: "Wofür ist FIDIC in der Baubranche am bekanntesten?",
+      options: [
+        "A. Eine digitale Plattform für internationale Projektausschreibungen",
+        "B. Ein finanzielles Absicherungssystem für Baumängel",
+        "C. Standardvertragsmuster für internationale Bau- und Ingenieurverträge",
+        "D. Ein internationales Zertifizierungssystem für Gebäudesicherheit"
+      ],
+      correctIndex: 2
+    },
+    Q15: {
+      question: "Wofür steht „RICS“ in der Baubranche?",
+      options: [
+        "A. Regional Infrastructure Construction Standards (Regionale Standards für den Infrastrukturbau)",
+        "B. Royal Institution of Chartered Surveyors (Königliche Institution der Chartered Surveyors)",
+        "C. Risk and Insurance for Construction Services (Risiken und Versicherungsschutz für Bauleistungen)",
+        "D. Registered International Construction Specialists (Registrierte internationale Baufachleute)"
+      ],
+      correctIndex: 1
+    },
+    Q16: {
+      question: "Wofür steht „IFC“ im Bereich BIM?",
+      options: [
+        "A. Integrated Facility Control (Integrierte Anlagensteuerung)",
+        "B. Information Flow Chart (Informationsflussdiagramm)",
+        "C. Industry Foundation Classes (Grundlagenkurse für die Industrie)",
+        "D. International Finance Corporation (Internationale Finanz-Corporation)"
+      ],
+      correctIndex: 2
+    },
+    Q17: {
+      question: "Wofür steht „LOTO“ im Bereich der Arbeitssicherheit auf Baustellen?",
+      options: [
+        "A. Level of Tolerance for Operations (Toleranzgrenze für den Betrieb)",
+        "B. Logistics and Onsite Transportation Order (Auftrag für Logistik und Transport vor Ort)",
+        "C. Low-Temperature Operating Threshold (Betriebsgrenzwert für niedrige Temperaturen)",
+        "D. Lockout / Tagout (Lockout/Tagout)"
+      ],
+      correctIndex: 3
+    },
+    Q18: {
+      question: "Wofür steht „NPV“ in der Investitions- oder Bewertungsanalyse?",
+      options: [
+        "A. Net Present Value (Kapitalwert)",
+        "B. Nominal Property Valuation (Nominale Immobilienbewertung)",
+        "C. Net Profit Variance (Abweichung des Nettogewinns)",
+        "D. National Price Verification (Nationale Preisüberprüfung)"
+      ],
+      correctIndex: 0
+    },
+    Q19: {
+      question: "Wofür steht „LEED“ im Bereich des umweltfreundlichen Bauens?",
+      options: [
+        "A. Low Energy Emission Development (Entwicklung emissionsarmer Technologien)",
+        "B. Leadership in Energy and Environmental Design (Führungsrolle im Energie- und Umweltdesign)",
+        "C. Licensed Environmental Engineering Design (Zugelassene Planung im Umweltingenieurwesen)",
+        "D. Land Efficiency and Ecological Development (Flächeneffizienz und ökologische Entwicklung)"
+      ],
+      correctIndex: 1
+    },
+    Q20: {
+      question: "Was versteht man in der Bautechnik unter „Kollisionsprüfung“ (Clash Detection)?",
+      options: [
+        "A. Überprüfung der Sicherheitsabstände zwischen Baumaschinen",
+        "B. Simulation von Stoßreaktionen zwischen benachbarten Gebäuden bei Erdbeben",
+        "C. Identifizierung räumlicher Konflikte zwischen verschiedenen Gebäudesystemen in einem 3D-Modell",
+        "D. Erkennung von Stoßschäden an Baumaterialien während des Transports"
+      ],
+      correctIndex: 2
+    },
+    Q21: {
+      question: "Wofür steht „EPC“ in der Baubranche?",
+      options: [
+        "A. Environmental Protection Certificate (Umweltschutzzertifikat)",
+        "B. Engineering, Procurement, and Construction (Planung, Beschaffung und Bauausführung)",
+        "C. Estimated Project Cost (Geschätzte Projektkosten)",
+        "D. Equipment Performance Check (Geräteleistungsprüfung)"
+      ],
+      correctIndex: 1
+    },
+    Q22: {
+      question: "Wofür steht „TOD“ in der Stadtplanung?",
+      options: [
+        "A. Total Occupancy Density (Gesamtbelegungsdichte)",
+        "B. Transit-Oriented Development (Verkehrsorientierte Stadtentwicklung)",
+        "C. Territorial Operations Directive (Richtlinie für territoriale Operationen)",
+        "D. Topographic Overlay Design (Design der topografischen Überlagerung)"
+      ],
+      correctIndex: 1
+    }
+  },
+  sg: {
+    Q10: {
+      question: "In building construction, what does 'flashing' refer to? / 在建筑施工中，“flashing”指的是什么？",
+      options: [
+        "A. Water overflow into a building during heavy rain / 大雨期间涌入建筑物的溢水",
+        "B. The waterproofing detail at the junction of a roof and a vertical wall / 屋顶与垂直墙体交接处的防水构造细节",
+        "C. An overflow device in indoor plumbing systems / 室内管道系统中的溢流装置",
+        "D. Rainwater wash marks on exterior wall surfaces / 外墙面上的雨水冲刷痕迹"
+      ],
+      correctIndex: 1
+    },
+    Q12: {
+      question: "In structural/geotechnical engineering, what does 'SPT' stand for? / 在结构/岩土工程中，“SPT”代表什么？",
+      options: [
+        "A. Site Planning Template / 场地规划模板",
+        "B. Structural Performance Threshold / 结构性能阈值",
+        "C. Standard Penetration Test / 标准贯入试验",
+        "D. Soil Plasticity Type / 土壤塑性类型"
+      ],
+      correctIndex: 2
+    },
+    Q13: {
+      question: "In MEP engineering, what does 'FCU' stand for? / 在机电工程中，“FCU”代表什么？",
+      options: [
+        "A. Fire Control Unit / 消防控制单元",
+        "B. Fan Coil Unit / 风机盘管机组",
+        "C. Fluid Circulation Unit / 流体循环单元",
+        "D. Floor Cooling Utility / 地板冷却设备"
+      ],
+      correctIndex: 1
+    },
+    Q14: {
+      question: "What is FIDIC best known for in the construction industry? / 在建筑行业中，FIDIC 最广为人知的是什么？",
+      options: [
+        "A. A digital platform for international project bidding / 一个用于国际项目投标的数字平台",
+        "B. A financial insurance scheme for construction defects / 一种针对施工缺陷的金融保险计划",
+        "C. Standard forms of international construction and engineering contracts / 国际建筑与工程合同的标准范本",
+        "D. An international building safety certification system / 一个国际建筑安全认证体系"
+      ],
+      correctIndex: 2
+    },
+    Q15: {
+      question: "In the construction industry, what does 'RICS' stand for? / 在建筑行业中，“RICS”代表什么？",
+      options: [
+        "A. Regional Infrastructure Construction Standards / 区域基础设施建设标准",
+        "B. Royal Institution of Chartered Surveyors / 英国皇家特许测量师学会",
+        "C. Risk and Insurance for Construction Services / 建筑服务风险与保险",
+        "D. Registered International Construction Specialists / 注册国际建筑专家"
+      ],
+      correctIndex: 1
+    },
+    Q16: {
+      question: "In BIM, what does 'IFC' stand for? / 在BIM中，“IFC”代表什么？",
+      options: [
+        "A. Integrated Facility Control / 集成设施控制",
+        "B. Information Flow Chart / 信息流程图",
+        "C. Industry Foundation Classes / 工业基础类",
+        "D. International Finance Corporation / 国际金融公司"
+      ],
+      correctIndex: 2
+    },
+    Q17: {
+      question: "What does 'LOTO' stand for in construction safety? / 在建筑安全中，“LOTO”代表什么？",
+      options: [
+        "A. Level of Tolerance for Operations / 操作容忍度水平",
+        "B. Logistics and Onsite Transportation Order / 物流与现场运输指令",
+        "C. Low-Temperature Operating Threshold / 低温操作阈值",
+        "D. Lockout / Tagout / 上锁/挂牌"
+      ],
+      correctIndex: 3
+    },
+    Q18: {
+      question: "What does 'NPV' stand for in investment/valuation analysis? / 在投资/估值分析中，“NPV”代表什么？",
+      options: [
+        "A. Net Present Value / 净现值",
+        "B. Nominal Property Valuation / 名义物业估值",
+        "C. Net Profit Variance / 净利润差异",
+        "D. National Price Verification / 国家价格验证"
+      ],
+      correctIndex: 0
+    },
+    Q19: {
+      question: "In green building, what does 'LEED' stand for? / 在绿色建筑中，“LEED”代表什么？",
+      options: [
+        "A. Low Energy Emission Development / 低能耗排放发展",
+        "B. Leadership in Energy and Environmental Design / 能源与环境设计先锋",
+        "C. Licensed Environmental Engineering Design / 许可环境工程设计",
+        "D. Land Efficiency and Ecological Development / 土地效率与生态发展"
+      ],
+      correctIndex: 1
+    },
+    Q20: {
+      question: "In construction technology, what is 'clash detection'? / 在施工技术中，“clash detection”指的是什么？",
+      options: [
+        "A. Checking safe distances between construction machinery / 检查施工机械之间的安全距离",
+        "B. Simulating collision responses between adjacent buildings during earthquakes / 模拟地震时相邻建筑物之间的碰撞反应",
+        "C. Identifying spatial conflicts between different building systems in a 3D model / 在三维模型中识别不同建筑系统之间的空间冲突",
+        "D. Detecting collision damage to building materials during transportation / 检测运输过程中建筑材料的碰撞损坏"
+      ],
+      correctIndex: 2
+    },
+    Q21: {
+      question: "In the construction industry, what does 'EPC' stand for? / 在建筑行业中，“EPC”代表什么？",
+      options: [
+        "A. Environmental Protection Certificate / 环境保护证书",
+        "B. Engineering, Procurement, and Construction / 设计、采购与施工",
+        "C. Estimated Project Cost / 预估项目成本",
+        "D. Equipment Performance Check / 设备性能检查"
+      ],
+      correctIndex: 1
+    },
+    Q22: {
+      question: "In urban planning, what does 'TOD' stand for? / 在城市规划中，“TOD”代表什么？",
+      options: [
+        "A. Total Occupancy Density / 总居住密度",
+        "B. Transit-Oriented Development / 公交导向开发",
+        "C. Territorial Operations Directive / 领土行动指令",
+        "D. Topographic Overlay Design / 地形叠加设计"
+      ],
+      correctIndex: 1
+    }
+  }
+};
+
+// ============================================================
 // 配置
 // ============================================================
 const SURVEY_URLS = {
@@ -626,7 +1113,6 @@ const SURVEY_URLS = {
   DE: "https://qualtricsxmzpmj6w4xr.qualtrics.com/jfe/form/SV_6YAC2BOaEfu3KFo",
   SG: "https://qualtricsxmj5mtpnh84.qualtrics.com/jfe/form/SV_2mCyHxcqOhfXSKO",
   INT: "https://qualtricsxm9w64qn9tz.qualtrics.com/jfe/form/SV_6mRg9ZiDobFS7zg",
-  // 中国大陆、香港、澳门、台湾使用单独链接
   CN: "https://qualtricsxm9w64qn9tz.qualtrics.com/jfe/form/SV_5sTMJnY6ix2mHOe",
   HK: "https://qualtricsxm9w64qn9tz.qualtrics.com/jfe/form/SV_5sTMJnY6ix2mHOe",
   MO: "https://qualtricsxm9w64qn9tz.qualtrics.com/jfe/form/SV_5sTMJnY6ix2mHOe",
@@ -634,13 +1120,9 @@ const SURVEY_URLS = {
 };
 
 const LOTTERY_COUNTRIES = { "US": "US", "DE": "DE", "SG": "SG" };
-
-// 需要显示英中双语的国家代码（不包括抽奖国SG，但包含CN/HK/MO/TW）
 const BILINGUAL_COUNTRIES = ["CN", "HK", "MO", "TW", "SG"];
 
-// ============================================================
-// 专业列表（17 个）
-// ============================================================
+// 专业列表
 const PROFESSIONS = [
   { value: "1", label: "Architectural Design" },
   { value: "2", label: "Structural Engineering" },
@@ -662,9 +1144,7 @@ const PROFESSIONS = [
   { value: "18", label: "Other" }
 ];
 
-// ============================================================
-// 国家列表（按首字母排序，Other 放最后）
-// ============================================================
+// 国家列表（与之前相同，省略长列表）
 const COUNTRIES = [
   { code: "DZ", name: "Algeria" },
   { code: "AR", name: "Argentina" },
@@ -780,13 +1260,13 @@ let selectedCountryName = "";
 let lotteryChoice = "";
 let nonLotteryChoice = "";
 let counts = { US: 0, DE: 0, SG: 0 };
+let selectedQuizOption = null; // 选中的选项索引
 
 // ============================================================
 // 语言应用
 // ============================================================
 function applyLanguage(countryCode) {
   const code = countryCode || countrySelect.value || "en";
-  // 德国使用德语，中国大陆/香港/澳门/台湾/新加坡使用英中双语，其他使用英文
   const lang = (code === "DE") ? "de" 
                : (BILINGUAL_COUNTRIES.includes(code)) ? "sg" 
                : "en";
@@ -815,6 +1295,7 @@ function applyLanguage(countryCode) {
   otherProfInput.placeholder = t.otherProfPlaceholder || "Please specify your professional field";
   otherCountryInput.placeholder = t.otherCountryPlaceholder || "Please specify your country/region";
 
+  // 抽奖面板文字（原样保留）
   document.getElementById("congratsHeading").textContent = t.congratsHeading;
   let descHtml = t.congratsDesc;
   if (selectedName) {
@@ -837,7 +1318,6 @@ function applyLanguage(countryCode) {
 
   // 奖品表格
   document.getElementById("prizeHeading").textContent = t.prizeHeading;
-  // prizeNote 已在 applyLanguage 中单独设置（见下方）
   document.getElementById("thTier").textContent = t.thTier;
   document.getElementById("thAmount").textContent = t.thAmount;
   document.getElementById("thWinners").textContent = t.thWinners;
@@ -863,10 +1343,7 @@ function applyLanguage(countryCode) {
   totalTr.innerHTML = `<td><strong>${t.pTotal}</strong></td><td><strong>$1,387</strong></td><td><strong>${t.pTotalWin}</strong></td>`;
   tbody.appendChild(totalTr);
 
-  // 设置 prizeNote
   document.getElementById("prizeNote").innerHTML = t.prizeNote;
-
-  // lotteryLimit
   document.getElementById("lotteryLimit").innerHTML = t.lotteryLimit;
 
   document.getElementById("rulesHeading").textContent = t.rulesHeading;
@@ -898,52 +1375,138 @@ function applyLanguage(countryCode) {
 
   document.getElementById("quitTitle").textContent = t.quitTitle;
   document.getElementById("quitDesc").innerHTML = t.quitDesc;
+
+  // 常识题文字（语言相关）
+  document.getElementById("quizHeading").textContent = t.quizHeading;
+  document.getElementById("quizSubmitText").textContent = t.quizSubmitText;
+  document.getElementById("quizError").textContent = t.quizError;
+
+  // 语言相关也存储当前语言代码供后续使用
+  window.currentLang = lang;
 }
 
 // ============================================================
-// 进度模块：加载计数
+// 显示常识题
 // ============================================================
-const API_URL = "https://survey-counter.longhc23gemini.workers.dev";
+function showQuiz() {
+  const profCode = selectedProfession;
+  const quizId = QUIZ_MAP[profCode];
+  if (!quizId) {
+    // 若没有对应题目（理论上不会），直接跳转到抽奖面板
+    showLotteryPanel();
+    return;
+  }
 
-function loadCounter(code) {
-  document.getElementById("counterLoading").style.display = "block";
-  document.getElementById("progressContent").style.display = "none";
-
-  fetch(API_URL + "?action=read")
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      counts = data.counts || data;
-      renderProgress(code);
-    })
-    .catch(function() {
-      renderProgress(code);
-    });
+  const lang = window.currentLang || "en";
+  const quizData = QUIZ_DATA[lang];
+  if (!quizData || !quizData[quizId]) {
+    // 降级到英文
+    const fallback = QUIZ_DATA.en[quizId];
+    if (fallback) {
+      displayQuiz(quizId, fallback);
+    } else {
+      showLotteryPanel();
+    }
+    return;
+  }
+  displayQuiz(quizId, quizData[quizId]);
 }
 
-function renderProgress(code) {
-  // 语言使用与 applyLanguage 一致
-  const lang = (code === "DE") ? "de" 
-               : (BILINGUAL_COUNTRIES.includes(code)) ? "sg" 
-               : "en";
-  var t = T[lang];
-  var n = counts[code] || 0;
-  var total = 300;
-  var pct = Math.min(100, Math.round((n / total) * 100));
+function displayQuiz(quizId, data) {
+  document.getElementById("step1").style.display = "none";
+  document.getElementById("step2").style.display = "block";
+  document.getElementById("panelA").classList.remove("visible");
+  document.getElementById("panelB").classList.remove("visible");
+  document.getElementById("panelQuit").classList.remove("visible");
 
-  document.getElementById("counterLoading").style.display = "none";
-  document.getElementById("progressContent").style.display = "block";
+  document.getElementById("quizQuestion").textContent = data.question;
+  const optionsContainer = document.getElementById("quizOptions");
+  optionsContainer.innerHTML = "";
+  data.options.forEach((text, index) => {
+    const label = document.createElement("label");
+    label.className = "quiz-option";
+    label.setAttribute("data-index", index);
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "quiz";
+    radio.value = index;
+    radio.onclick = function() {
+      // 清除其他选中样式
+      document.querySelectorAll(".quiz-option").forEach(el => el.classList.remove("selected"));
+      label.classList.add("selected");
+      selectedQuizOption = index;
+      document.getElementById("quizError").classList.remove("visible");
+    };
+    label.appendChild(radio);
+    label.appendChild(document.createTextNode(" " + text));
+    optionsContainer.appendChild(label);
+  });
 
-  document.getElementById("progressLabel").innerHTML = t.progressLabel(code, n);
-  document.getElementById("progressText").innerHTML = n + " / " + total + " (" + pct + "%)";
-  document.getElementById("progressPhase").innerHTML = t.phaseText(n);
-
-  setTimeout(function() {
-    document.getElementById("progressFill").style.width = pct + "%";
-  }, 100);
+  // 重置错误提示和按钮状态
+  document.getElementById("quizError").classList.remove("visible");
+  document.getElementById("quizSubmitBtn").disabled = false;
+  selectedQuizOption = null;
 }
 
 // ============================================================
-// 事件
+// 提交常识题答案
+// ============================================================
+function submitQuizAnswer() {
+  const profCode = selectedProfession;
+  const quizId = QUIZ_MAP[profCode];
+  const lang = window.currentLang || "en";
+  const quizData = QUIZ_DATA[lang] || QUIZ_DATA.en;
+  const data = quizData[quizId];
+  if (!data) {
+    // 无数据则跳过
+    showLotteryPanel();
+    return;
+  }
+
+  if (selectedQuizOption === null || selectedQuizOption === undefined) {
+    document.getElementById("quizError").classList.add("visible");
+    return;
+  }
+
+  const isCorrect = (selectedQuizOption === data.correctIndex);
+  if (isCorrect) {
+    // 答对，进入抽奖面板
+    showLotteryPanel();
+  } else {
+    // 答错，设置失败标记，跳转不合格页
+    sessionStorage.setItem('quiz_failed', 'true');
+    // 清空可能的选择状态
+    sessionStorage.removeItem('selected_profession');
+    sessionStorage.removeItem('selected_country');
+    const country = selectedCountryCode || 'INT';
+    window.location.replace('disqualified.html?country=' + encodeURIComponent(country));
+  }
+}
+
+// ============================================================
+// 显示抽奖面板（原 panelA/panelB）
+// ============================================================
+function showLotteryPanel() {
+  document.getElementById("step1").style.display = "none";
+  document.getElementById("step2").style.display = "none";
+  applyLanguage(selectedCountryCode);
+
+  if (LOTTERY_COUNTRIES[selectedCountryCode]) {
+    document.getElementById("panelA").classList.add("visible");
+    document.getElementById("lotteryDetail").classList.remove("visible");
+    document.getElementById("proceedBtnA").disabled = true;
+    document.querySelectorAll("#lotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
+    lotteryChoice = "";
+  } else {
+    document.getElementById("panelB").classList.add("visible");
+    document.getElementById("proceedBtnB").disabled = true;
+    document.querySelectorAll("#nonLotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
+    nonLotteryChoice = "";
+  }
+}
+
+// ============================================================
+// 事件：专业/国家选择
 // ============================================================
 function handleProfChange() {
   const val = profSelect.value;
@@ -1019,13 +1582,14 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // ============================================================
-// 提交（第一步：显示抽奖面板）
+// 点击 Continue → 进入常识题
 // ============================================================
-function handleSubmit() {
+function goToQuiz() {
   selectedProfession = profSelect.value;
   selectedCountryCode = countrySelect.value;
   selectedCountryName = countrySelect.options[countrySelect.selectedIndex].text;
 
+  // 验证专业和国家（与其他逻辑一致）
   if (selectedProfession === "18") {
     const val = otherProfInput.value.trim();
     if (val === "") {
@@ -1054,21 +1618,13 @@ function handleSubmit() {
     otherCountryInput.classList.remove("error");
   }
 
-  document.getElementById("step1").style.display = "none";
-  applyLanguage(selectedCountryCode);
-
-  if (LOTTERY_COUNTRIES[selectedCountryCode]) {
-    document.getElementById("panelA").classList.add("visible");
-    document.getElementById("lotteryDetail").classList.remove("visible");
-    document.getElementById("proceedBtnA").disabled = true;
-    document.querySelectorAll("#lotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
-  } else {
-    document.getElementById("panelB").classList.add("visible");
-    document.getElementById("proceedBtnB").disabled = true;
-    document.querySelectorAll("#nonLotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
-  }
+  // 进入常识题
+  showQuiz();
 }
 
+// ============================================================
+// 抽奖面板选择逻辑
+// ============================================================
 function selectLotteryChoice(choice) {
   lotteryChoice = choice;
   document.querySelectorAll("#lotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
@@ -1116,18 +1672,56 @@ function selectNonLotteryChoice(choice) {
 }
 
 // ============================================================
-// 跳转
+// 进度模块
+// ============================================================
+const API_URL = "https://survey-counter.longhc23gemini.workers.dev";
+
+function loadCounter(code) {
+  document.getElementById("counterLoading").style.display = "block";
+  document.getElementById("progressContent").style.display = "none";
+
+  fetch(API_URL + "?action=read")
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      counts = data.counts || data;
+      renderProgress(code);
+    })
+    .catch(function() {
+      renderProgress(code);
+    });
+}
+
+function renderProgress(code) {
+  const lang = (code === "DE") ? "de" 
+               : (BILINGUAL_COUNTRIES.includes(code)) ? "sg" 
+               : "en";
+  var t = T[lang];
+  var n = counts[code] || 0;
+  var total = 300;
+  var pct = Math.min(100, Math.round((n / total) * 100));
+
+  document.getElementById("counterLoading").style.display = "none";
+  document.getElementById("progressContent").style.display = "block";
+
+  document.getElementById("progressLabel").innerHTML = t.progressLabel(code, n);
+  document.getElementById("progressText").innerHTML = n + " / " + total + " (" + pct + "%)";
+  document.getElementById("progressPhase").innerHTML = t.phaseText(n);
+
+  setTimeout(function() {
+    document.getElementById("progressFill").style.width = pct + "%";
+  }, 100);
+}
+
+// ============================================================
+// 跳转 Qualtrics
 // ============================================================
 function proceedToSurvey() {
   let surveyKey = "INT";
-  // 抽奖国使用对应链接
   if (LOTTERY_COUNTRIES[selectedCountryCode]) {
     surveyKey = selectedCountryCode;
   } else if (["CN", "HK", "MO", "TW"].includes(selectedCountryCode)) {
-    // 中国大陆、香港、澳门、台湾使用单独链接
     surveyKey = selectedCountryCode;
   }
-  // 其他非抽奖国仍使用 INT 链接
 
   let professionParam;
   if (selectedProfession === "18") {
