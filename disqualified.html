@@ -96,6 +96,12 @@
 </style>
 </head>
 <body>
+<script>
+  // ── 进入不合格页即设置失败标记，防止返回入口页 ──
+  (function() {
+    sessionStorage.setItem('quiz_failed', 'true');
+  })();
+</script>
 <div class="container">
   <div class="institution">
     <div class="institution-name">New Construction Cross-Laboratory (NCCL)</div>
@@ -154,6 +160,6 @@ function render() {
 }
 render();
 </script>
-<!-- 移除了 Cloudflare 的 beacon 脚本，避免显示问题 -->
+<!-- 移除了 Cloudflare 的 beacon 脚本 -->
 </body>
 </html>
