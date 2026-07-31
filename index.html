@@ -484,7 +484,7 @@
     </div>
 
     <!-- 24小时提醒（位于 Start the Survey 按钮上方） -->
-    <p class="token-expiry-hint" id="t-token-expiry-hint"></p>
+    <p class="token-expiry-hint token-expiry-hint-text"></p>
     <button class="btn-primary" id="proceedBtnA" disabled onclick="proceedToSurvey()"><span id="proceedBtnAText"></span></button>
   </div>
 
@@ -503,7 +503,7 @@
     </div>
 
     <!-- 24小时提醒（位于 Start the Survey 按钮上方） -->
-    <p class="token-expiry-hint" id="t-token-expiry-hint"></p>
+    <p class="token-expiry-hint token-expiry-hint-text"></p>
     <button class="btn-primary" id="proceedBtnB" disabled onclick="proceedToSurvey()"><span id="proceedBtnBText"></span></button>
   </div>
 
@@ -1321,8 +1321,9 @@ function applyLanguage(countryCode) {
   otherCountryInput.placeholder = t.otherCountryPlaceholder || "Please specify your country/region";
 
   // 24小时提醒
-  const hintEl = document.getElementById("t-token-expiry-hint");
-  if (hintEl) hintEl.textContent = t.tokenExpiryHint;
+  document.querySelectorAll(".token-expiry-hint-text").forEach(function(el) {
+    el.textContent = t.tokenExpiryHint;
+  });
 
   // 抽奖面板文字（原样保留）
   document.getElementById("congratsHeading").textContent = t.congratsHeading;
