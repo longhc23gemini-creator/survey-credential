@@ -649,7 +649,7 @@ const T = {
   },
   sg: {
     title: "Professional Governance & Trust in Construction",
-    subtitle: "Dear Professional,<br>尊敬的专业人士：<br><br>The construction industry stands at a crossroads. Your participation matters.<br>建筑行业正站在十字路口。您的参与至关重要。<br><br>We invite you to join a global academic study capturing the real state of professional governance and trust formation. By sharing your observations, you contribute to an international dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br>我们诚邀您参加一项全球性学术研究，旨在了解专业治理和信任建立的真实状况。通过分享您的观察，您将与面临同样挑战的跨国同行展开对话：在技术颠覆、公众期望转变和项目复杂性增加的时代，成为值得信赖的专业人士意味着什么？在不断变化的世界中，我们的行业如何继续赢得信任？<br><br><div class='return-box'><b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br><b style='color:var(--blue); font-size:16px;'>您的参与回报：</b><br>We value your time and expertise. Here is what we offer all participants:<br>我们十分重视您的时间与专业知识。我们为所有参与者提供以下回报：<br><br><b>① Research Report</b><br><b>① 研究报告</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br>研究完成后，我们将与所有参与者分享一份国际比较研究报告。您可通过清华大学云盘获取，或者我们也可以直接发送到您提供的电子邮箱。<br><br><b>② Prize Draw</b><br><b>② 问卷抽奖</b><br><span style='color:var(--red); font-weight:bold;'>为确保研究数据的代表性和质量，我们正对特定抽样国家/地区进行深度分析。来自这些抽样国家/地区的受访者，将有机会参与分两个阶段进行的100%中奖率抽奖活动，最高奖金为500美元！</span></div>",
+    subtitle: "Dear Professional,<br>尊敬的专业人士：<br><br>The construction industry stands at a crossroads. Your participation matters.<br>建筑行业正站在十字路口。您的参与至关重要。<br><br>We invite you to join a global academic study capturing the real state of professional governance and trust formation. By sharing your observations, you contribute to an international dialogue among peers facing the same challenges: What does it mean to be a trusted professional in times of technological disruption, shifting public expectations, and increasing project complexity? How can our profession continue to earn trust in a changing world?<br>我们诚邀您参加一项全球性学术研究，旨在了解专业治理和信任建立的真实状况。通过分享您的观察，您将与面临同样挑战的跨国同行展开对话：在技术颠覆、公众期望转变和项目复杂性增加的时代，成为值得信赖的专业人士意味着什么？在不断变化的世界中，我们的行业如何继续赢得信任？<br><br><div class='return-box'><b style='color:var(--blue); font-size:16px;'>What You Get in Return:</b><br><b style='color:var(--blue); font-size:16px;'>您的参与回报：</b><br>We value your time and expertise. Here is what we offer all participants:<br>我们十分重视您的时间与专业知识。我们为所有参与者提供以下回报：<br><br><b>① Research Report</b><br><b>① 研究报告</b><br>Upon completion of our study, we will share an international comparative research report with all participants. Access will be provided via Tsinghua University Cloud, or sent to you via email if you provide it to us.<br>研究完成后，我们将与所有参与者分享一份国际比较研究报告。您可通过清华大学云盘获取，或者我们也可以直接发送到您提供的电子邮箱。<br><br><b>② Prize Draw</b><br><b>② 问卷抽奖</b><br><span style='color:var(--red); font-weight:bold;'>To ensure the representativeness and quality of our research data, we are conducting in-depth analyses for a focused set of countries/regions. For respondents from these sample countries/regions, we offer a two-phase prize draw with a 100% win rate and a top prize of $500!<br>为确保研究数据的代表性和质量，我们正对特定抽样国家/地区进行深度分析。来自这些抽样国家/地区的受访者，将有机会参与分两个阶段进行的100%中奖率抽奖活动，最高奖金为500美元！</span></div>",
     returnBox: "",
     step1Heading: "About This Study / 关于本研究",
     formHeading: "Your Professional Background / 您的专业背景",
@@ -1436,6 +1436,7 @@ function displayQuiz(quizId, data) {
       label.classList.add("selected");
       selectedQuizOption = index;
       document.getElementById("quizError").classList.remove("visible");
+      document.getElementById("quizSubmitBtn").disabled = false;  // ← 选中时启用
     };
     label.appendChild(radio);
     label.appendChild(document.createTextNode(" " + text));
@@ -1444,7 +1445,7 @@ function displayQuiz(quizId, data) {
 
   // 重置错误提示和按钮状态
   document.getElementById("quizError").classList.remove("visible");
-  document.getElementById("quizSubmitBtn").disabled = false;
+  document.getElementById("quizSubmitBtn").disabled = true;  // ← 改为禁用
   selectedQuizOption = null;
 }
 
