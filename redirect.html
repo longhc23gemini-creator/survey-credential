@@ -111,15 +111,35 @@
   </div>
 </div>
 
+<!-- 隐藏的 form，用于提交请求 -->
+<form id="submitForm" method="POST" action="https://survey-counter.longhc23gemini.workers.dev/generate-draw-code" target="hidden_iframe">
+  <input type="hidden" name="rid" id="f_rid">
+  <input type="hidden" name="token" id="f_token">
+  <input type="hidden" name="country" id="f_country">
+  <input type="hidden" name="lottery" id="f_lottery">
+  <input type="hidden" name="profession" id="f_profession">
+</form>
+
+<!-- 隐藏的 iframe，用于接收响应 -->
+<iframe name="hidden_iframe" style="display:none;"></iframe>
+
 <script>
 (function() {
   var CREDENTIAL_BASE = 'https://longhc23gemini-creator.github.io/survey-credential/credential.html';
-  var API_BASE = 'https://survey-counter.longhc23gemini.workers.dev';
 
   var loadingState = document.getElementById('loadingState');
   var errorState = document.getElementById('errorState');
   var retryBtn = document.getElementById('retryBtn');
   var errorDesc = document.getElementById('errorDesc');
+
+  var submitForm = document.getElementById('submitForm');
+  var f_rid = document.getElementById('f_rid');
+  var f_token = document.getElementById('f_token');
+  var f_country = document.getElementById('f_country');
+  var f_lottery = document.getElementById('f_lottery');
+  var f_profession = document.getElementById('f_profession');
+
+  var iframe = document.querySelector('iframe[name="hidden_iframe"]');
 
   function showError(msg) {
     loadingState.style.display = 'none';
@@ -134,7 +154,7 @@
     retryBtn.disabled = true;
   }
 
-  // ── 从 URL 获取参数（不设默认值，全部显式检查） ──
+  // ── 从 URL 获取参数 ──
   var params = new URLSearchParams(window.location.search);
   var rid = params.get('rid');
   var token = params.get('token');
@@ -142,60 +162,104 @@
   var lottery = params.get('lottery');
   var profession = params.get('profession');
 
-  // ── 核心：直接调用 /generate-draw-code ──
-  async function process() {
-    showLoading();
-
-    try {
-      // ── 1. 检查所有参数是否完整（缺少任何一个都视为无效） ──
-      if (!rid || !token || !country || lottery === null || lottery === undefined || !profession) {
-        window.location.replace(CREDENTIAL_BASE);
-        return;
-      }
-
-      // ── 2. 调用 Worker 生成 draw_code（Worker 内部完成所有验证） ──
-      var genRes = await fetch(API_BASE + '/generate-draw-code', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          rid: rid,
-          token: token,
-          country: country,
-          lottery: lottery,
-          profession: profession
-        })
-      });
-
-      // HTTP 状态非 2xx → 验证失败（token 无效/参数不匹配/rid 不匹配等）
-      if (!genRes.ok) {
-        window.location.replace(CREDENTIAL_BASE);
-        return;
-      }
-
-      var genData = await genRes.json();
-
-      // 业务层错误 → 验证失败
-      if (genData.error) {
-        window.location.replace(CREDENTIAL_BASE);
-        return;
-      }
-
-      // ── 成功：跳转到凭证页 ──
-      window.location.replace(CREDENTIAL_BASE + '?code=' + encodeURIComponent(genData.draw_code));
-
-    } catch (err) {
-      // ── 网络异常：停留并显示重试按钮 ──
-      console.warn('Network error in redirect:', err);
-      showError('Network connection issue. Please check your internet and retry.');
-    }
+  // ── 检查参数完整性 ──
+  function hasValidParams() {
+    return rid && token && country && lottery !== null && lottery !== undefined && profession;
   }
 
-  // 绑定重试按钮
+  // ── 通过 iframe + form 提交 ──
+  function process() {
+    showLoading();
+
+    if (!hasValidParams()) {
+      window.location.replace(CREDENTIAL_BASE);
+      return;
+    }
+
+    // 填写表单
+    f_rid.value = rid;
+    f_token.value = token;
+    f_country.value = country;
+    f_lottery.value = lottery;
+    f_profession.value = profession;
+
+    // 移除旧的 iframe 加载监听
+    iframe.onload = null;
+
+    // 设置超时
+    var timeoutId = setTimeout(function() {
+      showError('Request timed out. Please check your internet and retry.');
+    }, 15000);
+
+    // iframe 加载完成时触发
+    iframe.onload = function() {
+      clearTimeout(timeoutId);
+
+      try {
+        // 尝试读取 iframe 内容
+        var doc = iframe.contentDocument || iframe.contentWindow.document;
+        var content = doc.body.textContent || doc.body.innerText || '';
+
+        // 尝试解析 JSON
+        try {
+          var data = JSON.parse(content);
+          if (data.draw_code) {
+            window.location.replace(CREDENTIAL_BASE + '?code=' + encodeURIComponent(data.draw_code));
+            return;
+          }
+          if (data.error) {
+            window.location.replace(CREDENTIAL_BASE);
+            return;
+          }
+        } catch (e) {
+          // 不是 JSON，尝试从 HTML 中提取 draw_code
+          var match = content.match(/"draw_code"\s*:\s*"([^"]+)"/);
+          if (match && match[1]) {
+            window.location.replace(CREDENTIAL_BASE + '?code=' + encodeURIComponent(match[1]));
+            return;
+          }
+        }
+
+        // 无法解析，跳转无 code 凭证页
+        window.location.replace(CREDENTIAL_BASE);
+
+      } catch (e) {
+        // 跨域读取失败，无法获取响应内容
+        // 这种情况下，我们无法知道请求结果
+        // 采用一个保守策略：等待几秒后如果页面没有跳转，显示错误
+        var fallbackTimeout = setTimeout(function() {
+          // 如果页面没有被跳转，显示错误
+          // 但由于无法检测页面是否即将跳转，只能直接跳转无 code 凭证页
+          // 这是最安全的方式
+          window.location.replace(CREDENTIAL_BASE);
+        }, 3000);
+
+        // 如果 3 秒内页面未跳转，fallback 会执行
+        // 但如果我们能检测到 iframe 中有内容，可以提前取消
+        try {
+          var doc2 = iframe.contentDocument || iframe.contentWindow.document;
+          if (doc2 && doc2.body && doc2.body.textContent) {
+            clearTimeout(fallbackTimeout);
+            // 递归调用自身，再次尝试解析
+            iframe.onload();
+            return;
+          }
+        } catch (e2) {
+          // 仍然跨域，让 fallback 执行
+        }
+      }
+    };
+
+    // 提交表单
+    submitForm.submit();
+  }
+
+  // ── 重试 ──
   retryBtn.addEventListener('click', function() {
     process();
   });
 
-  // 立即执行
+  // ── 立即执行 ──
   process();
 })();
 </script>
