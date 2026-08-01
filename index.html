@@ -526,6 +526,13 @@
 // 防返回标记检查（必须放在最前面）
 // ============================================================
 (function() {
+  // ── 优先检查：是否已完成凭证（credential_issued） ──
+  if (sessionStorage.getItem('credential_issued') === 'true') {
+    window.location.replace('https://longhc23gemini-creator.github.io/survey-credential/credential.html');
+    throw new Error('Redirecting to credential page');
+  }
+
+  // ── 其次检查：是否不合格（quiz_failed） ──
   if (sessionStorage.getItem('quiz_failed') === 'true') {
     var params = new URLSearchParams(window.location.search);
     var country = params.get('country') || 'INT';
