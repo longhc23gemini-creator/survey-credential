@@ -43,39 +43,6 @@
     color: #718096;
     margin-top: 4px;
   }
-  .error-box {
-    display: none;
-    margin-top: 20px;
-  }
-  .error-box.visible { display: block; }
-  .error-box .err-icon { font-size: 32px; margin-bottom: 8px; }
-  .error-box .err-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #c53030;
-  }
-  .error-box .err-desc {
-    font-size: 14px;
-    color: #4a5568;
-    margin: 8px 0 16px;
-    line-height: 1.6;
-  }
-  .retry-btn {
-    background: #1a56db;
-    color: #fff;
-    border: none;
-    padding: 10px 32px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .retry-btn:hover { background: #1e429f; }
-  .retry-btn:disabled {
-    background: #a0aec0;
-    cursor: not-allowed;
-  }
   .footer {
     margin-top: 24px;
     font-size: 12px;
@@ -88,31 +55,16 @@
 </head>
 <body>
 <div class="container">
-  <!-- 加载状态（默认显示） -->
-  <div id="loadingState">
-    <div class="spinner"></div>
-    <div class="status-text">Generating your credential...</div>
-    <div class="status-sub">Please wait while we prepare your participation record.</div>
-  </div>
-
-  <!-- 错误状态（初始隐藏） -->
-  <div class="error-box" id="errorState">
-    <div class="err-icon">⚠️</div>
-    <div class="err-title">Connection Issue</div>
-    <div class="err-desc" id="errorDesc">
-      We encountered a network issue while generating your credential.
-      Please check your connection and try again.
-    </div>
-    <button class="retry-btn" id="retryBtn">Retry</button>
-  </div>
-
+  <div class="spinner"></div>
+  <div class="status-text">Generating your credential...</div>
+  <div class="status-sub">Please wait while we prepare your participation record.</div>
   <div class="footer">
     <a href="mailto:nccl@tsinghua.edu.cn">nccl@tsinghua.edu.cn</a>
   </div>
 </div>
 
-<!-- 隐藏的 form，用于提交请求 -->
-<form id="submitForm" method="POST" action="https://survey-counter.longhc23gemini.workers.dev/generate-draw-code" target="hidden_iframe">
+<!-- 隐藏 form，提交到当前窗口（_top） -->
+<form id="submitForm" method="POST" action="https://survey-counter.longhc23gemini.workers.dev/generate-draw-code" target="_top">
   <input type="hidden" name="rid" id="f_rid">
   <input type="hidden" name="token" id="f_token">
   <input type="hidden" name="country" id="f_country">
@@ -120,42 +72,11 @@
   <input type="hidden" name="profession" id="f_profession">
 </form>
 
-<!-- 隐藏的 iframe，用于接收响应 -->
-<iframe name="hidden_iframe" style="display:none;"></iframe>
-
 <script>
 (function() {
   var CREDENTIAL_BASE = 'https://longhc23gemini-creator.github.io/survey-credential/credential.html';
-
-  var loadingState = document.getElementById('loadingState');
-  var errorState = document.getElementById('errorState');
-  var retryBtn = document.getElementById('retryBtn');
-  var errorDesc = document.getElementById('errorDesc');
-
-  var submitForm = document.getElementById('submitForm');
-  var f_rid = document.getElementById('f_rid');
-  var f_token = document.getElementById('f_token');
-  var f_country = document.getElementById('f_country');
-  var f_lottery = document.getElementById('f_lottery');
-  var f_profession = document.getElementById('f_profession');
-
-  var iframe = document.querySelector('iframe[name="hidden_iframe"]');
-
-  function showError(msg) {
-    loadingState.style.display = 'none';
-    errorState.classList.add('visible');
-    if (msg) errorDesc.textContent = msg;
-    retryBtn.disabled = false;
-  }
-
-  function showLoading() {
-    loadingState.style.display = 'block';
-    errorState.classList.remove('visible');
-    retryBtn.disabled = true;
-  }
-
-  // ── 从 URL 获取参数 ──
   var params = new URLSearchParams(window.location.search);
+
   var rid = params.get('rid');
   var token = params.get('token');
   var country = params.get('country');
@@ -163,104 +84,19 @@
   var profession = params.get('profession');
 
   // ── 检查参数完整性 ──
-  function hasValidParams() {
-    return rid && token && country && lottery !== null && lottery !== undefined && profession;
+  if (!rid || !token || !country || lottery === null || lottery === undefined || !profession) {
+    window.location.replace(CREDENTIAL_BASE);
+    return;
   }
 
-  // ── 通过 iframe + form 提交 ──
-  function process() {
-    showLoading();
+  // ── 填写表单并提交 ──
+  document.getElementById('f_rid').value = rid;
+  document.getElementById('f_token').value = token;
+  document.getElementById('f_country').value = country;
+  document.getElementById('f_lottery').value = lottery;
+  document.getElementById('f_profession').value = profession;
 
-    if (!hasValidParams()) {
-      window.location.replace(CREDENTIAL_BASE);
-      return;
-    }
-
-    // 填写表单
-    f_rid.value = rid;
-    f_token.value = token;
-    f_country.value = country;
-    f_lottery.value = lottery;
-    f_profession.value = profession;
-
-    // 移除旧的 iframe 加载监听
-    iframe.onload = null;
-
-    // 设置超时
-    var timeoutId = setTimeout(function() {
-      showError('Request timed out. Please check your internet and retry.');
-    }, 15000);
-
-    // iframe 加载完成时触发
-    iframe.onload = function() {
-      clearTimeout(timeoutId);
-
-      try {
-        // 尝试读取 iframe 内容
-        var doc = iframe.contentDocument || iframe.contentWindow.document;
-        var content = doc.body.textContent || doc.body.innerText || '';
-
-        // 尝试解析 JSON
-        try {
-          var data = JSON.parse(content);
-          if (data.draw_code) {
-            window.location.replace(CREDENTIAL_BASE + '?code=' + encodeURIComponent(data.draw_code));
-            return;
-          }
-          if (data.error) {
-            window.location.replace(CREDENTIAL_BASE);
-            return;
-          }
-        } catch (e) {
-          // 不是 JSON，尝试从 HTML 中提取 draw_code
-          var match = content.match(/"draw_code"\s*:\s*"([^"]+)"/);
-          if (match && match[1]) {
-            window.location.replace(CREDENTIAL_BASE + '?code=' + encodeURIComponent(match[1]));
-            return;
-          }
-        }
-
-        // 无法解析，跳转无 code 凭证页
-        window.location.replace(CREDENTIAL_BASE);
-
-      } catch (e) {
-        // 跨域读取失败，无法获取响应内容
-        // 这种情况下，我们无法知道请求结果
-        // 采用一个保守策略：等待几秒后如果页面没有跳转，显示错误
-        var fallbackTimeout = setTimeout(function() {
-          // 如果页面没有被跳转，显示错误
-          // 但由于无法检测页面是否即将跳转，只能直接跳转无 code 凭证页
-          // 这是最安全的方式
-          window.location.replace(CREDENTIAL_BASE);
-        }, 3000);
-
-        // 如果 3 秒内页面未跳转，fallback 会执行
-        // 但如果我们能检测到 iframe 中有内容，可以提前取消
-        try {
-          var doc2 = iframe.contentDocument || iframe.contentWindow.document;
-          if (doc2 && doc2.body && doc2.body.textContent) {
-            clearTimeout(fallbackTimeout);
-            // 递归调用自身，再次尝试解析
-            iframe.onload();
-            return;
-          }
-        } catch (e2) {
-          // 仍然跨域，让 fallback 执行
-        }
-      }
-    };
-
-    // 提交表单
-    submitForm.submit();
-  }
-
-  // ── 重试 ──
-  retryBtn.addEventListener('click', function() {
-    process();
-  });
-
-  // ── 立即执行 ──
-  process();
+  document.getElementById('submitForm').submit();
 })();
 </script>
 </body>
