@@ -299,7 +299,7 @@
   }
   .footer a { color: var(--gray-500); }
   .hidden { display: none; }
-  .rules-list { padding-left: 20px; margin: 0; }
+  .rules-list { padding-left: 20px; margin: 10px 0; }
   .rules-list li { margin-bottom: 8px; line-height: 1.6; }
   .return-box { margin-top: 18px; padding: 18px; background: #fff; border-radius: 8px; border-left: 4px solid var(--blue); }
   #infoBox .return-box { margin-top: 18px; padding: 18px; background: #fff; border-radius: 8px; border-left: 4px solid var(--blue); }
@@ -373,6 +373,8 @@
     background: var(--gray-300);
     cursor: not-allowed;
   }
+
+  /* 移除 token 过期提示样式，不再需要 */
 </style>
 </head>
 <body>
@@ -572,6 +574,7 @@ const T = {
     quizHeading: "Please answer the following question:",
     quizSubmitText: "Submit",
     quizError: "Please select an answer.",
+    // 删除 tokenExpiryHint 字段
     congratsHeading: "🎉 Congratulations!",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?",
     optYes: "🎁 Yes, I want to join the draw",
@@ -599,8 +602,9 @@ const T = {
     pTotal: "Total",
     pTotalWin: "300 (Guaranteed)",
     prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win a prize!</strong>",
+    // lotteryLimit 保持不变
     lotteryLimit: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.",
-    // 抽奖轮次框
+    // 抽奖轮次框（纯英文）
     roundsHeading: "Draw Rounds",
     resultHeading: "Draw Result Access",
     round1: "First draw (when 150 valid responses are reached in a country/region): Awards 1 second prize, 5 third prizes, 25 participation prizes. Note: The first prize is not drawn in this phase.",
@@ -609,7 +613,8 @@ const T = {
     result1: "Draw Results Notification: All participants who have provided an email address will receive the draw results by email.",
     result2: "Tsinghua Cloud Drive: Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.",
     result3: "Prize Delivery: Leaving your email is the ONLY way we can deliver your prize. Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win.",
-    hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.",
+    // 移除 hint 字段（原截图提示）
+    // 不再使用 hint 字段，改为在 lotteryLimit 中显示
     proceedBtn: "Start the Survey",
     sorryText: "<p><strong>Thank you for your selection!</strong></p><p>The country/region you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.</p>",
     nonCont: "Yes, I would like to continue the survey",
@@ -635,6 +640,7 @@ const T = {
     quizHeading: "Bitte beantworten Sie die folgende Frage: / Please answer the following question:",
     quizSubmitText: "Einreichen / Submit",
     quizError: "Bitte wählen Sie eine Antwort. / Please select an answer.",
+    // 删除 tokenExpiryHint
     congratsHeading: "🎉 Congratulations! / Herzlichen Glückwunsch!",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='lotteryCountryName_de'></strong> — ist eines unserer ausgewählten Länder / Regionen, das an der Verlosung teilnehmen kann. Möchten Sie am Gewinnspiel teilnehmen?",
     optYes: "🎁 Yes, I want to join the draw / Ja, ich möchte teilnehmen",
@@ -671,7 +677,7 @@ const T = {
     result1: "Draw Results Notification: All participants who have provided an email address will receive the draw results by email. / Benachrichtigung über die Ergebnisse: Alle Teilnehmer, die eine E-Mail-Adresse angegeben haben, erhalten die Auslosungsergebnisse per E-Mail.",
     result2: "Tsinghua Cloud Drive: Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted. / Tsinghua Cloud Drive: Die Auslosungsergebnisse werden auch auf dem Tsinghua Cloud Drive veröffentlicht; der Link wird nach der Umfrage angezeigt.",
     result3: "Prize Delivery: Leaving your email is the ONLY way we can deliver your prize. Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win. / Preisübergabe: Die Angabe Ihrer E-Mail-Adresse ist der EINZIGE Weg, um Ihnen einen Gewinn zuzustellen. Gewinner erhalten ihre Amazon-Gutscheine per E-Mail. Wenn Sie keine E-Mail hinterlassen, verfällt ein eventueller Preis.",
-    hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.<br>Nach Abschluss der Umfrage erhalten Sie eine Teilnahme-Nr. Bitte machen Sie einen Screenshot.",
+    // 不再使用 hint
     proceedBtn: "Start the Survey / Umfrage starten",
     sorryText: "<p><strong>Thank you for your selection! / Vielen Dank für Ihre Auswahl!</strong></p><p>Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='nonLotteryCountryName'></strong> — gehört nicht zur Verlosungsstichprobe dieser Studie. Wir laden Sie jedoch herzlich ein, fortzufahren und Ihre wertvolle berufliche Perspektive zu Governance-Fragen zu teilen.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>Ihre Erkenntnisse sind für diese Forschung ebenso wichtig und fließen in unsere internationale Vergleichsanalyse ein.</p>",
     nonCont: "Yes, I would like to continue the survey / Ja, ich möchte die Umfrage fortsetzen",
@@ -697,6 +703,7 @@ const T = {
     quizHeading: "Please answer the following question: / 请回答以下问题：",
     quizSubmitText: "Submit / 提交",
     quizError: "Please select an answer. / 请选择一个答案。",
+    // 删除 tokenExpiryHint
     congratsHeading: "🎉 Congratulations! / 恭喜！",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>您选择的国家/地区 — <strong id='lotteryCountryName_cn'></strong> — 是我们的抽奖国家/地区之一。您希望参与抽奖吗？",
     optYes: "🎁 Yes, I want to join the draw / 是的，我要参与抽奖",
@@ -734,7 +741,7 @@ const T = {
     result1: "Draw Results Notification: All participants who have provided an email address will receive the draw results by email. / 开奖通知：所有提供了邮箱的参与者都将收到开奖结果通知。",
     result2: "Tsinghua Cloud Drive: Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted. / 云盘公示：抽奖结果同时将在清华大学云盘公示，问卷提交后将显示下载链接。",
     result3: "Prize Delivery: Leaving your email is the ONLY way we can deliver your prize. Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win. / 奖品发放：留下邮箱是我们发送奖品的唯一方式。中奖者将通过邮件收到亚马逊礼品卡。不提供邮箱将视为放弃奖品领取。",
-    hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.<br>问卷完成后，您将获得一个唯一的参与编号。建议截图保存作为凭证。",
+    // 不再使用 hint
     proceedBtn: "Start the Survey / 开始填写问卷",
     sorryText: "<p><strong>Thank you for your selection! / 感谢您的选择！</strong></p><p>The country/region you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.<br>您选择的国家/地区 — <strong id='nonLotteryCountryName_cn'></strong> — 不属于本次研究的抽奖样本国家/地区。但我们仍然热忱邀请您继续填写问卷，分享您对专业治理问题的宝贵见解。</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>您的见解对这项研究同样重要，并将为我们的国际比较分析做出贡献。</p>",
     nonCont: "Yes, I would like to continue the survey / 是的，我继续填写问卷",
@@ -1334,7 +1341,7 @@ function applyLanguage(countryCode) {
   otherProfInput.placeholder = t.otherProfPlaceholder || "Please specify your professional field";
   otherCountryInput.placeholder = t.otherCountryPlaceholder || "Please specify your country/region";
 
-  // 抽奖面板文字
+  // 抽奖面板文字（原样保留）
   document.getElementById("congratsHeading").textContent = t.congratsHeading;
   let descHtml = t.congratsDesc;
   if (selectedName) {
@@ -1383,7 +1390,7 @@ function applyLanguage(countryCode) {
   document.getElementById("prizeNote").innerHTML = t.prizeNote;
   document.getElementById("lotteryLimit").innerHTML = t.lotteryLimit;
 
-  // 抽奖轮次框
+  // 抽奖轮次框（新添加）
   document.getElementById("roundsHeading").textContent = t.roundsHeading;
   document.getElementById("resultHeading").textContent = t.resultHeading;
   document.getElementById("round1").textContent = t.round1;
@@ -1393,7 +1400,12 @@ function applyLanguage(countryCode) {
   document.getElementById("result2").textContent = t.result2;
   document.getElementById("result3").textContent = t.result3;
 
-  document.getElementById("hintBox").innerHTML = t.hint;
+  // 不再设置 hintBox 内容（已被 lotteryLimit 替代）
+  // 但需清空 hintBox 以避免多余内容
+  document.getElementById("hintBox").innerHTML = '<span id="lotteryLimit"></span>';
+  // 重新设置 lotteryLimit（因为上面被清空，需重新填充）
+  document.getElementById("lotteryLimit").innerHTML = t.lotteryLimit;
+
   document.getElementById("proceedBtnAText").textContent = t.proceedBtn;
   document.getElementById("proceedBtnBText").textContent = t.proceedBtn;
 
