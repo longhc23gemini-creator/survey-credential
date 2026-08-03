@@ -373,7 +373,7 @@
     cursor: not-allowed;
   }
 
-  /* 按钮组 flex 布局 */
+  /* 按钮组 flex 布局（用于面板中的并排按钮） */
   .btn-group {
     display: flex;
     flex-wrap: wrap;
@@ -442,25 +442,7 @@
       </div>
     </div>
 
-    <!-- 按钮组：电脑并排、手机上下 -->
-    <div class="btn-group">
-      <button class="btn-primary" id="submitBtn" disabled onclick="goToQuiz()">
-        <span id="submitBtnText"></span>
-      </button>
-      <button class="btn-primary btn-share" id="shareBtn">
-        <span id="shareBtnText"></span>
-      </button>
-    </div>
-    <!-- 分享反馈（初始隐藏） -->
-    <div id="shareFeedback" style="margin-top:10px; font-size:14px; font-weight:600; color:var(--green); display:none;">
-      <span id="shareFeedbackText"></span>
-      <div id="qrCodeContainer" style="margin-top:12px; display:none;">
-        <img src="qrcode_entry.png" alt="QR Code" style="width:120px; height:120px; border:1px solid var(--gray-200); border-radius:8px;" />
-        <div style="font-size:12px; font-weight:400; color:var(--gray-500); margin-top:4px;">
-          <span id="qrCodeHint"></span>
-        </div>
-      </div>
-    </div>
+    <button class="btn-primary" id="submitBtn" disabled onclick="goToQuiz()"><span id="submitBtnText"></span></button>
   </div>
 
   <!-- Step 2: 常识题 -->
@@ -549,7 +531,23 @@
       <p style="margin-top:12px;"><a href="mailto:nccl@tsinghua.edu.cn" style="color:var(--blue);">nccl@tsinghua.edu.cn</a></p>
     </div>
 
-    <button class="btn-primary" id="proceedBtnA" disabled onclick="proceedToSurvey()"><span id="proceedBtnAText"></span></button>
+    <!-- 按钮组：Start the Survey + 分享 -->
+    <div class="btn-group">
+      <button class="btn-primary" id="proceedBtnA" disabled onclick="proceedToSurvey()"><span id="proceedBtnAText"></span></button>
+      <button class="btn-primary btn-share share-btn" id="shareBtnA" data-feedback="shareFeedbackA" data-qr="qrCodeContainerA">
+        <span id="shareBtnAText"></span>
+      </button>
+    </div>
+    <!-- 分享反馈 -->
+    <div id="shareFeedbackA" style="margin-top:10px; font-size:14px; font-weight:600; color:var(--green); display:none;">
+      <span id="shareFeedbackTextA"></span>
+      <div id="qrCodeContainerA" style="margin-top:12px; display:none;">
+        <img src="qrcode_entry.png" alt="QR Code" style="width:120px; height:120px; border:1px solid var(--gray-200); border-radius:8px;" />
+        <div style="font-size:12px; font-weight:400; color:var(--gray-500); margin-top:4px;">
+          <span id="qrCodeHintA"></span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="panelB" class="result-panel">
@@ -573,7 +571,23 @@
       <p style="margin-top:12px;"><a href="mailto:nccl@tsinghua.edu.cn" style="color:var(--blue);">nccl@tsinghua.edu.cn</a></p>
     </div>
 
-    <button class="btn-primary" id="proceedBtnB" disabled onclick="proceedToSurvey()"><span id="proceedBtnBText"></span></button>
+    <!-- 按钮组：Start the Survey + 分享 -->
+    <div class="btn-group">
+      <button class="btn-primary" id="proceedBtnB" disabled onclick="proceedToSurvey()"><span id="proceedBtnBText"></span></button>
+      <button class="btn-primary btn-share share-btn" id="shareBtnB" data-feedback="shareFeedbackB" data-qr="qrCodeContainerB">
+        <span id="shareBtnBText"></span>
+      </button>
+    </div>
+    <!-- 分享反馈 -->
+    <div id="shareFeedbackB" style="margin-top:10px; font-size:14px; font-weight:600; color:var(--green); display:none;">
+      <span id="shareFeedbackTextB"></span>
+      <div id="qrCodeContainerB" style="margin-top:12px; display:none;">
+        <img src="qrcode_entry.png" alt="QR Code" style="width:120px; height:120px; border:1px solid var(--gray-200); border-radius:8px;" />
+        <div style="font-size:12px; font-weight:400; color:var(--gray-500); margin-top:4px;">
+          <span id="qrCodeHintB"></span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="footer">
@@ -623,7 +637,6 @@ const T = {
     quizHeading: "Please answer the following question:",
     quizSubmitText: "Submit",
     quizError: "Please select an answer.",
-    // 删除 tokenExpiryHint 字段
     congratsHeading: "🎉 Congratulations!",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?",
     optYes: "🎁 Yes, I want to join the draw",
@@ -651,9 +664,7 @@ const T = {
     pTotal: "Total",
     pTotalWin: "300 (Guaranteed)",
     prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win a prize!</strong>",
-    // lotteryLimit 保持不变
     lotteryLimit: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.",
-    // 抽奖轮次框（纯英文）
     roundsHeading: "Draw Rounds",
     resultHeading: "Draw Result Access",
     round1: "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i>",
@@ -662,8 +673,6 @@ const T = {
     result1: "<b>Draw Results Notification:</b> <span style='color:#1a56db; font-weight:600;'>All participants who have provided an email address</span> will receive the draw results by email.",
     result2: "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.",
     result3: "<b>Prize Delivery:</b> <span style='color:#c53030; font-weight:600;'>Leaving your email is the ONLY way we can deliver your prize.</span> Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win.",
-    // 移除 hint 字段（原截图提示）
-    // 不再使用 hint 字段，改为在 lotteryLimit 中显示
     proceedBtn: "Start the Survey",
     sorryText: "<p><strong>Thank you for your selection!</strong></p><p>The country/region you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.</p>",
     nonCont: "Yes, I would like to continue the survey",
@@ -690,11 +699,10 @@ const T = {
     otherProfRequired: "Bitte geben Sie Ihr Berufsfeld an, bevor Sie fortfahren.",
     otherCountryPlaceholder: "Bitte geben Sie Ihr Land / Ihre Region an",
     otherCountryRequired: "Bitte geben Sie Ihr Land / Ihre Region an, bevor Sie fortfahren.",
-    // 常识题（英语在前，德语在后）
+    // 常识题（英语在前，德语在后）—— 您已修正，请勿改动
     quizHeading: "Please answer the following question: / Bitte beantworten Sie die folgende Frage:",
     quizSubmitText: "Submit / Einreichen",
     quizError: "Please select an answer. / Bitte wählen Sie eine Antwort.",
-    // 删除 tokenExpiryHint
     congratsHeading: "🎉 Congratulations! / Herzlichen Glückwunsch!",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='lotteryCountryName_de'></strong> — ist eines unserer ausgewählten Länder / Regionen, das an der Verlosung teilnehmen kann. Möchten Sie am Gewinnspiel teilnehmen?",
     optYes: "🎁 Yes, I want to join the draw / Ja, ich möchte teilnehmen",
@@ -722,7 +730,6 @@ const T = {
     pTotalWin: "300 (Guaranteed / Garantiert)",
     prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win a prize!<br>Die ersten 300 qualifizierten Teilnehmer pro Land/Region erhalten GARANTIERT einen Preis!</strong>",
     lotteryLimit: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.<br>Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, kann jeder Teilnehmer nur eine Umfrage ausfüllen. Nur gültige Umfrageantworten berechtigen zur Teilnahme an der Verlosung.",
-    // 抽奖轮次框（英德双语，英文在前，德文在后）
     roundsHeading: "Draw Rounds / Auslosungsrunden",
     resultHeading: "Draw Result Access / Zugang zu den Auslosungsergebnissen",
     round1: "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>Erste Auslosung (bei 150 gültigen Antworten in einem Land / einer Region):</b> Vergabe von 1 zweiten Preis, 5 dritten Preisen, 25 Teilnahmepreisen. <i>Hinweis: Der Hauptpreis wird in dieser Phase nicht verlost.</i>",
@@ -731,7 +738,6 @@ const T = {
     result1: "<b>Draw Results Notification:</b> <span style='color:#1a56db; font-weight:600;'>All participants who have provided an email address</span> will receive the draw results by email.<br><b>Benachrichtigung über die Ergebnisse:</b> <span style='color:#1a56db; font-weight:600;'>Alle Teilnehmer, die eine E-Mail-Adresse angegeben haben,</span> erhalten die Auslosungsergebnisse per E-Mail.",
     result2: "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.<br><b>Tsinghua Cloud Drive:</b> Die Auslosungsergebnisse werden auch auf dem Tsinghua Cloud Drive veröffentlicht; der Link wird nach der Umfrage angezeigt.",
     result3: "<b>Prize Delivery:</b> <span style='color:#c53030; font-weight:600;'>Leaving your email is the ONLY way we can deliver your prize.</span> Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win.<br><b>Preisübergabe:</b> <span style='color:#c53030; font-weight:600;'>Die Angabe Ihrer E-Mail-Adresse ist der EINZIGE Weg, um Ihnen einen Gewinn zuzustellen.</span> Gewinner erhalten ihre Amazon-Gutscheine per E-Mail. Wenn Sie keine E-Mail hinterlassen, verfällt ein eventueller Preis.",
-    // 不再使用 hint
     proceedBtn: "Start the Survey / Umfrage starten",
     sorryText: "<p><strong>Thank you for your selection! / Vielen Dank für Ihre Auswahl!</strong></p><p>Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='nonLotteryCountryName'></strong> — gehört nicht zur Verlosungsstichprobe dieser Studie. Wir laden Sie jedoch herzlich ein, fortzufahren und Ihre wertvolle berufliche Perspektive zu Governance-Fragen zu teilen.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>Ihre Erkenntnisse sind für diese Forschung ebenso wichtig und fließen in unsere internationale Vergleichsanalyse ein.</p>",
     nonCont: "Yes, I would like to continue the survey / Ja, ich möchte die Umfrage fortsetzen",
@@ -758,11 +764,9 @@ const T = {
     otherProfRequired: "请填写您的具体专业领域后再继续。",
     otherCountryPlaceholder: "请填写您的国家/地区",
     otherCountryRequired: "请填写您的国家/地区后再继续。",
-    // 常识题（英中双语，英文在前，中文在后）
     quizHeading: "Please answer the following question: / 请回答以下问题：",
     quizSubmitText: "Submit / 提交",
     quizError: "Please select an answer. / 请选择一个答案。",
-    // 删除 tokenExpiryHint
     congratsHeading: "🎉 Congratulations! / 恭喜！",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>您选择的国家/地区 — <strong id='lotteryCountryName_cn'></strong> — 是我们的抽奖国家/地区之一。您希望参与抽奖吗？",
     optYes: "🎁 Yes, I want to join the draw / 是的，我要参与抽奖",
@@ -791,7 +795,6 @@ const T = {
     pTotalWin: "300 (Guaranteed / 人人有奖)",
     prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win one of the following prizes!<br>每个国家/地区前300名符合条件的参与者 100% 获得以下奖项之一！</strong>",
     lotteryLimit: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.<br>为确保调研数据的质量与完整性，每位参与者仅可填写一份问卷，仅有效问卷可参与抽奖。",
-    // 抽奖轮次框（英中双语，英文在前，中文在后）
     roundsHeading: "Draw Rounds / 抽奖轮次",
     resultHeading: "Draw Result Access / 抽奖结果获取",
     round1: "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>首轮开奖（该国/地区满150份有效答卷时）：</b>抽取二等奖1名，三等奖5名，参与奖25名。<i>注：本阶段不抽取一等奖。</i>",
@@ -800,7 +803,6 @@ const T = {
     result1: "<b>Draw Results Notification:</b> <span style='color:#1a56db; font-weight:600;'>All participants who have provided an email address</span> will receive the draw results by email.<br><b>开奖通知：</b><span style='color:#1a56db; font-weight:600;'>所有提供了邮箱的参与者</span>都将收到开奖结果通知邮件。",
     result2: "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.<br><b>云盘公示：</b>抽奖结果同时将在清华大学云盘公示，问卷提交后将显示下载链接。",
     result3: "<b>Prize Delivery:</b> <span style='color:#c53030; font-weight:600;'>Leaving your email is the ONLY way we can deliver your prize.</span> Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win.<br><b>奖品发放：</b><span style='color:#c53030; font-weight:600;'>留下邮箱是我们发送奖品的唯一方式。</span>中奖者将通过邮件收到亚马逊礼品卡。不提供邮箱将视为放弃奖品领取。",
-    // 不再使用 hint
     proceedBtn: "Start the Survey / 开始填写问卷",
     sorryText: "<p><strong>Thank you for your selection! / 感谢您的选择！</strong></p><p>The country/region you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.<br>您选择的国家/地区 — <strong id='nonLotteryCountryName_cn'></strong> — 不属于本次研究的抽奖样本国家/地区。但我们仍然热忱邀请您继续填写问卷，分享您对专业治理问题的宝贵见解。</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>您的见解对这项研究同样重要，并将为我们的国际比较分析做出贡献。</p>",
     nonCont: "Yes, I would like to continue the survey / 是的，我继续填写问卷",
@@ -1405,7 +1407,7 @@ function applyLanguage(countryCode) {
   otherProfInput.placeholder = t.otherProfPlaceholder || "Please specify your professional field";
   otherCountryInput.placeholder = t.otherCountryPlaceholder || "Please specify your country/region";
 
-  // 抽奖面板文字（原样保留）
+  // 抽奖面板文字
   document.getElementById("congratsHeading").textContent = t.congratsHeading;
   let descHtml = t.congratsDesc;
   if (selectedName) {
@@ -1454,7 +1456,7 @@ function applyLanguage(countryCode) {
   document.getElementById("prizeNote").innerHTML = t.prizeNote;
   document.getElementById("lotteryLimit").innerHTML = t.lotteryLimit;
 
-  // 抽奖轮次框（新添加）
+  // 抽奖轮次框
   document.getElementById("roundsHeading").textContent = t.roundsHeading;
   document.getElementById("resultHeading").textContent = t.resultHeading;
   document.getElementById("round1").innerHTML = t.round1;
@@ -1464,10 +1466,8 @@ function applyLanguage(countryCode) {
   document.getElementById("result2").innerHTML = t.result2;
   document.getElementById("result3").innerHTML = t.result3;
 
-  // 不再设置 hintBox 内容（已被 lotteryLimit 替代）
-  // 但需清空 hintBox 以避免多余内容
+  // 重新设置 hintBox
   document.getElementById("hintBox").innerHTML = '<span id="lotteryLimit"></span>';
-  // 重新设置 lotteryLimit（因为上面被清空，需重新填充）
   document.getElementById("lotteryLimit").innerHTML = t.lotteryLimit;
 
   document.getElementById("proceedBtnAText").textContent = t.proceedBtn;
@@ -1500,10 +1500,13 @@ function applyLanguage(countryCode) {
   document.getElementById("quizSubmitText").textContent = t.quizSubmitText;
   document.getElementById("quizError").textContent = t.quizError;
 
-  // 分享按钮及反馈
-  document.getElementById("shareBtnText").textContent = t.shareBtnText;
-  document.getElementById("shareFeedbackText").textContent = t.shareFeedback;
-  document.getElementById("qrCodeHint").textContent = t.qrCodeHint;
+  // 分享按钮及反馈（panelA 和 panelB 共用文本）
+  document.getElementById("shareBtnAText").textContent = t.shareBtnText;
+  document.getElementById("shareBtnBText").textContent = t.shareBtnText;
+  document.getElementById("shareFeedbackTextA").textContent = t.shareFeedback;
+  document.getElementById("shareFeedbackTextB").textContent = t.shareFeedback;
+  document.getElementById("qrCodeHintA").textContent = t.qrCodeHint;
+  document.getElementById("qrCodeHintB").textContent = t.qrCodeHint;
   window.shareContent = t.shareContent;
 
   window.currentLang = lang;
@@ -1892,14 +1895,22 @@ function proceedToSurvey() {
 }
 
 // ============================================================
-// 分享按钮点击事件
+// 分享按钮点击事件（支持 panelA 和 panelB）
 // ============================================================
-document.getElementById('shareBtn').addEventListener('click', function() {
+document.addEventListener('click', function(e) {
+  var target = e.target.closest('.share-btn');
+  if (!target) return;
+
   var text = window.shareContent || "";
   if (!text) return;
 
-  var feedbackEl = document.getElementById('shareFeedback');
-  var qrContainer = document.getElementById('qrCodeContainer');
+  var feedbackId = target.getAttribute('data-feedback');
+  var qrId = target.getAttribute('data-qr');
+
+  var feedbackEl = document.getElementById(feedbackId);
+  var qrContainer = document.getElementById(qrId);
+
+  if (!feedbackEl || !qrContainer) return;
 
   function showSuccess() {
     feedbackEl.style.display = 'block';
