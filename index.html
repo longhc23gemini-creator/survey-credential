@@ -164,7 +164,6 @@
 
   .btn-primary {
     display: block;
-    width: 100%;
     padding: 14px 24px;
     background: var(--blue);
     color: #fff;
@@ -174,7 +173,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: background 0.15s;
-    margin-top: 24px;
+    margin-top: 0;
   }
   .btn-primary:hover { background: var(--blue-dark); }
   .btn-primary:disabled {
@@ -374,6 +373,32 @@
     cursor: not-allowed;
   }
 
+  /* 按钮组 flex 布局 */
+  .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .btn-group .btn-primary {
+    flex: 1 1 0;
+    min-width: 140px;
+    margin-top: 0;
+  }
+  .btn-share {
+    background: var(--gray-600);
+  }
+  .btn-share:hover {
+    background: #4a5568 !important;
+  }
+  /* 手机版上下排列 */
+  @media (max-width: 480px) {
+    .btn-group .btn-primary {
+      flex: 1 1 100%;
+      min-width: unset;
+    }
+  }
+
   /* 移除 token 过期提示样式，不再需要 */
 </style>
 </head>
@@ -417,7 +442,25 @@
       </div>
     </div>
 
-    <button class="btn-primary" id="submitBtn" disabled onclick="goToQuiz()"><span id="submitBtnText"></span></button>
+    <!-- 按钮组：电脑并排、手机上下 -->
+    <div class="btn-group">
+      <button class="btn-primary" id="submitBtn" disabled onclick="goToQuiz()">
+        <span id="submitBtnText"></span>
+      </button>
+      <button class="btn-primary btn-share" id="shareBtn">
+        <span id="shareBtnText"></span>
+      </button>
+    </div>
+    <!-- 分享反馈（初始隐藏） -->
+    <div id="shareFeedback" style="margin-top:10px; font-size:14px; font-weight:600; color:var(--green); display:none;">
+      <span id="shareFeedbackText"></span>
+      <div id="qrCodeContainer" style="margin-top:12px; display:none;">
+        <img src="qrcode_entry.png" alt="QR Code" style="width:120px; height:120px; border:1px solid var(--gray-200); border-radius:8px;" />
+        <div style="font-size:12px; font-weight:400; color:var(--gray-500); margin-top:4px;">
+          <span id="qrCodeHint"></span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Step 2: 常识题 -->
@@ -499,6 +542,13 @@
       </div>
     </div>
 
+    <!-- 退出消息（选择退出时显示） -->
+    <div id="quitMessage" class="lottery-detail" style="display:none; background:var(--gray-50); border-color:var(--gray-200); text-align:center;">
+      <p style="font-size:16px; font-weight:600; margin-bottom:8px;" id="quitTitle"></p>
+      <p id="quitDesc" style="font-size:14px; line-height:1.7; color:var(--gray-700);"></p>
+      <p style="margin-top:12px;"><a href="mailto:nccl@tsinghua.edu.cn" style="color:var(--blue);">nccl@tsinghua.edu.cn</a></p>
+    </div>
+
     <button class="btn-primary" id="proceedBtnA" disabled onclick="proceedToSurvey()"><span id="proceedBtnAText"></span></button>
   </div>
 
@@ -516,15 +566,14 @@
       </label>
     </div>
 
-    <button class="btn-primary" id="proceedBtnB" disabled onclick="proceedToSurvey()"><span id="proceedBtnBText"></span></button>
-  </div>
-
-  <div id="panelQuit" class="result-panel">
-    <div class="info-box" style="text-align:center;">
-      <p style="font-size:16px; font-weight:600; margin-bottom:8px;" id="quitTitle"></p>
-      <p id="quitDesc"></p>
+    <!-- 退出消息（非抽奖国，选择退出时显示） -->
+    <div id="quitMessageB" class="lottery-detail" style="display:none; background:var(--gray-50); border-color:var(--gray-200); text-align:center;">
+      <p style="font-size:16px; font-weight:600; margin-bottom:8px;" id="quitTitleB"></p>
+      <p id="quitDescB" style="font-size:14px; line-height:1.7; color:var(--gray-700);"></p>
       <p style="margin-top:12px;"><a href="mailto:nccl@tsinghua.edu.cn" style="color:var(--blue);">nccl@tsinghua.edu.cn</a></p>
     </div>
+
+    <button class="btn-primary" id="proceedBtnB" disabled onclick="proceedToSurvey()"><span id="proceedBtnBText"></span></button>
   </div>
 
   <div class="footer">
@@ -621,7 +670,12 @@ const T = {
     nonQuit: "I would like to exit",
     quitTitle: "Thank you for your time!",
     quitDesc: "We appreciate your interest in this research. If you change your mind, you are welcome to return and participate at any time.",
-    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete.</i>"
+    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete.</i>",
+    // 分享相关字段
+    shareBtnText: "Share This Survey",
+    shareFeedback: "✅ Invitation copied to clipboard! Feel free to share with other construction professionals.",
+    shareContent: "Dear colleague,\n\n    I invite you to join a global academic survey on professional governance and trust in the construction industry. I think it's an interesting and important international comparative study. I believe your insights would be valuable, and you will receive the final research report after the study is completed.\n\nPlease access this survey through the following link:\nhttps://longhc23gemini-creator.github.io/survey-credential/index.html",
+    qrCodeHint: "Scan to access the survey"
   },
   de: {
     title: "Professional Governance & Trust in Construction<br>Berufsständische Governance & Vertrauen im Bauwesen",
@@ -636,7 +690,7 @@ const T = {
     otherProfRequired: "Bitte geben Sie Ihr Berufsfeld an, bevor Sie fortfahren.",
     otherCountryPlaceholder: "Bitte geben Sie Ihr Land / Ihre Region an",
     otherCountryRequired: "Bitte geben Sie Ihr Land / Ihre Region an, bevor Sie fortfahren.",
-    // 常识题
+    // 常识题（英语在前，德语在后）
     quizHeading: "Please answer the following question: / Bitte beantworten Sie die folgende Frage:",
     quizSubmitText: "Submit / Einreichen",
     quizError: "Please select an answer. / Bitte wählen Sie eine Antwort.",
@@ -684,7 +738,12 @@ const T = {
     nonQuit: "I would like to exit / Ich möchte beenden",
     quitTitle: "Thank you for your time! / Vielen Dank für Ihre Zeit!",
     quitDesc: "We appreciate your interest in this research. If you change your mind, you are welcome to return and participate at any time.<br>Wir danken für Ihr Interesse an dieser Forschung. Wenn Sie es sich anders überlegen, können Sie jederzeit zurückkehren und teilnehmen.",
-    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br>Diese Umfrage ist unbezahlt – aber Ihre Stimme ist wertvoller: Ihre Beobachtungen werden dazu beitragen, unsere gemeinsame Zukunft zu gestalten.<br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete.</i>"
+    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br>Diese Umfrage ist unbezahlt – aber Ihre Stimme ist wertvoller: Ihre Beobachtungen werden dazu beitragen, unsere gemeinsame Zukunft zu gestalten.<br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete.</i>",
+    // 分享相关字段（英德双语，英文在前，德文在后）
+    shareBtnText: "Share This Survey / Umfrage teilen",
+    shareFeedback: "✅ Invitation copied to clipboard! Feel free to share with other construction professionals. / Einladungstext in die Zwischenablage kopiert! Gerne können Sie ihn mit anderen Fachleuten aus der Bauindustrie teilen.",
+    shareContent: "Dear colleague,\n\n    I invite you to join a global academic survey on professional governance and trust in the construction industry. I think it's an interesting and important international comparative study. I believe your insights would be valuable, and you will receive the final research report after the study is completed.\n\nPlease access this survey through the following link:\nhttps://longhc23gemini-creator.github.io/survey-credential/index.html\n\n\nLiebe Kollegin, lieber Kollege,\n\n    ich lade dich ein, an einer globalen akademischen Umfrage zu Governance und Vertrauen in der Bauindustrie teilzunehmen. Ich finde, es ist eine interessante und wichtige internationale Vergleichsstudie. Ich glaube, deine Einsichten wären wertvoll, und du erhältst den endgültigen Forschungsbericht nach Abschluss der Studie.\n\nBitte rufe die Umfrage über folgenden Link auf:\nhttps://longhc23gemini-creator.github.io/survey-credential/index.html",
+    qrCodeHint: "Scan to access the survey / Scannen, um zur Umfrage zu gelangen"
   },
   sg: {
     title: "Professional Governance & Trust in Construction",
@@ -699,7 +758,7 @@ const T = {
     otherProfRequired: "请填写您的具体专业领域后再继续。",
     otherCountryPlaceholder: "请填写您的国家/地区",
     otherCountryRequired: "请填写您的国家/地区后再继续。",
-    // 常识题
+    // 常识题（英中双语，英文在前，中文在后）
     quizHeading: "Please answer the following question: / 请回答以下问题：",
     quizSubmitText: "Submit / 提交",
     quizError: "Please select an answer. / 请选择一个答案。",
@@ -748,7 +807,12 @@ const T = {
     nonQuit: "I would like to exit / 我想退出",
     quitTitle: "Thank you for your time! / 感谢您的时间！",
     quitDesc: "We appreciate your interest in this research. If you change your mind, you are welcome to return and participate at any time.<br>感谢您对本研究的兴趣。如果您改变主意，欢迎随时回来参与。",
-    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br><br>本国际问卷无现金报酬，但您的声音比金钱更有价值：您的见解将与来自不同国家和背景的专业人士汇聚在一起，共同塑造行业的未来。<br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete. (研究完成后，您将收到我们的国际比较研究报告。)</i>"
+    intInfo: "<b>This survey is of no financial compensation -- but there is something more valuable: Your voice, together with those of professionals across countries and contexts, will help shape our common future.</b><br><br>本国际问卷无现金报酬，但您的声音比金钱更有价值：您的见解将与来自不同国家和背景的专业人士汇聚在一起，共同塑造行业的未来。<br><br><i>* You will receive our international comparative research report (estimated December 2026) once the study is complete. (研究完成后，您将收到我们的国际比较研究报告。)</i>",
+    // 分享相关字段（英中双语，英文在前，中文在后）
+    shareBtnText: "Share This Survey / 点此分享本调查",
+    shareFeedback: "✅ Invitation copied to clipboard! Feel free to share with other construction professionals. / 邀请信息已复制到剪贴板，欢迎分享给更多建筑行业同仁。",
+    shareContent: "Dear colleague,\n\n    I invite you to join a global academic survey on professional governance and trust in the construction industry. I think it's an interesting and important international comparative study. I believe your insights would be valuable, and you will receive the final research report after the study is completed.\n\nPlease access this survey through the following link:\nhttps://longhc23gemini-creator.github.io/survey-credential/index.html\n\n\n亲爱的同行：\n\n    我想邀请你参与一项关于建筑行业专业治理与信任的全球学术调查。我觉得这是一项有趣且重要的国际比较研究，相信你的见解会很有价值，研究完成后你会收到最终的研究报告。\n\n请通过以下链接进入问卷：\nhttps://longhc23gemini-creator.github.io/survey-credential/index.html",
+    qrCodeHint: "Scan to access the survey / 扫码进入问卷"
   }
 };
 
@@ -776,7 +840,7 @@ const QUIZ_MAP = {
   "18": "Q21", // Other
 };
 
-// 各语言题目内容（en: 纯英文, de: 英德双语, sg: 英中双语）
+// 各语言题目内容（en: 纯英文, de: 英德双语，英文在前德文在后, sg: 英中双语，英文在前中文在后）
 const QUIZ_DATA = {
   en: {
     Q10: {
@@ -914,20 +978,20 @@ const QUIZ_DATA = {
     Q12: {
       question: "In structural/geotechnical engineering, what does 'SPT' stand for? / Wofür steht „SPT“ im Bauingenieurwesen bzw. in der Geotechnik?",
       options: [
-        "A. Site Planning Template / Site Planning Template (Vorlage für die Standortplanung)",
-        "B. Structural Performance Threshold / Structural Performance Threshold (Grenzwert für das Tragverhalten)",
-        "C. Standard Penetration Test / Standard Penetration Test (Standard-Penetrationsversuch)",
-        "D. Soil Plasticity Type / Soil Plasticity Type (Art der Bodenplastizität)"
+        "A. Site Planning Template / Vorlage für die Standortplanung",
+        "B. Structural Performance Threshold / Grenzwert für das Tragverhalten",
+        "C. Standard Penetration Test / Standard-Penetrationsversuch",
+        "D. Soil Plasticity Type / Art der Bodenplastizität"
       ],
       correctIndex: 2
     },
     Q13: {
       question: "In MEP engineering, what does 'FCU' stand for? / Wofür steht „FCU“ in der TGA-Planung (Technikgebäudeausrüstung)?",
       options: [
-        "A. Fire Control Unit / Fire Control Unit (Feuerleiteinheit)",
-        "B. Fan Coil Unit / Fan Coil Unit (Gebläsekonvektor)",
-        "C. Fluid Circulation Unit / Fluid Circulation Unit (Flüssigkeitsumlaufeinheit)",
-        "D. Floor Cooling Utility / Floor Cooling Utility (Dienstprogramm zur Bodenkühlung)"
+        "A. Fire Control Unit / Feuerleiteinheit",
+        "B. Fan Coil Unit / Gebläsekonvektor",
+        "C. Fluid Circulation Unit / Flüssigkeitsumlaufeinheit",
+        "D. Floor Cooling Utility / Bodenkühleinheit"
       ],
       correctIndex: 1
     },
@@ -944,50 +1008,50 @@ const QUIZ_DATA = {
     Q15: {
       question: "In the construction industry, what does 'RICS' stand for? / Wofür steht „RICS“ in der Baubranche?",
       options: [
-        "A. Regional Infrastructure Construction Standards / Regional Infrastructure Construction Standards (Regionale Standards für den Infrastrukturbau)",
-        "B. Royal Institution of Chartered Surveyors / Royal Institution of Chartered Surveyors (Königliche Institution der Chartered Surveyors)",
-        "C. Risk and Insurance for Construction Services / Risk and Insurance for Construction Services (Risiken und Versicherungsschutz für Bauleistungen)",
-        "D. Registered International Construction Specialists / Registered International Construction Specialists (Registrierte internationale Baufachleute)"
+        "A. Regional Infrastructure Construction Standards / Regionale Standards für den Infrastrukturbau",
+        "B. Royal Institution of Chartered Surveyors / Königliche Institution der Chartered Surveyors",
+        "C. Risk and Insurance for Construction Services / Risiken und Versicherungsschutz für Bauleistungen",
+        "D. Registered International Construction Specialists / Registrierte internationale Baufachleute"
       ],
       correctIndex: 1
     },
     Q16: {
       question: "In BIM, what does 'IFC' stand for? / Wofür steht „IFC“ im Bereich BIM?",
       options: [
-        "A. Integrated Facility Control / Integrated Facility Control (Integrierte Anlagensteuerung)",
-        "B. Information Flow Chart / Information Flow Chart (Informationsflussdiagramm)",
-        "C. Industry Foundation Classes / Industry Foundation Classes (Grundlagenkurse für die Industrie)",
-        "D. International Finance Corporation / International Finance Corporation (Internationale Finanz-Corporation)"
+        "A. Integrated Facility Control / Integrierte Anlagensteuerung",
+        "B. Information Flow Chart / Informationsflussdiagramm",
+        "C. Industry Foundation Classes / Industrie-Grundklassen",
+        "D. International Finance Corporation / Internationale Finanz-Corporation"
       ],
       correctIndex: 2
     },
     Q17: {
       question: "What does 'LOTO' stand for in construction safety? / Wofür steht „LOTO“ im Bereich der Arbeitssicherheit auf Baustellen?",
       options: [
-        "A. Level of Tolerance for Operations / Level of Tolerance for Operations (Toleranzgrenze für den Betrieb)",
-        "B. Logistics and Onsite Transportation Order / Logistics and Onsite Transportation Order (Auftrag für Logistik und Transport vor Ort)",
-        "C. Low-Temperature Operating Threshold / Low-Temperature Operating Threshold (Betriebsgrenzwert für niedrige Temperaturen)",
-        "D. Lockout / Tagout / Lockout / Tagout"
+        "A. Level of Tolerance for Operations / Toleranzgrenze für den Betrieb",
+        "B. Logistics and Onsite Transportation Order / Auftrag für Logistik und Transport vor Ort",
+        "C. Low-Temperature Operating Threshold / Betriebsgrenzwert für niedrige Temperaturen",
+        "D. Lockout/Tagout / Verriegelung/Kennzeichnung"
       ],
       correctIndex: 3
     },
     Q18: {
       question: "What does 'NPV' stand for in investment/valuation analysis? / Wofür steht „NPV“ in der Investitions- oder Bewertungsanalyse?",
       options: [
-        "A. Net Present Value / Net Present Value (Kapitalwert)",
-        "B. Nominal Property Valuation / Nominal Property Valuation (Nominale Immobilienbewertung)",
-        "C. Net Profit Variance / Net Profit Variance (Abweichung des Nettogewinns)",
-        "D. National Price Verification / National Price Verification (Nationale Preisüberprüfung)"
+        "A. Net Present Value / Kapitalwert",
+        "B. Nominal Property Valuation / Nominale Immobilienbewertung",
+        "C. Net Profit Variance / Abweichung des Nettogewinns",
+        "D. National Price Verification / Nationale Preisüberprüfung"
       ],
       correctIndex: 0
     },
     Q19: {
       question: "In green building, what does 'LEED' stand for? / Wofür steht „LEED“ im Bereich des umweltfreundlichen Bauens?",
       options: [
-        "A. Low Energy Emission Development / Low Energy Emission Development (Entwicklung emissionsarmer Technologien)",
-        "B. Leadership in Energy and Environmental Design / Leadership in Energy and Environmental Design (Führungsrolle im Energie- und Umweltdesign)",
-        "C. Licensed Environmental Engineering Design / Licensed Environmental Engineering Design (Zugelassene Planung im Umweltingenieurwesen)",
-        "D. Land Efficiency and Ecological Development / Land Efficiency and Ecological Development (Flächeneffizienz und ökologische Entwicklung)"
+        "A. Low Energy Emission Development / Entwicklung emissionsarmer Technologien",
+        "B. Leadership in Energy and Environmental Design / Führungsrolle im Energie- und Umweltdesign",
+        "C. Licensed Environmental Engineering Design / Zugelassene Planung im Umweltingenieurwesen",
+        "D. Land Efficiency and Ecological Development / Flächeneffizienz und ökologische Entwicklung"
       ],
       correctIndex: 1
     },
@@ -1004,20 +1068,20 @@ const QUIZ_DATA = {
     Q21: {
       question: "In the construction industry, what does 'EPC' stand for? / Wofür steht „EPC“ in der Baubranche?",
       options: [
-        "A. Environmental Protection Certificate / Environmental Protection Certificate (Umweltschutzzertifikat)",
-        "B. Engineering, Procurement, and Construction / Engineering, Procurement, and Construction (Planung, Beschaffung und Bauausführung)",
-        "C. Estimated Project Cost / Estimated Project Cost (Geschätzte Projektkosten)",
-        "D. Equipment Performance Check / Equipment Performance Check (Geräteleistungsprüfung)"
+        "A. Environmental Protection Certificate / Umweltschutzzertifikat",
+        "B. Engineering, Procurement, and Construction / Planung, Beschaffung und Bauausführung",
+        "C. Estimated Project Cost / Geschätzte Projektkosten",
+        "D. Equipment Performance Check / Geräteleistungsprüfung"
       ],
       correctIndex: 1
     },
     Q22: {
       question: "In urban planning, what does 'TOD' stand for? / Wofür steht „TOD“ in der Stadtplanung?",
       options: [
-        "A. Total Occupancy Density / Total Occupancy Density (Gesamtbelegungsdichte)",
-        "B. Transit-Oriented Development / Transit-Oriented Development (Verkehrsorientierte Stadtentwicklung)",
-        "C. Territorial Operations Directive / Territorial Operations Directive (Richtlinie für territoriale Operationen)",
-        "D. Topographic Overlay Design / Topographic Overlay Design (Design der topografischen Überlagerung)"
+        "A. Total Occupancy Density / Gesamtbelegungsdichte",
+        "B. Transit-Oriented Development / Verkehrsorientierte Stadtentwicklung",
+        "C. Territorial Operations Directive / Richtlinie für territoriale Operationen",
+        "D. Topographic Overlay Design / Design der topografischen Überlagerung"
       ],
       correctIndex: 1
     }
@@ -1409,6 +1473,14 @@ function applyLanguage(countryCode) {
   document.getElementById("proceedBtnAText").textContent = t.proceedBtn;
   document.getElementById("proceedBtnBText").textContent = t.proceedBtn;
 
+  // 退出消息（panelA）
+  document.getElementById("quitTitle").textContent = t.quitTitle;
+  document.getElementById("quitDesc").innerHTML = t.quitDesc;
+
+  // 退出消息（panelB）
+  document.getElementById("quitTitleB").textContent = t.quitTitle;
+  document.getElementById("quitDescB").innerHTML = t.quitDesc;
+
   let sorryHtml = t.sorryText;
   if (selectedName) {
     sorryHtml = sorryHtml.replace(/<strong id='nonLotteryCountryName'><\/strong>/, "<strong id='nonLotteryCountryName'>" + selectedName + "</strong>");
@@ -1423,13 +1495,16 @@ function applyLanguage(countryCode) {
   document.getElementById("nonContText").innerHTML = t.nonCont;
   document.getElementById("nonQuitText").innerHTML = t.nonQuit;
 
-  document.getElementById("quitTitle").textContent = t.quitTitle;
-  document.getElementById("quitDesc").innerHTML = t.quitDesc;
-
   // 常识题文字
   document.getElementById("quizHeading").textContent = t.quizHeading;
   document.getElementById("quizSubmitText").textContent = t.quizSubmitText;
   document.getElementById("quizError").textContent = t.quizError;
+
+  // 分享按钮及反馈
+  document.getElementById("shareBtnText").textContent = t.shareBtnText;
+  document.getElementById("shareFeedbackText").textContent = t.shareFeedback;
+  document.getElementById("qrCodeHint").textContent = t.qrCodeHint;
+  window.shareContent = t.shareContent;
 
   window.currentLang = lang;
 }
@@ -1464,7 +1539,6 @@ function displayQuiz(quizId, data) {
   document.getElementById("step2").style.display = "block";
   document.getElementById("panelA").classList.remove("visible");
   document.getElementById("panelB").classList.remove("visible");
-  document.getElementById("panelQuit").classList.remove("visible");
 
   document.getElementById("quizQuestion").textContent = data.question;
   const optionsContainer = document.getElementById("quizOptions");
@@ -1675,12 +1749,19 @@ function selectLotteryChoice(choice) {
     }
   });
 
+  // 默认隐藏所有详情面板
+  document.getElementById("lotteryDetail").classList.remove("visible");
+  document.getElementById("quitMessage").classList.remove("visible");
+
   if (choice === "quit") {
-    document.getElementById("panelA").classList.remove("visible");
-    document.getElementById("lotteryDetail").classList.remove("visible");
-    document.getElementById("panelQuit").classList.add("visible");
+    // 显示退出消息，禁用按钮
+    document.getElementById("quitMessage").classList.add("visible");
+    document.getElementById("proceedBtnA").disabled = true;
     return;
   }
+
+  // 非退出选项：隐藏退出消息，处理抽奖详情
+  document.getElementById("quitMessage").classList.remove("visible");
 
   if (choice === "yes") {
     document.getElementById("lotteryDetail").classList.add("visible");
@@ -1694,6 +1775,8 @@ function selectLotteryChoice(choice) {
 
 function selectNonLotteryChoice(choice) {
   nonLotteryChoice = choice;
+
+  // 更新选项样式
   document.querySelectorAll("#nonLotteryChoiceGroup .radio-option").forEach(el => el.classList.remove("selected"));
   document.querySelectorAll("#nonLotteryChoiceGroup .radio-option").forEach(el => {
     const input = el.querySelector('input[type="radio"]');
@@ -1702,12 +1785,18 @@ function selectNonLotteryChoice(choice) {
     }
   });
 
+  // 获取退出消息元素
+  var quitMsg = document.getElementById("quitMessageB");
+
   if (choice === "quit") {
-    document.getElementById("panelB").classList.remove("visible");
-    document.getElementById("panelQuit").classList.add("visible");
+    // 显示退出消息，禁用按钮
+    quitMsg.style.display = "block";
+    document.getElementById("proceedBtnB").disabled = true;
     return;
   }
 
+  // 非退出选项：隐藏退出消息，启用按钮
+  quitMsg.style.display = "none";
   document.getElementById("proceedBtnB").disabled = false;
 }
 
@@ -1801,6 +1890,46 @@ function proceedToSurvey() {
     alert("Unable to start survey. Please try again.");
   });
 }
+
+// ============================================================
+// 分享按钮点击事件
+// ============================================================
+document.getElementById('shareBtn').addEventListener('click', function() {
+  var text = window.shareContent || "";
+  if (!text) return;
+
+  var feedbackEl = document.getElementById('shareFeedback');
+  var qrContainer = document.getElementById('qrCodeContainer');
+
+  function showSuccess() {
+    feedbackEl.style.display = 'block';
+    qrContainer.style.display = 'block';
+  }
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(showSuccess).catch(function() {
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+
+  function fallbackCopy(text) {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      showSuccess();
+    } catch (err) {
+      alert('Unable to copy. Please copy manually.');
+    }
+    document.body.removeChild(textarea);
+  }
+});
 </script>
 </body>
 </html>
