@@ -386,10 +386,10 @@
     margin-top: 0;
   }
   .btn-share {
-    background: var(--gray-600);
+    background: #38a169;
   }
   .btn-share:hover {
-    background: #4a5568 !important;
+    background: #2f855a !important;
   }
   /* 手机版上下排列 */
   @media (max-width: 480px) {
@@ -399,7 +399,16 @@
     }
   }
 
-  /* 移除 token 过期提示样式，不再需要 */
+/* ── 新增：第一步的 Continue 按钮独占一行 ── */
+#submitBtn {
+  width: 100%;
+}
+
+/* 常识页的 Submit 按钮独占一行 */
+#quizSubmitBtn {
+  width: 100%;
+}
+
 </style>
 </head>
 <body>
@@ -525,7 +534,7 @@
     </div>
 
     <!-- 退出消息（选择退出时显示） -->
-    <div id="quitMessage" class="lottery-detail" style="display:none; background:var(--gray-50); border-color:var(--gray-200); text-align:center;">
+    <div id="quitMessage" class="lottery-detail" style="background:var(--gray-50); border-color:var(--gray-200); text-align:center;">
       <p style="font-size:16px; font-weight:600; margin-bottom:8px;" id="quitTitle"></p>
       <p id="quitDesc" style="font-size:14px; line-height:1.7; color:var(--gray-700);"></p>
       <p style="margin-top:12px;"><a href="mailto:nccl@tsinghua.edu.cn" style="color:var(--blue);">nccl@tsinghua.edu.cn</a></p>
@@ -565,7 +574,7 @@
     </div>
 
     <!-- 退出消息（非抽奖国，选择退出时显示） -->
-    <div id="quitMessageB" class="lottery-detail" style="display:none; background:var(--gray-50); border-color:var(--gray-200); text-align:center;">
+    <div id="quitMessageB" class="lottery-detail" style="background:var(--gray-50); border-color:var(--gray-200); text-align:center;">
       <p style="font-size:16px; font-weight:600; margin-bottom:8px;" id="quitTitleB"></p>
       <p id="quitDescB" style="font-size:14px; line-height:1.7; color:var(--gray-700);"></p>
       <p style="margin-top:12px;"><a href="mailto:nccl@tsinghua.edu.cn" style="color:var(--blue);">nccl@tsinghua.edu.cn</a></p>
