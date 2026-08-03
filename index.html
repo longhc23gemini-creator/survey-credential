@@ -299,17 +299,17 @@
   }
   .footer a { color: var(--gray-500); }
   .hidden { display: none; }
-  .rules-list { padding-left: 20px; margin: 10px 0; }
+  .rules-list { padding-left: 20px; margin: 0; }
   .rules-list li { margin-bottom: 8px; line-height: 1.6; }
   .return-box { margin-top: 18px; padding: 18px; background: #fff; border-radius: 8px; border-left: 4px solid var(--blue); }
   #infoBox .return-box { margin-top: 18px; padding: 18px; background: #fff; border-radius: 8px; border-left: 4px solid var(--blue); }
-  
+
   /* lotteryLimit 样式：红色加粗，字号继承，左对齐 */
   #lotteryLimit {
     color: var(--red);
     font-weight: bold;
     text-align: left;
-    margin: 16px 0 12px;
+    margin: 0;
   }
 
   /* 常识题样式 */
@@ -372,16 +372,6 @@
   .quiz-container .btn-submit-quiz:disabled {
     background: var(--gray-300);
     cursor: not-allowed;
-  }
-
-  /* token 过期提示样式：深红色，加粗 */
-  .token-expiry-hint {
-    font-size: 13px;
-    color: var(--red);
-    font-weight: 600;
-    text-align: center;
-    margin: 10px 0 0;
-    line-height: 1.6;
   }
 </style>
 </head>
@@ -477,14 +467,36 @@
         <thead><tr><th id="thTier"></th><th id="thAmount"></th><th id="thWinners"></th></tr></thead>
         <tbody id="prizeBody"></tbody>
       </table>
-      <p id="lotteryLimit"></p>
-      <h4 id="rulesHeading"></h4>
-      <ol class="rules-list" id="rulesList"></ol>
-      <div class="hint-box" id="hintBox" style="background:var(--blue-light);border-left:4px solid var(--blue);padding:14px 18px;margin-top:16px;border-radius:0 var(--radius) var(--radius) 0;"></div>
+
+      <!-- 抽奖轮次框 -->
+      <div class="progress-box" style="margin-bottom: 16px;">
+        <div style="font-weight:700; font-size:14px; color:var(--gray-700); margin-bottom:10px;">
+          <span id="roundsHeading"></span>
+        </div>
+        <ol class="rules-list" id="roundsList">
+          <li id="round1"></li>
+          <li id="round2"></li>
+          <li id="round3"></li>
+        </ol>
+      </div>
+
+      <!-- 抽奖结果获取框 -->
+      <div class="progress-box" style="margin-bottom: 0;">
+        <div style="font-weight:700; font-size:14px; color:var(--gray-700); margin-bottom:10px;">
+          <span id="resultHeading"></span>
+        </div>
+        <ol class="rules-list" id="resultList">
+          <li id="result1"></li>
+          <li id="result2"></li>
+          <li id="result3"></li>
+        </ol>
+      </div>
+
+      <div class="hint-box" id="hintBox" style="background:var(--blue-light);border-left:4px solid var(--blue);padding:14px 18px;margin-top:16px;border-radius:0 var(--radius) var(--radius) 0;">
+        <span id="lotteryLimit"></span>
+      </div>
     </div>
 
-    <!-- 24小时提醒（位于 Start the Survey 按钮上方） -->
-    <p class="token-expiry-hint token-expiry-hint-text"></p>
     <button class="btn-primary" id="proceedBtnA" disabled onclick="proceedToSurvey()"><span id="proceedBtnAText"></span></button>
   </div>
 
@@ -502,8 +514,6 @@
       </label>
     </div>
 
-    <!-- 24小时提醒（位于 Start the Survey 按钮上方） -->
-    <p class="token-expiry-hint token-expiry-hint-text"></p>
     <button class="btn-primary" id="proceedBtnB" disabled onclick="proceedToSurvey()"><span id="proceedBtnBText"></span></button>
   </div>
 
@@ -562,8 +572,6 @@ const T = {
     quizHeading: "Please answer the following question:",
     quizSubmitText: "Submit",
     quizError: "Please select an answer.",
-    // 24小时提醒（新增）
-    tokenExpiryHint: "Once you proceed, please complete the survey and obtain your credential within 24 hours. The credential generation link will expire after that time.",
     congratsHeading: "🎉 Congratulations!",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?",
     optYes: "🎁 Yes, I want to join the draw",
@@ -592,14 +600,15 @@ const T = {
     pTotalWin: "300 (Guaranteed)",
     prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win a prize!</strong>",
     lotteryLimit: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.",
-    rules: [
-      "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i>",
-      "<b>Second draw (when 300 valid responses are reached in a country/region):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.",
-      "<b>First Prize ($500):</b> Drawn once among ALL 300 participants regardless of phase, as long as you have not won a prize before.",
-      "<b>Draw Results Notification:</b> <span style='color:#1a56db; font-weight:600;'>All participants who have provided an email address</span> will receive the draw results by email.",
-      "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.",
-      "<b>Prize Delivery:</b> <span style='color:#c53030; font-weight:600;'>Leaving your email is the ONLY way we can deliver your prize.</span> Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win."
-    ],
+    // 抽奖轮次框
+    roundsHeading: "Draw Rounds",
+    resultHeading: "Draw Result Access",
+    round1: "First draw (when 150 valid responses are reached in a country/region): Awards 1 second prize, 5 third prizes, 25 participation prizes. Note: The first prize is not drawn in this phase.",
+    round2: "Second draw (when 300 valid responses are reached in a country/region): Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.",
+    round3: "First Prize ($500): Drawn once among ALL 300 participants regardless of phase, as long as you have not won a prize before.",
+    result1: "Draw Results Notification: All participants who have provided an email address will receive the draw results by email.",
+    result2: "Tsinghua Cloud Drive: Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.",
+    result3: "Prize Delivery: Leaving your email is the ONLY way we can deliver your prize. Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win.",
     hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.",
     proceedBtn: "Start the Survey",
     sorryText: "<p><strong>Thank you for your selection!</strong></p><p>The country/region you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.</p>",
@@ -626,8 +635,6 @@ const T = {
     quizHeading: "Bitte beantworten Sie die folgende Frage: / Please answer the following question:",
     quizSubmitText: "Einreichen / Submit",
     quizError: "Bitte wählen Sie eine Antwort. / Please select an answer.",
-    // 24小时提醒（新增）
-    tokenExpiryHint: "Bitte schließen Sie die Umfrage ab und erhalten Sie Ihre Teilnahmebestätigung innerhalb von 24 Stunden. Der Link zur Bestätigung verfällt danach. / Once you proceed, please complete the survey and obtain your credential within 24 hours. The credential generation link will expire after that time.",
     congratsHeading: "🎉 Congratulations! / Herzlichen Glückwunsch!",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='lotteryCountryName_de'></strong> — ist eines unserer ausgewählten Länder / Regionen, das an der Verlosung teilnehmen kann. Möchten Sie am Gewinnspiel teilnehmen?",
     optYes: "🎁 Yes, I want to join the draw / Ja, ich möchte teilnehmen",
@@ -655,14 +662,15 @@ const T = {
     pTotalWin: "300 (Guaranteed / Garantiert)",
     prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win a prize!<br>Die ersten 300 qualifizierten Teilnehmer pro Land/Region erhalten GARANTIERT einen Preis!</strong>",
     lotteryLimit: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.<br>Um die Qualität und Integrität unserer Forschungsdaten zu gewährleisten, kann jeder Teilnehmer nur eine Umfrage ausfüllen. Nur gültige Umfrageantworten berechtigen zur Teilnahme an der Verlosung.",
-    rules: [
-      "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>Erste Auslosung (bei 150 gültigen Antworten in einem Land / einer Region):</b> Vergabe von 1 zweiten Preis, 5 dritten Preisen, 25 Teilnahmepreisen. <i>Hinweis: Der Hauptpreis wird in dieser Phase nicht verlost.</i>",
-      "<b>Second draw (when 300 valid responses are reached in a country/region):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.<br><b>Zweite Auslosung (bei 300 gültigen Antworten in einem Land / einer Region):</b> Unter den Teilnehmern 151–300 werden der verbleibende 1 zweite Preis, 5 dritte Preise und 25 Teilnahmepreise verlost.",
-      "<b>First Prize ($500):</b> Drawn once among ALL 300 participants regardless of phase, as long as you have not won a prize before.<br><b>Hauptpreis ($500):</b> Wird einmalig unter ALLEN 300 Teilnehmern unabhängig von der Phase verlost (ausgenommen bereits Gewonnene).",
-      "<b>Draw Results Notification:</b> <span style='color:#1a56db; font-weight:600;'>All participants who have provided an email address</span> will receive the draw results by email.<br><b>Benachrichtigung über die Ergebnisse:</b> <span style='color:#1a56db; font-weight:600;'>Alle Teilnehmer, die eine E-Mail-Adresse angegeben haben,</span> erhalten die Auslosungsergebnisse per E-Mail.",
-      "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.<br><b>Tsinghua Cloud Drive:</b> Die Auslosungsergebnisse werden auch auf dem Tsinghua Cloud Drive veröffentlicht; der Link wird nach der Umfrage angezeigt.",
-      "<b>Prize Delivery:</b> <span style='color:#c53030; font-weight:600;'>Leaving your email is the ONLY way we can deliver your prize.</span> Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win.<br><b>Preisübergabe:</b> <span style='color:#c53030; font-weight:600;'>Die Angabe Ihrer E-Mail-Adresse ist der EINZIGE Weg, um Ihnen einen Gewinn zuzustellen.</span> Gewinner erhalten ihre Amazon-Gutscheine per E-Mail. Wenn Sie keine E-Mail hinterlassen, verfällt ein eventueller Preis."
-    ],
+    // 抽奖轮次框（英德双语，英文在前，德文在后）
+    roundsHeading: "Draw Rounds / Auslosungsrunden",
+    resultHeading: "Draw Result Access / Zugang zu den Auslosungsergebnissen",
+    round1: "First draw (when 150 valid responses are reached in a country/region): Awards 1 second prize, 5 third prizes, 25 participation prizes. Note: The first prize is not drawn in this phase. / Erste Auslosung (bei 150 gültigen Antworten in einem Land / einer Region): Vergabe von 1 zweiten Preis, 5 dritten Preisen, 25 Teilnahmepreisen. Hinweis: Der Hauptpreis wird in dieser Phase nicht verlost.",
+    round2: "Second draw (when 300 valid responses are reached in a country/region): Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes. / Zweite Auslosung (bei 300 gültigen Antworten in einem Land / einer Region): Unter den Teilnehmern 151–300 werden der verbleibende 1 zweite Preis, 5 dritte Preise und 25 Teilnahmepreise verlost.",
+    round3: "First Prize ($500): Drawn once among ALL 300 participants regardless of phase, as long as you have not won a prize before. / Hauptpreis ($500): Wird einmalig unter ALLEN 300 Teilnehmern unabhängig von der Phase verlost (ausgenommen bereits Gewonnene).",
+    result1: "Draw Results Notification: All participants who have provided an email address will receive the draw results by email. / Benachrichtigung über die Ergebnisse: Alle Teilnehmer, die eine E-Mail-Adresse angegeben haben, erhalten die Auslosungsergebnisse per E-Mail.",
+    result2: "Tsinghua Cloud Drive: Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted. / Tsinghua Cloud Drive: Die Auslosungsergebnisse werden auch auf dem Tsinghua Cloud Drive veröffentlicht; der Link wird nach der Umfrage angezeigt.",
+    result3: "Prize Delivery: Leaving your email is the ONLY way we can deliver your prize. Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win. / Preisübergabe: Die Angabe Ihrer E-Mail-Adresse ist der EINZIGE Weg, um Ihnen einen Gewinn zuzustellen. Gewinner erhalten ihre Amazon-Gutscheine per E-Mail. Wenn Sie keine E-Mail hinterlassen, verfällt ein eventueller Preis.",
     hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.<br>Nach Abschluss der Umfrage erhalten Sie eine Teilnahme-Nr. Bitte machen Sie einen Screenshot.",
     proceedBtn: "Start the Survey / Umfrage starten",
     sorryText: "<p><strong>Thank you for your selection! / Vielen Dank für Ihre Auswahl!</strong></p><p>Das von Ihnen gewählte Land / die von Ihnen gewählte Region — <strong id='nonLotteryCountryName'></strong> — gehört nicht zur Verlosungsstichprobe dieser Studie. Wir laden Sie jedoch herzlich ein, fortzufahren und Ihre wertvolle berufliche Perspektive zu Governance-Fragen zu teilen.</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>Ihre Erkenntnisse sind für diese Forschung ebenso wichtig und fließen in unsere internationale Vergleichsanalyse ein.</p>",
@@ -689,8 +697,6 @@ const T = {
     quizHeading: "Please answer the following question: / 请回答以下问题：",
     quizSubmitText: "Submit / 提交",
     quizError: "Please select an answer. / 请选择一个答案。",
-    // 24小时提醒（新增）
-    tokenExpiryHint: "Once you proceed, please complete the survey and obtain your credential within 24 hours. The credential generation link will expire after that time. / 点击进入问卷后，请在24小时内完成问卷并获取参与凭证，过期将无法生成凭证。",
     congratsHeading: "🎉 Congratulations! / 恭喜！",
     congratsDesc: "The country/region you selected — <strong id='lotteryCountryName'></strong> — is one of our sampled countries/regions eligible for lottery rewards. Would you like to join the prize draw?<br>您选择的国家/地区 — <strong id='lotteryCountryName_cn'></strong> — 是我们的抽奖国家/地区之一。您希望参与抽奖吗？",
     optYes: "🎁 Yes, I want to join the draw / 是的，我要参与抽奖",
@@ -719,14 +725,15 @@ const T = {
     pTotalWin: "300 (Guaranteed / 人人有奖)",
     prizeNote: "<strong>The first 300 eligible participants per country/region are GUARANTEED to win one of the following prizes!<br>每个国家/地区前300名符合条件的参与者 100% 获得以下奖项之一！</strong>",
     lotteryLimit: "To ensure the quality and integrity of our research data, each participant may complete only one survey. Only valid survey responses are eligible for the prize draw.<br>为确保调研数据的质量与完整性，每位参与者仅可填写一份问卷，仅有效问卷可参与抽奖。",
-    rules: [
-      "<b>First draw (when 150 valid responses are reached in a country/region):</b> Awards 1 second prize, 5 third prizes, 25 participation prizes. <i>Note: The first prize is not drawn in this phase.</i><br><b>首轮开奖（该国/地区满150份有效答卷时）：</b>抽取二等奖1名，三等奖5名，参与奖25名。<i>注：本阶段不抽取一等奖。</i>",
-      "<b>Second draw (when 300 valid responses are reached in a country/region):</b> Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes.<br><b>次轮开奖（该国/地区满300份有效答卷时）：</b>在第151至300名参与者中抽取剩余的二等奖1名，三等奖5名和参与奖25名。",
-      "<b>First Prize ($500):</b> Drawn once among ALL 300 participants regardless of phase, as long as you have not won a prize before.<br><b>一等奖 ($500)：</b>在全部300名参与者中统一抽取一次（排除已中奖者）。",
-      "<b>Draw Results Notification:</b> <span style='color:#1a56db; font-weight:600;'>All participants who have provided an email address</span> will receive the draw results by email.<br><b>开奖通知：</b><span style='color:#1a56db; font-weight:600;'>所有提供了邮箱的参与者</span>都将收到开奖结果通知。",
-      "<b>Tsinghua Cloud Drive:</b> Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted.<br><b>云盘公示：</b>抽奖结果同时将在清华大学云盘公示，问卷提交后将显示下载链接。",
-      "<b>Prize Delivery:</b> <span style='color:#c53030; font-weight:600;'>Leaving your email is the ONLY way we can deliver your prize.</span> Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win.<br><b>奖品发放：</b><span style='color:#c53030; font-weight:600;'>留下邮箱是我们发送奖品的唯一方式。</span>中奖者将通过邮件收到亚马逊礼品卡。不提供邮箱将视为放弃奖品领取。"
-    ],
+    // 抽奖轮次框（英中双语，英文在前，中文在后）
+    roundsHeading: "Draw Rounds / 抽奖轮次",
+    resultHeading: "Draw Result Access / 抽奖结果获取",
+    round1: "First draw (when 150 valid responses are reached in a country/region): Awards 1 second prize, 5 third prizes, 25 participation prizes. Note: The first prize is not drawn in this phase. / 首轮开奖（该国/地区满150份有效答卷时）：抽取二等奖1名，三等奖5名，参与奖25名。注：本阶段不抽取一等奖。",
+    round2: "Second draw (when 300 valid responses are reached in a country/region): Among participants 151–300, awards the remaining 1 second prize, 5 third prizes, and 25 participation prizes. / 次轮开奖（该国/地区满300份有效答卷时）：在第151至300名参与者中抽取剩余的二等奖1名，三等奖5名和参与奖25名。",
+    round3: "First Prize ($500): Drawn once among ALL 300 participants regardless of phase, as long as you have not won a prize before. / 一等奖 ($500)：在全部300名参与者中统一抽取一次（排除已中奖者）。",
+    result1: "Draw Results Notification: All participants who have provided an email address will receive the draw results by email. / 开奖通知：所有提供了邮箱的参与者都将收到开奖结果通知。",
+    result2: "Tsinghua Cloud Drive: Draw results will also be published on Tsinghua Cloud Drive; the download link will be displayed after the main survey is submitted. / 云盘公示：抽奖结果同时将在清华大学云盘公示，问卷提交后将显示下载链接。",
+    result3: "Prize Delivery: Leaving your email is the ONLY way we can deliver your prize. Winners will receive their Amazon Gift Cards by email. If you do not leave an email, you will forfeit any prize you may win. / 奖品发放：留下邮箱是我们发送奖品的唯一方式。中奖者将通过邮件收到亚马逊礼品卡。不提供邮箱将视为放弃奖品领取。",
     hint: "After completing the survey, you will receive a unique Participant ID. We recommend taking a screenshot to keep it.<br>问卷完成后，您将获得一个唯一的参与编号。建议截图保存作为凭证。",
     proceedBtn: "Start the Survey / 开始填写问卷",
     sorryText: "<p><strong>Thank you for your selection! / 感谢您的选择！</strong></p><p>The country/region you selected — <strong id='nonLotteryCountryName'></strong> — is not within this study's lottery-eligible sample. However, we warmly invite you to continue and share your valuable professional voice on governance issues.<br>您选择的国家/地区 — <strong id='nonLotteryCountryName_cn'></strong> — 不属于本次研究的抽奖样本国家/地区。但我们仍然热忱邀请您继续填写问卷，分享您对专业治理问题的宝贵见解。</p><p style='margin-top:10px;'>Your insights are equally important to this research and will contribute to our international comparative analysis.<br>您的见解对这项研究同样重要，并将为我们的国际比较分析做出贡献。</p>",
@@ -762,7 +769,7 @@ const QUIZ_MAP = {
   "18": "Q21", // Other
 };
 
-// 各语言题目内容（en: 纯英文, de: 德文, sg: 英中双语）
+// 各语言题目内容（en: 纯英文, de: 英德双语, sg: 英中双语）
 const QUIZ_DATA = {
   en: {
     Q10: {
@@ -888,122 +895,122 @@ const QUIZ_DATA = {
   },
   de: {
     Q10: {
-      question: "Was versteht man im Bauwesen unter „Flashing“ (Anschlussblech/Abdeckung)?",
+      question: "In building construction, what does 'flashing' refer to? / Was versteht man im Bauwesen unter „Flashing“ (Anschlussblech/Abdeckung)?",
       options: [
-        "A. Eindringen von Wasser in ein Gebäude bei Starkregen",
-        "B. Das Abdichtungsdetail am Übergang zwischen Dach und vertikaler Wand",
-        "C. Eine Überlaufvorrichtung in der Hausinstallation",
-        "D. Regenwasser-Ablaufspuren an Außenwandflächen"
+        "A. Water overflow into a building during heavy rain / Eindringen von Wasser in ein Gebäude bei Starkregen",
+        "B. The waterproofing detail at the junction of a roof and a vertical wall / Das Abdichtungsdetail am Übergang zwischen Dach und vertikaler Wand",
+        "C. An overflow device in indoor plumbing systems / Eine Überlaufvorrichtung in der Hausinstallation",
+        "D. Rainwater wash marks on exterior wall surfaces / Regenwasser-Ablaufspuren an Außenwandflächen"
       ],
       correctIndex: 1
     },
     Q12: {
-      question: "Wofür steht „SPT“ im Bauingenieurwesen bzw. in der Geotechnik?",
+      question: "In structural/geotechnical engineering, what does 'SPT' stand for? / Wofür steht „SPT“ im Bauingenieurwesen bzw. in der Geotechnik?",
       options: [
-        "A. Site Planning Template (Vorlage für die Standortplanung)",
-        "B. Structural Performance Threshold (Grenzwert für das Tragverhalten)",
-        "C. Standard Penetration Test (Standard-Penetrationsversuch)",
-        "D. Soil Plasticity Type (Art der Bodenplastizität)"
+        "A. Site Planning Template / Site Planning Template (Vorlage für die Standortplanung)",
+        "B. Structural Performance Threshold / Structural Performance Threshold (Grenzwert für das Tragverhalten)",
+        "C. Standard Penetration Test / Standard Penetration Test (Standard-Penetrationsversuch)",
+        "D. Soil Plasticity Type / Soil Plasticity Type (Art der Bodenplastizität)"
       ],
       correctIndex: 2
     },
     Q13: {
-      question: "Wofür steht „FCU“ in der TGA-Planung (Technikgebäudeausrüstung)?",
+      question: "In MEP engineering, what does 'FCU' stand for? / Wofür steht „FCU“ in der TGA-Planung (Technikgebäudeausrüstung)?",
       options: [
-        "A. Fire Control Unit (Feuerleiteinheit)",
-        "B. Fan Coil Unit (Gebläsekonvektor)",
-        "C. Fluid Circulation Unit (Flüssigkeitsumlaufeinheit)",
-        "D. Floor Cooling Utility (Dienstprogramm zur Bodenkühlung)"
+        "A. Fire Control Unit / Fire Control Unit (Feuerleiteinheit)",
+        "B. Fan Coil Unit / Fan Coil Unit (Gebläsekonvektor)",
+        "C. Fluid Circulation Unit / Fluid Circulation Unit (Flüssigkeitsumlaufeinheit)",
+        "D. Floor Cooling Utility / Floor Cooling Utility (Dienstprogramm zur Bodenkühlung)"
       ],
       correctIndex: 1
     },
     Q14: {
-      question: "Wofür ist FIDIC in der Baubranche am bekanntesten?",
+      question: "What is FIDIC best known for in the construction industry? / Wofür ist FIDIC in der Baubranche am bekanntesten?",
       options: [
-        "A. Eine digitale Plattform für internationale Projektausschreibungen",
-        "B. Ein finanzielles Absicherungssystem für Baumängel",
-        "C. Standardvertragsmuster für internationale Bau- und Ingenieurverträge",
-        "D. Ein internationales Zertifizierungssystem für Gebäudesicherheit"
+        "A. A digital platform for international project bidding / Eine digitale Plattform für internationale Projektausschreibungen",
+        "B. A financial insurance scheme for construction defects / Ein finanzielles Absicherungssystem für Baumängel",
+        "C. Standard forms of international construction and engineering contracts / Standardvertragsmuster für internationale Bau- und Ingenieurverträge",
+        "D. An international building safety certification system / Ein internationales Zertifizierungssystem für Gebäudesicherheit"
       ],
       correctIndex: 2
     },
     Q15: {
-      question: "Wofür steht „RICS“ in der Baubranche?",
+      question: "In the construction industry, what does 'RICS' stand for? / Wofür steht „RICS“ in der Baubranche?",
       options: [
-        "A. Regional Infrastructure Construction Standards (Regionale Standards für den Infrastrukturbau)",
-        "B. Royal Institution of Chartered Surveyors (Königliche Institution der Chartered Surveyors)",
-        "C. Risk and Insurance for Construction Services (Risiken und Versicherungsschutz für Bauleistungen)",
-        "D. Registered International Construction Specialists (Registrierte internationale Baufachleute)"
+        "A. Regional Infrastructure Construction Standards / Regional Infrastructure Construction Standards (Regionale Standards für den Infrastrukturbau)",
+        "B. Royal Institution of Chartered Surveyors / Royal Institution of Chartered Surveyors (Königliche Institution der Chartered Surveyors)",
+        "C. Risk and Insurance for Construction Services / Risk and Insurance for Construction Services (Risiken und Versicherungsschutz für Bauleistungen)",
+        "D. Registered International Construction Specialists / Registered International Construction Specialists (Registrierte internationale Baufachleute)"
       ],
       correctIndex: 1
     },
     Q16: {
-      question: "Wofür steht „IFC“ im Bereich BIM?",
+      question: "In BIM, what does 'IFC' stand for? / Wofür steht „IFC“ im Bereich BIM?",
       options: [
-        "A. Integrated Facility Control (Integrierte Anlagensteuerung)",
-        "B. Information Flow Chart (Informationsflussdiagramm)",
-        "C. Industry Foundation Classes (Grundlagenkurse für die Industrie)",
-        "D. International Finance Corporation (Internationale Finanz-Corporation)"
+        "A. Integrated Facility Control / Integrated Facility Control (Integrierte Anlagensteuerung)",
+        "B. Information Flow Chart / Information Flow Chart (Informationsflussdiagramm)",
+        "C. Industry Foundation Classes / Industry Foundation Classes (Grundlagenkurse für die Industrie)",
+        "D. International Finance Corporation / International Finance Corporation (Internationale Finanz-Corporation)"
       ],
       correctIndex: 2
     },
     Q17: {
-      question: "Wofür steht „LOTO“ im Bereich der Arbeitssicherheit auf Baustellen?",
+      question: "What does 'LOTO' stand for in construction safety? / Wofür steht „LOTO“ im Bereich der Arbeitssicherheit auf Baustellen?",
       options: [
-        "A. Level of Tolerance for Operations (Toleranzgrenze für den Betrieb)",
-        "B. Logistics and Onsite Transportation Order (Auftrag für Logistik und Transport vor Ort)",
-        "C. Low-Temperature Operating Threshold (Betriebsgrenzwert für niedrige Temperaturen)",
-        "D. Lockout / Tagout (Lockout/Tagout)"
+        "A. Level of Tolerance for Operations / Level of Tolerance for Operations (Toleranzgrenze für den Betrieb)",
+        "B. Logistics and Onsite Transportation Order / Logistics and Onsite Transportation Order (Auftrag für Logistik und Transport vor Ort)",
+        "C. Low-Temperature Operating Threshold / Low-Temperature Operating Threshold (Betriebsgrenzwert für niedrige Temperaturen)",
+        "D. Lockout / Tagout / Lockout / Tagout"
       ],
       correctIndex: 3
     },
     Q18: {
-      question: "Wofür steht „NPV“ in der Investitions- oder Bewertungsanalyse?",
+      question: "What does 'NPV' stand for in investment/valuation analysis? / Wofür steht „NPV“ in der Investitions- oder Bewertungsanalyse?",
       options: [
-        "A. Net Present Value (Kapitalwert)",
-        "B. Nominal Property Valuation (Nominale Immobilienbewertung)",
-        "C. Net Profit Variance (Abweichung des Nettogewinns)",
-        "D. National Price Verification (Nationale Preisüberprüfung)"
+        "A. Net Present Value / Net Present Value (Kapitalwert)",
+        "B. Nominal Property Valuation / Nominal Property Valuation (Nominale Immobilienbewertung)",
+        "C. Net Profit Variance / Net Profit Variance (Abweichung des Nettogewinns)",
+        "D. National Price Verification / National Price Verification (Nationale Preisüberprüfung)"
       ],
       correctIndex: 0
     },
     Q19: {
-      question: "Wofür steht „LEED“ im Bereich des umweltfreundlichen Bauens?",
+      question: "In green building, what does 'LEED' stand for? / Wofür steht „LEED“ im Bereich des umweltfreundlichen Bauens?",
       options: [
-        "A. Low Energy Emission Development (Entwicklung emissionsarmer Technologien)",
-        "B. Leadership in Energy and Environmental Design (Führungsrolle im Energie- und Umweltdesign)",
-        "C. Licensed Environmental Engineering Design (Zugelassene Planung im Umweltingenieurwesen)",
-        "D. Land Efficiency and Ecological Development (Flächeneffizienz und ökologische Entwicklung)"
+        "A. Low Energy Emission Development / Low Energy Emission Development (Entwicklung emissionsarmer Technologien)",
+        "B. Leadership in Energy and Environmental Design / Leadership in Energy and Environmental Design (Führungsrolle im Energie- und Umweltdesign)",
+        "C. Licensed Environmental Engineering Design / Licensed Environmental Engineering Design (Zugelassene Planung im Umweltingenieurwesen)",
+        "D. Land Efficiency and Ecological Development / Land Efficiency and Ecological Development (Flächeneffizienz und ökologische Entwicklung)"
       ],
       correctIndex: 1
     },
     Q20: {
-      question: "Was versteht man in der Bautechnik unter „Kollisionsprüfung“ (Clash Detection)?",
+      question: "In construction technology, what is 'clash detection'? / Was versteht man in der Bautechnik unter „Kollisionsprüfung“ (Clash Detection)?",
       options: [
-        "A. Überprüfung der Sicherheitsabstände zwischen Baumaschinen",
-        "B. Simulation von Stoßreaktionen zwischen benachbarten Gebäuden bei Erdbeben",
-        "C. Identifizierung räumlicher Konflikte zwischen verschiedenen Gebäudesystemen in einem 3D-Modell",
-        "D. Erkennung von Stoßschäden an Baumaterialien während des Transports"
+        "A. Checking safe distances between construction machinery / Überprüfung der Sicherheitsabstände zwischen Baumaschinen",
+        "B. Simulating collision responses between adjacent buildings during earthquakes / Simulation von Stoßreaktionen zwischen benachbarten Gebäuden bei Erdbeben",
+        "C. Identifying spatial conflicts between different building systems in a 3D model / Identifizierung räumlicher Konflikte zwischen verschiedenen Gebäudesystemen in einem 3D-Modell",
+        "D. Detecting collision damage to building materials during transportation / Erkennung von Stoßschäden an Baumaterialien während des Transports"
       ],
       correctIndex: 2
     },
     Q21: {
-      question: "Wofür steht „EPC“ in der Baubranche?",
+      question: "In the construction industry, what does 'EPC' stand for? / Wofür steht „EPC“ in der Baubranche?",
       options: [
-        "A. Environmental Protection Certificate (Umweltschutzzertifikat)",
-        "B. Engineering, Procurement, and Construction (Planung, Beschaffung und Bauausführung)",
-        "C. Estimated Project Cost (Geschätzte Projektkosten)",
-        "D. Equipment Performance Check (Geräteleistungsprüfung)"
+        "A. Environmental Protection Certificate / Environmental Protection Certificate (Umweltschutzzertifikat)",
+        "B. Engineering, Procurement, and Construction / Engineering, Procurement, and Construction (Planung, Beschaffung und Bauausführung)",
+        "C. Estimated Project Cost / Estimated Project Cost (Geschätzte Projektkosten)",
+        "D. Equipment Performance Check / Equipment Performance Check (Geräteleistungsprüfung)"
       ],
       correctIndex: 1
     },
     Q22: {
-      question: "Wofür steht „TOD“ in der Stadtplanung?",
+      question: "In urban planning, what does 'TOD' stand for? / Wofür steht „TOD“ in der Stadtplanung?",
       options: [
-        "A. Total Occupancy Density (Gesamtbelegungsdichte)",
-        "B. Transit-Oriented Development (Verkehrsorientierte Stadtentwicklung)",
-        "C. Territorial Operations Directive (Richtlinie für territoriale Operationen)",
-        "D. Topographic Overlay Design (Design der topografischen Überlagerung)"
+        "A. Total Occupancy Density / Total Occupancy Density (Gesamtbelegungsdichte)",
+        "B. Transit-Oriented Development / Transit-Oriented Development (Verkehrsorientierte Stadtentwicklung)",
+        "C. Territorial Operations Directive / Territorial Operations Directive (Richtlinie für territoriale Operationen)",
+        "D. Topographic Overlay Design / Topographic Overlay Design (Design der topografischen Überlagerung)"
       ],
       correctIndex: 1
     }
@@ -1327,12 +1334,7 @@ function applyLanguage(countryCode) {
   otherProfInput.placeholder = t.otherProfPlaceholder || "Please specify your professional field";
   otherCountryInput.placeholder = t.otherCountryPlaceholder || "Please specify your country/region";
 
-  // 24小时提醒
-  document.querySelectorAll(".token-expiry-hint-text").forEach(function(el) {
-    el.textContent = t.tokenExpiryHint;
-  });
-
-  // 抽奖面板文字（原样保留）
+  // 抽奖面板文字
   document.getElementById("congratsHeading").textContent = t.congratsHeading;
   let descHtml = t.congratsDesc;
   if (selectedName) {
@@ -1381,14 +1383,15 @@ function applyLanguage(countryCode) {
   document.getElementById("prizeNote").innerHTML = t.prizeNote;
   document.getElementById("lotteryLimit").innerHTML = t.lotteryLimit;
 
-  document.getElementById("rulesHeading").textContent = t.rulesHeading;
-  const rulesList = document.getElementById("rulesList");
-  rulesList.innerHTML = "";
-  t.rules.forEach(r => {
-    const li = document.createElement("li");
-    li.innerHTML = r;
-    rulesList.appendChild(li);
-  });
+  // 抽奖轮次框
+  document.getElementById("roundsHeading").textContent = t.roundsHeading;
+  document.getElementById("resultHeading").textContent = t.resultHeading;
+  document.getElementById("round1").textContent = t.round1;
+  document.getElementById("round2").textContent = t.round2;
+  document.getElementById("round3").textContent = t.round3;
+  document.getElementById("result1").textContent = t.result1;
+  document.getElementById("result2").textContent = t.result2;
+  document.getElementById("result3").textContent = t.result3;
 
   document.getElementById("hintBox").innerHTML = t.hint;
   document.getElementById("proceedBtnAText").textContent = t.proceedBtn;
