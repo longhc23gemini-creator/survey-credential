@@ -8,8 +8,8 @@
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
     text-align: center;
-    color: #1a56db; 
-    background: #ebf5ff; 
+    color: #1a56db;
+    background: #ebf5ff;
     border-radius: 10px;
     margin: 0;
     padding: 15px;
@@ -17,103 +17,196 @@
     font-size: 14px;
     line-height: 1.6;
   }
-  .count-box { 
-    margin-top: 12px; 
-    color: #1a202c; 
+  .count-box {
+    margin-top: 12px;
+    color: #1a202c;
     font-size: 15px;
     text-align: left;
     display: inline-block;
+    width: 100%;
+    max-width: 400px;
   }
-  .country-row {
-    margin-bottom: 8px;
-    font-weight: 500;
+  .country-group {
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
   }
-  .ticket { 
-    color: #c53030;
-    font-weight: bold; 
-    font-family: "SF Mono", "Consolas", monospace; 
-    font-size: 16px;
+  .country-group .country-name {
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 4px;
+    font-size: 15px;
   }
-  .ticket-full { 
+  .country-group .sub {
+    font-weight: 400;
+    font-size: 13px;
+    color: #4a5568;
+    padding-left: 4px;
+  }
+  .country-group .sub strong {
+    color: #1a202c;
+    font-weight: 700;
+  }
+  .country-group .sub .highlight-yes {
     color: #276749;
-    font-weight: bold; 
+  }
+  .country-group .sub .highlight-no {
+    color: #c53030;
+  }
+  .country-group .sub .highlight-full {
+    color: #b7791f;
+  }
+  .divider {
+    border-top: 1px solid #e2e8f0;
+    margin: 8px 0 12px;
+  }
+  .divider-light {
+    border-top: 1px dashed #e2e8f0;
+    margin: 6px 0 10px;
+  }
+  .non-lottery-group {
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #f7fafc;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+  }
+  .non-lottery-group .country-name {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 14px;
+  }
+  .non-lottery-group .sub {
+    font-weight: 400;
+    font-size: 13px;
+    color: #4a5568;
+    padding-left: 4px;
+  }
+  .non-lottery-group .sub strong {
+    color: #1a202c;
+    font-weight: 700;
   }
 </style>
 </head>
 <body>
-    <div id="counter">Loading current spots...</div>
-    <script>
-        // ── 语言判定 ──
-        var params = new URLSearchParams(window.location.search);
-        var countryParam = params.get('country') || '';
-        var lang = 'en';
-        if (countryParam.toUpperCase() === 'DE') lang = 'de';
-        else if (countryParam.toUpperCase() === 'SG') lang = 'sg';
+  <div id="counter">Loading current spots...</div>
+  <script>
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var countryParam = params.get('country') || '';
+      var lang = 'en';
+      if (countryParam.toUpperCase() === 'DE') lang = 'de';
+      else if (countryParam.toUpperCase() === 'SG') lang = 'sg';
 
-        var T = {
-          en: {
-            loading: 'Loading current spots...',
-            usLabel: '🇺🇸 <b>US:</b> ',
-            deLabel: '🇩🇪 <b>DE:</b> ',
-            sgLabel: '🇸🇬 <b>SG:</b> ',
-            status1: function(left) { return '1st Draw: <span class="ticket">' + left + '</span> left'; },
-            status2: function(left) { return '2nd Draw: <span class="ticket">' + left + '</span> left'; },
-            statusFull: '<span class="ticket-full">Quota Reached (300+)</span>',
-            error: 'System initializing...'
-          },
-          de: {
-            loading: 'Loading current spots...',
-            usLabel: '🇺🇸 <b>US:</b> ',
-            deLabel: '🇩🇪 <b>DE:</b> ',
-            sgLabel: '🇸🇬 <b>SG:</b> ',
-            status1: function(left) { return '1st Draw: <span class="ticket">' + left + '</span> left / Erste Auslosung: <span class="ticket">' + left + '</span> verbleibend'; },
-            status2: function(left) { return '2nd Draw: <span class="ticket">' + left + '</span> left / Zweite Auslosung: <span class="ticket">' + left + '</span> verbleibend'; },
-            statusFull: '<span class="ticket-full">Quota Reached (300+) / Kontingent erreicht (300+)</span>',
-            error: 'System initializing...'
-          },
-          sg: {
-            loading: 'Loading current spots... / 正在加载名额进度...',
-            usLabel: '🇺🇸 <b>US:</b> ',
-            deLabel: '🇩🇪 <b>DE:</b> ',
-            sgLabel: '🇸🇬 <b>SG:</b> ',
-            status1: function(left) { return '1st Draw: <span class="ticket">' + left + '</span> left / 首轮抽奖还剩 <span class="ticket">' + left + '</span> 个名额'; },
-            status2: function(left) { return '2nd Draw: <span class="ticket">' + left + '</span> left / 次轮抽奖还剩 <span class="ticket">' + left + '</span> 个名额'; },
-            statusFull: '<span class="ticket-full">Quota Reached (300+) / 满额 (已超 300 人)</span>',
-            error: 'System initializing... / 系统初始化中...'
-          }
-        };
+      var T = {
+        en: {
+          loading: 'Loading current spots...',
+          participating: 'Participating in draw',
+          notParticipating: 'Not participating',
+          quotaFull: 'Quota reached (300+)',
+          error: 'System initializing...',
+          us: 'United States',
+          de: 'Germany',
+          sg: 'Singapore',
+          cn: 'China (Mainland, HK, MO, TW)',
+          int: 'Other countries',
+          total: 'Total'
+        },
+        de: {
+          loading: 'Loading current spots...',
+          participating: 'Teilnahme an der Verlosung',
+          notParticipating: 'Nicht teilnehmend',
+          quotaFull: 'Kontingent erreicht (300+)',
+          error: 'System initializing...',
+          us: 'United States',
+          de: 'Germany',
+          sg: 'Singapore',
+          cn: 'China (Festland, HK, MO, TW)',
+          int: 'Andere Länder',
+          total: 'Gesamt'
+        },
+        sg: {
+          loading: 'Loading current spots... / 正在加载名额进度...',
+          participating: 'Participating in draw / 参与抽奖',
+          notParticipating: 'Not participating / 不参与抽奖',
+          quotaFull: 'Quota reached (300+) / 名额已满 (300+)',
+          error: 'System initializing... / 系统初始化中...',
+          us: 'United States',
+          de: 'Germany',
+          sg: 'Singapore',
+          cn: 'China (Mainland, HK, MO, TW) / 中国大陆、香港、澳门、台湾',
+          int: 'Other countries / 其他国家/地区',
+          total: 'Total / 合计'
+        }
+      };
 
-        var t = T[lang] || T.en;
+      var t = T[lang] || T.en;
+      var API_URL = "https://survey-counter.longhc23gemini.workers.dev/";
+      var headerEl = document.getElementById("counter");
 
-        function getStatusText(count) {
-          if (count < 150) {
-            return t.status1(150 - count);
-          } else if (count < 300) {
-            return t.status2(300 - count);
-          } else {
-            return t.statusFull;
-          }
+      function render(data) {
+        var counts = data.counts || {};
+        var html = '<div style="font-size:16px; font-weight:700; color:#1a56db; margin-bottom:8px;">🏆 <span style="font-size:14px; font-weight:400; color:#4a5568;">Real-Time Survey Participation Stats</span></div>';
+        html += '<div class="count-box">';
+
+        // ── 抽奖国 ──
+        var lotteryCountries = [
+          { code: 'US', label: t.us, key: 'US' },
+          { code: 'DE', label: t.de, key: 'DE' },
+          { code: 'SG', label: t.sg, key: 'SG' }
+        ];
+
+        for (var i = 0; i < lotteryCountries.length; i++) {
+          var c = lotteryCountries[i];
+          var yes = counts[c.key] || 0;
+          var no = counts[c.key + '_no'] || 0;
+          var full = counts[c.key + '_full'] || 0;
+          var total = yes + no + full;
+
+          html += '<div class="country-group">';
+          html += '<div class="country-name">' + c.label + ' <span style="font-size:12px; font-weight:400; color:#a0aec0;">(ID: ' + c.key + ')</span></div>';
+          html += '<div class="sub">' + t.participating + ': <strong class="highlight-yes">' + yes + '</strong></div>';
+          html += '<div class="sub">' + t.notParticipating + ': <strong class="highlight-no">' + no + '</strong></div>';
+          html += '<div class="sub">' + t.quotaFull + ': <strong class="highlight-full">' + full + '</strong></div>';
+          html += '<div class="sub" style="margin-top:4px; padding-top:4px; border-top:1px dashed #e2e8f0; font-size:12px; color:#718096;">' + t.total + ': <strong>' + total + '</strong></div>';
+          html += '</div>';
         }
 
-        var API_URL = "https://survey-counter.longhc23gemini.workers.dev/";
-        var headerEl = document.getElementById("counter");
-        headerEl.innerHTML = t.loading;
+        html += '<div class="divider"></div>';
 
-        fetch(API_URL + "?action=read")
+        // ── 非抽奖国 ──
+        var cnNo = counts['CN_no'] || 0;
+        var intNo = counts['INT_no'] || 0;
+
+        html += '<div style="font-size:13px; font-weight:600; color:#4a5568; margin-bottom:6px;">' + (lang === 'de' ? 'Nicht an der Verlosung teilnehmende Länder / Nicht-Teilnehmer' : lang === 'sg' ? 'Non-participating countries / 非抽奖国' : 'Non-participating countries') + '</div>';
+
+        html += '<div class="non-lottery-group">';
+        html += '<div class="country-name">' + t.cn + '</div>';
+        html += '<div class="sub">' + t.notParticipating + ': <strong>' + cnNo + '</strong></div>';
+        html += '</div>';
+
+        html += '<div class="non-lottery-group" style="margin-bottom:0;">';
+        html += '<div class="country-name">' + t.int + '</div>';
+        html += '<div class="sub">' + t.notParticipating + ': <strong>' + intNo + '</strong></div>';
+        html += '</div>';
+
+        html += '</div>';
+        headerEl.innerHTML = html;
+      }
+
+      headerEl.innerHTML = t.loading;
+
+      fetch(API_URL + "?action=read")
         .then(function(res) { return res.json(); })
         .then(function(data) {
-            var counts = data.counts || {};
-            headerEl.innerHTML =
-                "🏆 <b>Real-Time Prize Draw Spots</b><br>" +
-                "<div class='count-box'>" +
-                "<div class='country-row'>" + t.usLabel + getStatusText(counts.US || 0) + "</div>" +
-                "<div class='country-row'>" + t.deLabel + getStatusText(counts.DE || 0) + "</div>" +
-                "<div class='country-row'>" + t.sgLabel + getStatusText(counts.SG || 0) + "</div>" +
-                "</div>";
+          render(data);
         })
         .catch(function(err) {
-            headerEl.innerHTML = t.error;
+          headerEl.innerHTML = t.error;
         });
-    </script>
+    })();
+  </script>
 </body>
 </html>
