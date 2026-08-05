@@ -1395,9 +1395,17 @@ function applyLanguage(countryCode) {
                : "en";
   const t = T[lang];
 
-  const selectedName = countrySelect.options[countrySelect.selectedIndex]
+  let selectedName = countrySelect.options[countrySelect.selectedIndex]
     ? countrySelect.options[countrySelect.selectedIndex].text
     : "";
+
+  // ── 如果选的是 "OTHER"，使用用户输入的内容 ──
+  if (countrySelect.value === "OTHER") {
+    const inputVal = otherCountryInput.value.trim();
+    if (inputVal) {
+      selectedName = "Other(" + inputVal + ")";
+    }
+  }
 
   document.getElementById("mainTitle").innerHTML = t.title;
   document.getElementById("mainSub").innerHTML = "";
