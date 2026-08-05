@@ -1717,7 +1717,11 @@ document.addEventListener("DOMContentLoaded", function() {
   applyLanguage("en");
   otherProfGroup.classList.remove("visible");
   otherCountryGroup.classList.remove("visible");
-  // ── 新增：根据当前表单状态初始化按钮 ──
+  // ── 新增：根据当前表单状态初始化按钮，清空输入框内容 ──
+  otherProfInput.value = "";
+  otherCountryInput.value = "";
+  otherProfInput.classList.remove("error");
+  otherCountryInput.classList.remove("error");
   checkFormReady();
 
   // ── 新增：重置抽奖面板选项状态（刷新后清除残留选中） ──
