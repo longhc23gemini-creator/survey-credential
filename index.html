@@ -1709,6 +1709,8 @@ document.addEventListener("DOMContentLoaded", function() {
   applyLanguage("en");
   otherProfGroup.classList.remove("visible");
   otherCountryGroup.classList.remove("visible");
+  // ── 新增：根据当前表单状态初始化按钮 ──
+  checkFormReady();
 
   // ── 加载二维码图片并转为 base64（供复制到剪贴板使用） ──
   // 注意：这里不要用 var 重新声明，直接使用外部全局变量
