@@ -1712,6 +1712,33 @@ document.addEventListener("DOMContentLoaded", function() {
   // ── 新增：根据当前表单状态初始化按钮 ──
   checkFormReady();
 
+  // ── 新增：重置抽奖面板选项状态（刷新后清除残留选中） ──
+  // 重置 lotteryChoiceGroup（panelA）
+  document.querySelectorAll("#lotteryChoiceGroup .radio-option").forEach(function(el) {
+    var input = el.querySelector('input[type="radio"]');
+    if (input) {
+      input.checked = false;
+    }
+    el.classList.remove("selected");
+  });
+  // 重置非抽奖国选项（panelB）
+  document.querySelectorAll("#nonLotteryChoiceGroup .radio-option").forEach(function(el) {
+    var input = el.querySelector('input[type="radio"]');
+    if (input) {
+      input.checked = false;
+    }
+    el.classList.remove("selected");
+  });
+
+  // ── 重置状态变量 ──
+  lotteryChoice = "";
+  nonLotteryChoice = "";
+
+  // ── 隐藏详情面板 ──
+  document.getElementById("lotteryDetail").classList.remove("visible");
+  document.getElementById("quitMessage").classList.remove("visible");
+  document.getElementById("quitMessageB").classList.remove("visible");
+
   // ── 加载二维码图片并转为 base64（供复制到剪贴板使用） ──
   // 注意：这里不要用 var 重新声明，直接使用外部全局变量
   fetch('qrcode_entry.png')
