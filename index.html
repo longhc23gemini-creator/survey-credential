@@ -1409,7 +1409,9 @@ function applyLanguage(countryCode) {
   document.getElementById("mainTitle").innerHTML = t.title;
   document.getElementById("mainSub").innerHTML = "";
 
-  document.getElementById("step1Heading").textContent = t.step1Heading;
+  var step1HeadingEl = document.getElementById("step1Heading");
+  if (step1HeadingEl) step1HeadingEl.textContent = t.step1Heading;
+  
   document.getElementById("infoBox").innerHTML = t.subtitle;
   if (t.returnBox && t.returnBox !== "") {
     document.getElementById("incentiveBox").innerHTML = t.returnBox;
