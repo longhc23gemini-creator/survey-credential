@@ -546,7 +546,7 @@
     <div id="shareFeedbackA" style="margin-top:10px; font-size:14px; font-weight:600; color:var(--green); display:none;">
       <span id="shareFeedbackTextA"></span>
       <div id="qrCodeContainerA" style="margin-top:10px; display:none; text-align:center;">
-        <img src="poster-full.png" alt="Survey Poster" style="width:140px; height:auto; border-radius:8px; border:1px solid #dce4ec; box-shadow:0 2px 8px rgba(0,0,0,0.08);" />
+        <img src="poster-full.png" alt="Survey Poster" style="width:200px; height:auto; border-radius:8px; border:1px solid #dce4ec; box-shadow:0 2px 8px rgba(0,0,0,0.08);" />
         <div style="font-size:12px; font-weight:400; color:var(--gray-500); margin-top:4px;">
           <span id="qrCodeHintA"></span>
         </div>
@@ -585,7 +585,7 @@
     <div id="shareFeedbackB" style="margin-top:10px; font-size:14px; font-weight:600; color:var(--green); display:none;">
       <span id="shareFeedbackTextB"></span>
       <div id="qrCodeContainerB" style="margin-top:10px; display:none; text-align:center;">
-        <img src="poster-full.png" alt="Survey Poster" style="width:140px; height:auto; border-radius:8px; border:1px solid #dce4ec; box-shadow:0 2px 8px rgba(0,0,0,0.08);" />
+        <img src="poster-full.png" alt="Survey Poster" style="width:200px; height:auto; border-radius:8px; border:1px solid #dce4ec; box-shadow:0 2px 8px rgba(0,0,0,0.08);" />
         <div style="font-size:12px; font-weight:400; color:var(--gray-500); margin-top:4px;">
           <span id="qrCodeHintB"></span>
         </div>
@@ -2004,7 +2004,7 @@ document.addEventListener('click', function(e) {
 
   // 拼接：对应语言的文字 + 末尾一张二维码
   var htmlContent = shareTexts[lang] || shareTexts.en;
-  htmlContent += '<br><br><img src="' + qrImage + '" alt="QR Code" width="150" height="150"><br><br>';
+  htmlContent += '<br><br><img src="' + qrImage + '" alt="Survey Poster" style="width:200px; height:auto; max-width:100%; border-radius:8px;"><br><br>';
   
   // 尝试使用 Clipboard API 写入 HTML 和纯文本
   if (navigator.clipboard && navigator.clipboard.write) {
