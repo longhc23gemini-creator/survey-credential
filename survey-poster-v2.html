@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Win Up to $500! | Construction Industry Survey — 15 min, Anonymous, 100% Win Rate</title>
+<meta name="description" content="Help shape a more trustworthy future for construction. For architects, engineers & project managers in Singapore, US & Germany (prize draw); all professionals welcome. Tap to participate.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Win Up to $500! | Construction Industry Survey — 15 min, Anonymous, 100% Win Rate">
+<meta property="og:description" content="Help shape a more trustworthy future for construction. Prize draw for Singapore, US & Germany (100% win rate); all construction professionals welcome. Tap to participate.">
+<meta property="og:image" content="https://longhc23gemini-creator.github.io/survey-credential/survey-poster-v2-assets/og-thumb.png">
+<meta property="og:url" content="https://longhc23gemini-creator.github.io/survey-credential/survey-poster-v2.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:,">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; }
+  body {
+    font-family: "Segoe UI", "Arial", "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background: #FFFFFF;
+  }
+
+  /* ============ TOP: photo (target audience) ============ */
+  .hero { position: relative; width: 1080px; height: 830px; }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: url("survey-poster-v2-assets/bg.jpg") center / cover no-repeat;
+  }
+  .hero-shade {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(8,22,38,.42) 0%, rgba(8,22,38,.10) 26%, rgba(8,22,38,0) 55%, rgba(8,22,38,.62) 100%);
+  }
+  .hero-tag {
+    position: absolute; top: 34px; left: 40px;
+    background: rgba(255,255,255,.92); border-radius: 999px;
+    padding: 10px 26px;
+    font-size: 20px; font-weight: 700; letter-spacing: 5px; color: #0F2A43;
+    text-transform: uppercase;
+    box-shadow: 0 6px 20px rgba(8,22,38,.25);
+  }
+  .hero-caption {
+    position: absolute; left: 44px; right: 44px; bottom: 40px;
+    text-align: left;
+  }
+  .cap-label {
+    font-size: 17px; font-weight: 700; letter-spacing: 4px; color: #F5DD9C;
+    text-transform: uppercase;
+  }
+  .cap-line {
+    font-size: 38px; font-weight: 700; color: #FFFFFF; line-height: 1.2;
+    margin-top: 8px;
+    text-shadow: 0 2px 14px rgba(0,0,0,.45);
+  }
+  .cap-sub {
+    font-size: 23px; font-weight: 500; color: rgba(255,255,255,.94);
+    margin-top: 6px;
+    text-shadow: 0 1px 10px rgba(0,0,0,.45);
+  }
+
+  /* ============ BOTTOM: white content ============ */
+  .content {
+    position: absolute; top: 830px; left: 0; right: 0; bottom: 0;
+    background: #FFFFFF;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 34px 64px 26px;
+  }
+  .content::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(90deg, #C8102E 0%, #E8B84B 55%, #C8102E 100%);
+  }
+  .inner {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: space-between;
+  }
+
+  /* reward */
+  .win-title {
+    font-size: 56px; font-weight: 800; color: #C8102E; line-height: 1.05;
+    letter-spacing: -.5px; text-align: center;
+  }
+  .win-title .amt { font-size: 68px; }
+  .winrate {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(180deg, #FBEEC2, #F5DD9C);
+    border: 2px solid #E3C56B; border-radius: 999px;
+    padding: 9px 26px; margin-top: 8px;
+    font-size: 28px; font-weight: 700; color: #7A5A10;
+  }
+  .winrate svg { width: 24px; height: 24px; }
+
+  /* mission */
+  .mission { text-align: center; }
+  .mission .m1 {
+    font-size: 23px; font-weight: 700; color: #0F2A43; line-height: 1.32;
+    max-width: 900px;
+  }
+  .mission .m2 {
+    font-size: 18px; font-weight: 400; color: #4A5F73; margin-top: 6px;
+  }
+
+  /* survey */
+  .sec-label {
+    font-size: 14px; font-weight: 700; letter-spacing: 5px; color: #8A9BAE;
+    text-transform: uppercase; text-align: center; margin-bottom: 6px;
+  }
+  .survey-title {
+    font-size: 27px; font-weight: 600; color: #0F2A43; line-height: 1.3;
+    text-align: center; max-width: 880px;
+  }
+
+  /* info pills */
+  .pills {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+    max-width: 950px;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #F1F5F9; border: 1.5px solid #DCE4EC; border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 18px; font-weight: 600; color: #33475B;
+    white-space: nowrap;
+  }
+  .pill svg { width: 18px; height: 18px; flex: 0 0 auto; color: #C8102E; }
+
+  /* CTA + QR */
+  .qualifier {
+    text-align: center;
+    font-size: 18px; font-weight: 500; color: #4A5F73; line-height: 1.28;
+  }
+  .qualifier div:last-child { color: #5F7186; }
+  .cta {
+    font-size: 31px; font-weight: 700; color: #0F2A43; text-align: center;
+  }
+  .qr-box {
+    display: inline-flex; justify-content: center; align-items: center;
+    background: #FFFFFF; border: 2px solid #DCE4EC; border-radius: 22px;
+    padding: 16px; margin-top: 14px;
+    box-shadow: 0 12px 28px rgba(15,42,67,.14);
+  }
+  .qr-box img { display: block; width: 252px; height: 252px; }
+  .open-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: 12px;
+    background: #C8102E; border-radius: 999px;
+    padding: 14px 40px;
+    font-size: 32px; font-weight: 700; color: #FFFFFF; text-decoration: none;
+    box-shadow: 0 10px 24px rgba(200,16,46,.28);
+    transition: background .2s;
+  }
+  .open-btn:hover { background: #A80D26; }
+  .open-btn svg { width: 26px; height: 26px; }
+  .cta a, .qr-box a { text-decoration: none; color: inherit; cursor: pointer; }
+  .qr-box { transition: border-color .2s; }
+  .qr-box:hover { border-color: #E3C56B; }
+  .footer {
+    font-size: 18px; font-weight: 500; color: #5F7186; text-align: center;
+  }
+  .footer-email {
+    font-size: 17px; font-weight: 500; color: #5F7186; text-align: center;
+    margin-top: 4px;
+  }
+  .footer-email a { color: #0F2A43; text-decoration: none; border-bottom: 1px solid #B9C6D3; }
+  .footer-email a:hover { border-bottom-color: #C8102E; color: #C8102E; }
+</style>
+</head>
+<body>
+
+  <!-- TOP: the people we want to reach -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-shade"></div>
+    <div class="hero-tag">Survey</div>
+    <div class="hero-caption">
+      <div class="cap-label">Who We're Inviting</div>
+      <div class="cap-line">Architects · Engineers · Project Managers</div>
+      <div class="cap-sub">Construction professionals worldwide &mdash; prize draw open to Singapore, the US &amp; Germany</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM: reward + survey info + QR -->
+  <div class="content">
+    <div class="inner">
+
+      <div style="text-align:center">
+        <div class="win-title">Win Up to <span class="amt">$500!</span></div>
+        <span class="winrate">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7A5A10" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          100% Win Rate &middot; SG, US &amp; DE
+        </span>
+      </div>
+
+      <div class="mission">
+        <div class="m1">Help Shape a More Trustworthy Future for the Construction Industry</div>
+        <div class="m2">— Share Your Professional Insight</div>
+      </div>
+
+      <div style="text-align:center">
+        <div class="sec-label">Survey</div>
+        <div class="survey-title">Professional Governance &amp; Trust in Construction Area</div>
+      </div>
+
+      <div class="pills">
+        <span class="pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          15–20 Minutes
+        </span>
+        <span class="pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          Fully Anonymous &amp; Confidential
+        </span>
+        <span class="pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+          Free Research Report
+        </span>
+      </div>
+
+      <div class="qualifier">
+        <div>Prize draw (100% win rate) for Singapore, the US &amp; Germany</div>
+        <div>Professionals in other countries: participate voluntarily &mdash; your voice matters too</div>
+      </div>
+
+      <div style="text-align:center">
+        <div class="cta"><a href="https://longhc23gemini-creator.github.io/survey-credential/index.html" target="_blank" rel="noopener" title="Open the survey">Scan to Participate &amp; Win!</a></div>
+        <div class="qr-box">
+          <a href="https://longhc23gemini-creator.github.io/survey-credential/index.html" target="_blank" rel="noopener" title="Click to open the survey">
+            <img src="survey-poster-v2-assets/qr_clean.png" alt="Survey QR code — click to open">
+          </a>
+        </div>
+        <a class="open-btn" href="https://longhc23gemini-creator.github.io/survey-credential/index.html" target="_blank" rel="noopener" title="Open the survey">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          Open the Survey Now
+        </a>
+      </div>
+
+      <div class="footer">
+        <div>Brought to you by NCCL, Tsinghua University</div>
+        <div class="footer-email">Questions? <a href="mailto:NCCL@tsinghua.edu.cn">NCCL@tsinghua.edu.cn</a></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Scale the fixed 1080x1920 poster to fit any screen (PNG export unaffected at 1080x1920)
+    (function fit() {
+      var s = Math.min(window.innerWidth / 1080, window.innerHeight / 1920);
+      document.body.style.transform = "scale(" + s + ")";
+      document.body.style.transformOrigin = "top left";
+    })();
+    window.addEventListener("resize", function () {
+      var s = Math.min(window.innerWidth / 1080, window.innerHeight / 1920);
+      document.body.style.transform = "scale(" + s + ")";
+    });
+  </script>
+
+</body>
+</html>
